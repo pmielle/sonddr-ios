@@ -1,14 +1,14 @@
 //
-//  ContentView.swift
+//  NotificationsView.swift
 //  sonddr
 //
-//  Created by Paul Mielle on 13/11/2022.
+//  Created by Paul Mielle on 16/11/2022.
 //
 
 import SwiftUI
 
-struct ContentView: View {
-    
+struct NotificationsView: View {
+
     // attributes
     // ------------------------------------------
     // ...
@@ -17,7 +17,11 @@ struct ContentView: View {
     // body
     // ------------------------------------------
     var body: some View {
-        MyTabView()
+        ZStack() { MyBackground()
+            
+            Text("NotificationsView works!")
+            
+        }
     }
     
     
@@ -31,8 +35,10 @@ struct ContentView: View {
     // ...
 }
 
-struct ContentView_Previews: PreviewProvider {
+struct NotificationsView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        NavigationView {
+            NotificationsView()
+        }
     }
 }
