@@ -25,11 +25,7 @@ struct MyTabView: View {
     // constructor
     // ------------------------------------------
     init() {
-        let coloredNavAppearance = UINavigationBarAppearance()
-        coloredNavAppearance.configureWithOpaqueBackground()
-        coloredNavAppearance.backgroundColor = UIColor(myBackgroundColor)
-        coloredNavAppearance.shadowColor = .clear
-        UINavigationBar.appearance().standardAppearance = coloredNavAppearance
+        self.changeNavbarStyle()
     }
     
     
@@ -161,7 +157,13 @@ struct MyTabView: View {
     
     // methods
     // ------------------------------------------
-    // ...
+    func changeNavbarStyle() {
+        let coloredNavAppearance = UINavigationBarAppearance()
+        coloredNavAppearance.configureWithOpaqueBackground()
+        coloredNavAppearance.backgroundColor = UIColor(myBackgroundColor)
+        coloredNavAppearance.shadowColor = .clear
+        UINavigationBar.appearance().standardAppearance = coloredNavAppearance
+    }
 }
 
 struct MyTabView_Previews: PreviewProvider {

@@ -75,7 +75,7 @@ struct HomeView: View {
     // methods
     // ------------------------------------------
     func onScroll(offset: CGPoint) {
-        withAnimation {
+        withAnimation { 
             self.showSortBy = offset.y <= 200
         }
     }
