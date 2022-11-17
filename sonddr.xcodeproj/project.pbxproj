@@ -15,6 +15,8 @@
 		0B39F91B292592C500C21405 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F91A292592C500C21405 /* SearchView.swift */; };
 		0B39F91D292592D100C21405 /* MessagesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F91C292592D100C21405 /* MessagesView.swift */; };
 		0B39F91F292592D800C21405 /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F91E292592D800C21405 /* NotificationsView.swift */; };
+		0B39F9212925F91D00C21405 /* MyFab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F9202925F91D00C21405 /* MyFab.swift */; };
+		0B39F92329260D1C00C21405 /* TimeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F92229260D1C00C21405 /* TimeConstants.swift */; };
 		0B781FE629211243001D84AB /* sonddrApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B781FE529211243001D84AB /* sonddrApp.swift */; };
 		0B781FE829211243001D84AB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B781FE729211243001D84AB /* ContentView.swift */; };
 		0B781FEA29211244001D84AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B781FE929211244001D84AB /* Assets.xcassets */; };
@@ -34,7 +36,7 @@
 		0B78201129236318001D84AB /* Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201029236318001D84AB /* Random.swift */; };
 		0B782013292363DE001D84AB /* Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B782012292363DE001D84AB /* Size.swift */; };
 		0B78201529236476001D84AB /* IdeaCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201429236476001D84AB /* IdeaCard.swift */; };
-		0B78201729236A2B001D84AB /* Time.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201629236A2B001D84AB /* Time.swift */; };
+		0B78201729236A2B001D84AB /* TimeUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201629236A2B001D84AB /* TimeUtilities.swift */; };
 		0B78201929237E22001D84AB /* IdeaList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201829237E22001D84AB /* IdeaList.swift */; };
 		0B78201B29243109001D84AB /* MyBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201A29243109001D84AB /* MyBackground.swift */; };
 		0B78201D2924315A001D84AB /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201C2924315A001D84AB /* Color.swift */; };
@@ -50,6 +52,8 @@
 		0B39F91A292592C500C21405 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		0B39F91C292592D100C21405 /* MessagesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesView.swift; sourceTree = "<group>"; };
 		0B39F91E292592D800C21405 /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
+		0B39F9202925F91D00C21405 /* MyFab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFab.swift; sourceTree = "<group>"; };
+		0B39F92229260D1C00C21405 /* TimeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeConstants.swift; sourceTree = "<group>"; };
 		0B781FE229211243001D84AB /* sonddr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sonddr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B781FE529211243001D84AB /* sonddrApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sonddrApp.swift; sourceTree = "<group>"; };
 		0B781FE729211243001D84AB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -70,7 +74,7 @@
 		0B78201029236318001D84AB /* Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Random.swift; sourceTree = "<group>"; };
 		0B782012292363DE001D84AB /* Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Size.swift; sourceTree = "<group>"; };
 		0B78201429236476001D84AB /* IdeaCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaCard.swift; sourceTree = "<group>"; };
-		0B78201629236A2B001D84AB /* Time.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Time.swift; sourceTree = "<group>"; };
+		0B78201629236A2B001D84AB /* TimeUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeUtilities.swift; sourceTree = "<group>"; };
 		0B78201829237E22001D84AB /* IdeaList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaList.swift; sourceTree = "<group>"; };
 		0B78201A29243109001D84AB /* MyBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBackground.swift; sourceTree = "<group>"; };
 		0B78201C2924315A001D84AB /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
@@ -146,6 +150,7 @@
 				0B781FF729211A7F001D84AB /* Spacing.swift */,
 				0B782012292363DE001D84AB /* Size.swift */,
 				0B78201C2924315A001D84AB /* Color.swift */,
+				0B39F92229260D1C00C21405 /* TimeConstants.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -162,6 +167,7 @@
 				0B78201429236476001D84AB /* IdeaCard.swift */,
 				0B78201829237E22001D84AB /* IdeaList.swift */,
 				0B78201A29243109001D84AB /* MyBackground.swift */,
+				0B39F9202925F91D00C21405 /* MyFab.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -180,7 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				0B78201029236318001D84AB /* Random.swift */,
-				0B78201629236A2B001D84AB /* Time.swift */,
+				0B78201629236A2B001D84AB /* TimeUtilities.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -281,7 +287,7 @@
 				0B39F91D292592D100C21405 /* MessagesView.swift in Sources */,
 				0B781FE829211243001D84AB /* ContentView.swift in Sources */,
 				0B39F91F292592D800C21405 /* NotificationsView.swift in Sources */,
-				0B78201729236A2B001D84AB /* Time.swift in Sources */,
+				0B78201729236A2B001D84AB /* TimeUtilities.swift in Sources */,
 				0B78201529236476001D84AB /* IdeaCard.swift in Sources */,
 				0B78201929237E22001D84AB /* IdeaList.swift in Sources */,
 				0B781FFB29212146001D84AB /* GoalChip.swift in Sources */,
@@ -289,8 +295,10 @@
 				0B78200A29235FAA001D84AB /* ProfilePicture.swift in Sources */,
 				0B781FF529211925001D84AB /* Text.swift in Sources */,
 				0B7820062923530C001D84AB /* GoalBadge.swift in Sources */,
+				0B39F92329260D1C00C21405 /* TimeConstants.swift in Sources */,
 				0B781FE629211243001D84AB /* sonddrApp.swift in Sources */,
 				0B39F911292509D100C21405 /* IdeaView.swift in Sources */,
+				0B39F9212925F91D00C21405 /* MyFab.swift in Sources */,
 				0B78201B29243109001D84AB /* MyBackground.swift in Sources */,
 				0B39F91329250C9800C21405 /* UserView.swift in Sources */,
 				0B39F9192925807500C21405 /* Shape.swift in Sources */,

@@ -17,7 +17,12 @@ struct ContentView: View {
     // body
     // ------------------------------------------
     var body: some View {
-        MyTabView()
+        ZStack(alignment: .bottomTrailing) {
+            MyTabView()
+            MyFab(mode: .Add)
+                .padding(.trailing, mySpacing)
+                .padding(.bottom, 70)
+        }
     }
     
     
