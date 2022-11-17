@@ -31,7 +31,7 @@ struct HomeView: View {
     var body: some View {
         ZStack { MyBackground()
             ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: self.onScroll) {
-                VStack(spacing: 30) {
+                VStack(spacing: mySpacing) {
                     header()
                     IdeaList(ideas: self.ideas, showSortBy: self.showSortBy)
                     Spacer()

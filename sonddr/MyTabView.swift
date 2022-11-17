@@ -19,7 +19,7 @@ struct MyTabView: View {
     // attributes
     // ------------------------------------------
     @State var selectedTab: Tab = .Ideas
-    let badgeSize: CGFloat = 24
+    let badgeSize: CGFloat = 20
     
     
     // constructor
@@ -93,7 +93,6 @@ struct MyTabView: View {
             )
             Spacer()
         }
-        .myGutter()
         .padding(.vertical, 5)
         .background(myBackgroundColor)
         .cornerRadius(20, corners: [.topLeft, .topRight])
@@ -146,12 +145,12 @@ struct MyTabView: View {
     
     func BottomBarBadge(label: String) -> some View {
         Text("\(label)")
-            .font(.system(size: 15, weight: .semibold))
-            .padding(.horizontal, 5)
+            .font(.system(size: 14))
+            .padding(.horizontal, 4)
             .frame(minWidth: badgeSize, minHeight: badgeSize, maxHeight: badgeSize)
             .background(.red)
             .cornerRadius(badgeSize / 2)
-            .offset(x: badgeSize / 2)
+            .offset(x: badgeSize / 3)
     }
     
     

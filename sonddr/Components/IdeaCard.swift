@@ -56,14 +56,18 @@ struct IdeaCard: View {
     }
     
     func bottomInfo() -> some View {
-        VStack(alignment: .leading, spacing: 5) {
+        VStack(alignment: .leading, spacing: 0) {
             // title
             NavigationLink(destination: IdeaView()) {
                 Text(self.idea.title)
-                    .font(.title2)
+                    .font(.title3)
             }.buttonStyle(.plain)
+                .padding(.leading, profilePictureSize + self.profilePictureSpacing)
             // stuff below
-            ZStack(alignment: .leading) {
+            HStack(spacing: self.profilePictureSpacing) {
+                NavigationLink(destination: UserView()) {
+                    ProfilePicture(user: self.idea.author)
+                }
                 HStack(spacing: 0) {
                     NavigationLink(destination: UserView()) {
                         Text(self.idea.author.name)
@@ -72,13 +76,9 @@ struct IdeaCard: View {
                     Text(" · \(prettyTimeDelta(date:self.idea.date))")
                 }
                 .opacity(0.5)
-                NavigationLink(destination: UserView()) {
-                    ProfilePicture(user: self.idea.author)
-                        .offset(x: -1 * (profilePictureSize + self.profilePictureSpacing))
-                }
             }
         }
-        .padding(.leading, profilePictureSize + self.profilePictureSpacing)
+        
     }
 
     

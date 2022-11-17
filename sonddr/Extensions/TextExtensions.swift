@@ -22,19 +22,3 @@ extension View {
         modifier(MyTitle())
     }
 }
-
-
-// gutter
-// ----------------------------------------------
-struct MyGutter: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .padding(.horizontal, mySpacing)
-    }
-}
-
-extension View {
-    func myGutter() -> some View {
-        modifier(MyGutter())
-    }
-}
