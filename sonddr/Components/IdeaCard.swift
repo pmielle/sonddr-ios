@@ -60,7 +60,7 @@ struct IdeaCard: View {
             // title
             NavigationLink(destination: IdeaView()) {
                 Text(self.idea.title)
-                    .font(.title3)
+                    .font(.headline)
             }.buttonStyle(.plain)
                 .padding(.leading, profilePictureSize + self.profilePictureSpacing)
             // stuff below
@@ -71,9 +71,11 @@ struct IdeaCard: View {
                 HStack(spacing: 0) {
                     NavigationLink(destination: UserView()) {
                         Text(self.idea.author.name)
+                            .font(.subheadline)
                     }
                     .buttonStyle(.plain)
                     Text(" · \(prettyTimeDelta(date:self.idea.date))")
+                        .font(.subheadline)
                 }
                 .opacity(0.5)
             }
