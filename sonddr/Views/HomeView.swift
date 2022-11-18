@@ -24,6 +24,7 @@ struct HomeView: View {
     ]
     @State var showSortBy = true
     let loggedInUser = dummyUser()
+    @State var titleScale = 1.0
     
     
     // body
@@ -56,6 +57,7 @@ struct HomeView: View {
         VStack(alignment: .leading, spacing: mySpacing) {
             Text("All ideas")
                 .myTitle()
+                .scaleEffect(self.titleScale, anchor: .bottomLeading)
                 .myGutter()
                 .padding(.top, mySpacing)
             Text("Every idea is linked to one or more goals it is trying to help with. You can filter them by using the chips below, or simply scroll down to see all of the latest ideas people have come up with.")
@@ -77,6 +79,11 @@ struct HomeView: View {
     func onScroll(offset: CGPoint) {
         withAnimation { 
             self.showSortBy = offset.y <= 200
+        }
+        if offset.y <= -1 {
+            self.titleScale = min(1.2, 1 - 0.5 * offset.y / 100)
+        } else if self.titleScale > 1 {
+            self.titleScale = 1.0
         }
     }
 }
