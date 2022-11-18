@@ -81,7 +81,7 @@ struct HomeView: View {
             self.showSortBy = offset.y <= 200
         }
         if offset.y <= -1 {
-            self.titleScale = min(1.2, 1 - 0.5 * offset.y / 100)
+            self.titleScale = 1 - 0.001 * offset.y
         } else if self.titleScale > 1 {
             self.titleScale = 1.0
         }
