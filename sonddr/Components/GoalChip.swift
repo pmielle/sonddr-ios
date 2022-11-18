@@ -17,10 +17,8 @@ struct GoalChip: View {
     // body
     // ------------------------------------------
     var body: some View {
-        Button(action: {}) {
-            Label(self.goal.name, systemImage: self.goal.icon)
-                .myLabel(color: self.goal.color)
-        }.buttonStyle(.plain)
+        Label(self.goal.name, systemImage: self.goal.icon)
+            .myLabel(color: self.goal.color)
     }
 }
 

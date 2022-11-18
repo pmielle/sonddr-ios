@@ -12,9 +12,14 @@ struct HomeView: View {
     // attributes
     // ------------------------------------------
     let goals: [Goal] = [
-        Goal(id: "no_poverty", name: "No poverty", icon: "house", color: .red),
-        Goal(id: "quality_education", name: "Quality education", icon: "graduationcap", color: .green),
-        Goal(id: "dff", name: "Quality education", icon: "graduationcap", color: .green),
+        Goal(id: "no_poverty", name: "No poverty", icon: "house.fill", color: Color("PinkGoalColor")),
+        Goal(id: "health_and_well_being", name: "Health and well-being", icon: "cross.fill", color: Color("RedGoalColor")),
+        Goal(id: "reduced_inequalitied", name: "Reduced inequalities", icon: "figure.2.arms.open", color: Color("OrangeGoalColor")),
+        Goal(id: "sustainability", name: "Sustainability", icon: "infinity", color: Color("YellowGoalColor")),
+        Goal(id: "preserved_ecosystems", name: "Preserved ecosystems", icon: "leaf.fill", color: Color("GreenGoalColor")),
+        Goal(id: "peace_and_justice", name: "Peace and justice", icon: "bird.fill", color: Color("CyanGoalColor")),
+        Goal(id: "decent_work", name: "Decent work", icon: "briefcase.fill", color: Color("BlueGoalColor")),
+        Goal(id: "quality_education", name: "Quality education", icon: "graduationcap.fill", color: Color("PurpleGoalColor")),
     ]
     let ideas: [Idea] = [
         dummyIdea(),
@@ -64,7 +69,9 @@ struct HomeView: View {
                     .myLabel(color: .white)
                     .foregroundColor(myBackgroundColor)
                 ForEach(self.goals) { goal in
-                    GoalChip(goal: goal)
+                    NavigationLink(destination: GoalView()) {
+                        GoalChip(goal: goal)
+                    }.buttonStyle(.plain)
                 }
             }
         }
