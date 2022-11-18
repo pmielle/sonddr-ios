@@ -23,8 +23,10 @@ struct HomeView: View {
         dummyIdea(),
     ]
     @State var showSortBy = true
-    let loggedInUser = dummyUser()
     @State var titleScale = 1.0
+    @State var showNavigationBarTitle = false
+    let loggedInUser = dummyUser()
+    let title = "All ideas"
     
     
     // body
@@ -38,15 +40,10 @@ struct HomeView: View {
                     Spacer()
                 }
             }
-        }.toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Image("Logo")
-                    .resizable()
-                    .frame(height: largeIconSize)
-            }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                ProfilePicture(user: self.loggedInUser)
-            }
+        }
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            self.toolbar()
         }
     }
     
@@ -55,7 +52,7 @@ struct HomeView: View {
     // ------------------------------------------
     func header() -> some View {
         VStack(alignment: .leading, spacing: mySpacing) {
-            Text("All ideas")
+            Text(self.title)
                 .myTitle()
                 .scaleEffect(self.titleScale, anchor: .bottomLeading)
                 .myGutter()
@@ -73,17 +70,40 @@ struct HomeView: View {
         }
     }
     
+    @ToolbarContentBuilder
+    func toolbar() -> some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Image("Logo")
+                .resizable()
+                .frame(height: largeIconSize)
+        }
+        ToolbarItem(placement: .principal) {
+            Text(self.title)
+                .font(.headline)
+                .opacity(self.showNavigationBarTitle ? 1 : 0)
+        }
+        ToolbarItem(placement: .navigationBarTrailing) {
+            ProfilePicture(user: self.loggedInUser)
+        }
+    }
+    
     
     // methods
     // ------------------------------------------
     func onScroll(offset: CGPoint) {
+        // sort by icon
         withAnimation { 
-            self.showSortBy = offset.y <= 200
+            self.showSortBy = offset.y < 50
         }
-        if offset.y <= -1 {
+        // title scale
+        if offset.y < -1 {
             self.titleScale = 1 - 0.001 * offset.y
         } else if self.titleScale > 1 {
             self.titleScale = 1.0
+        }
+        // navigation bar title
+        withAnimation {
+            self.showNavigationBarTitle = offset.y > 50
         }
     }
 }

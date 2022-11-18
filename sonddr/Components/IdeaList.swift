@@ -31,20 +31,23 @@ struct IdeaList: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                ForEach(self.sections, id: \.name) { section in
-                    Section(
-                        header: self.sectionHeader(name: section.name)
-                    ) {
-                        ForEach(section.ideas) { idea in
-                            IdeaCard(idea: idea)
-                                .padding(.bottom, mySpacing)
+                if self.sections.count > 0 {
+                    ForEach(
+                        (0...self.sections.count - 1),
+                        id: \.self
+                    ) { i in
+                        let section = self.sections[i]
+                        Section(
+                            header: self.sectionHeader(name: section.name, index: i)
+                        ) {
+                            ForEach(section.ideas) { idea in
+                                IdeaCard(idea: idea)
+                                    .padding(.bottom, mySpacing)
                                 
+                            }
                         }
                     }
                 }
-            }
-            if showSortBy {
-                self.sortBy()
             }
         }.onAppear {
             self.formatData()
@@ -54,10 +57,14 @@ struct IdeaList: View {
     
     // subviews
     // ------------------------------------------
-    func sectionHeader(name: String) -> some View {
+    func sectionHeader(name: String, index: Int) -> some View {
         HStack {
             Text(name)
             Spacer()
+            if (index == 0) {
+                self.sortBy()
+                    .opacity(self.showSortBy ? 1 : 0)
+            }
         }
         .myGutter()
         .padding(.vertical, 15)
@@ -70,9 +77,6 @@ struct IdeaList: View {
             Image(systemName: "line.3.horizontal.decrease")
         }
         .buttonStyle(.plain)
-        .myGutter()
-        .padding(.vertical, 15)
-        
     }
     
     
