@@ -7,23 +7,15 @@
 
 import SwiftUI
 
-struct ListSection {
-    let name: String
-    var ideas: [Idea]
-}
-
-enum SortBy {
-    case date
-    case rating
-}
-
 struct IdeaList: View {
     
     // attributes
     // ------------------------------------------
     var ideas: [Idea]
     var showSortBy: Bool
+    var pinnedHeaderColor: Color = myBackgroundColor
     @State var sections: [ListSection] = []
+    @State private var pinnedHeaderIndex: Int? = nil
     
     
     // body
@@ -38,7 +30,18 @@ struct IdeaList: View {
                     ) { i in
                         let section = self.sections[i]
                         Section(
-                            header: self.sectionHeader(name: section.name, index: i)
+                            header: self.sectionHeader(
+                                name: section.name,
+                                index: i,
+                                pinned: self.pinnedHeaderIndex == i
+                            )
+                            .onPreferenceChange(ViewOffsetKey.self) { offset in
+                                if offset < 1 {
+                                    self.pinnedHeaderIndex = i
+                                } else if self.pinnedHeaderIndex == i {
+                                    self.pinnedHeaderIndex = nil
+                                }
+                            }
                         ) {
                             ForEach(section.ideas) { idea in
                                 IdeaCard(idea: idea)
@@ -49,7 +52,8 @@ struct IdeaList: View {
                     }
                 }
             }
-        }.onAppear {
+        }
+        .onAppear {
             self.formatData()
         }
     }
@@ -57,7 +61,7 @@ struct IdeaList: View {
     
     // subviews
     // ------------------------------------------
-    func sectionHeader(name: String, index: Int) -> some View {
+    func sectionHeader(name: String, index: Int, pinned: Bool) -> some View {
         HStack {
             Text(name)
             Spacer()
@@ -68,7 +72,17 @@ struct IdeaList: View {
         }
         .myGutter()
         .padding(.vertical, 15)
-        .background(myBackgroundColor)
+        .background(pinned ? self.pinnedHeaderColor : myBackgroundColor)
+        .background(ZStack {
+            myBackgroundColor
+            GeometryReader { geom in
+                Color.clear.preference(
+                    key: ViewOffsetKey.self,
+                    value: geom.frame(in: .named("idea-list-container")).origin.y
+                )
+            }
+        
+        })
     }
     
     func sortBy() -> some View {
@@ -98,17 +112,27 @@ struct IdeaList: View {
                 earlierSection.ideas.append(idea)
             }
         }
-        // assign
-        // (discard empty sections)
+        // discard empty sections
         var newValue: [ListSection] = []
         [todaySection, thisWeekSection, earlierSection].forEach { section in
             if !section.ideas.isEmpty {
                 newValue.append(section)
             }
         }
+        // assign
         self.sections = newValue
 
     }
+}
+
+struct ListSection {
+    let name: String
+    var ideas: [Idea]
+}
+
+enum SortBy {
+    case date
+    case rating
 }
 
 struct IdeaList_Previews: PreviewProvider {
@@ -123,6 +147,7 @@ struct IdeaList_Previews: PreviewProvider {
                     ], showSortBy: true)
                 }
             }
+                .coordinateSpace(name: "idea-list-container")
         }
     }
 }

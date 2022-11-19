@@ -18,6 +18,7 @@
 		0B39F9212925F91D00C21405 /* MyFab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F9202925F91D00C21405 /* MyFab.swift */; };
 		0B39F92329260D1C00C21405 /* TimeConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F92229260D1C00C21405 /* TimeConstants.swift */; };
 		0B39F9252926CE7300C21405 /* SpacingExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F9242926CE7300C21405 /* SpacingExtensions.swift */; };
+		0B39F92829291A9A00C21405 /* PreferenceKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F92729291A9A00C21405 /* PreferenceKeys.swift */; };
 		0B781FE629211243001D84AB /* sonddrApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B781FE529211243001D84AB /* sonddrApp.swift */; };
 		0B781FE829211243001D84AB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B781FE729211243001D84AB /* ContentView.swift */; };
 		0B781FEA29211244001D84AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B781FE929211244001D84AB /* Assets.xcassets */; };
@@ -56,6 +57,7 @@
 		0B39F9202925F91D00C21405 /* MyFab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyFab.swift; sourceTree = "<group>"; };
 		0B39F92229260D1C00C21405 /* TimeConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeConstants.swift; sourceTree = "<group>"; };
 		0B39F9242926CE7300C21405 /* SpacingExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacingExtensions.swift; sourceTree = "<group>"; };
+		0B39F92729291A9A00C21405 /* PreferenceKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferenceKeys.swift; sourceTree = "<group>"; };
 		0B781FE229211243001D84AB /* sonddr.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = sonddr.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B781FE529211243001D84AB /* sonddrApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = sonddrApp.swift; sourceTree = "<group>"; };
 		0B781FE729211243001D84AB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -94,6 +96,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0B39F92629291A5E00C21405 /* Misc */ = {
+			isa = PBXGroup;
+			children = (
+				0B39F92729291A9A00C21405 /* PreferenceKeys.swift */,
+			);
+			path = Misc;
+			sourceTree = "<group>";
+		};
 		0B781FD929211243001D84AB = {
 			isa = PBXGroup;
 			children = (
@@ -113,8 +123,9 @@
 		0B781FE429211243001D84AB /* sonddr */ = {
 			isa = PBXGroup;
 			children = (
+				0B39F92629291A5E00C21405 /* Misc */,
 				0B78201E29243A0E001D84AB /* Views */,
-				0B78200F2923630E001D84AB /* Utilities */,
+				0B78200F2923630E001D84AB /* Utils */,
 				0B781FFC292122A9001D84AB /* Interfaces */,
 				0B781FF929212133001D84AB /* Components */,
 				0B781FF629211A6C001D84AB /* Constants */,
@@ -185,13 +196,13 @@
 			path = Interfaces;
 			sourceTree = "<group>";
 		};
-		0B78200F2923630E001D84AB /* Utilities */ = {
+		0B78200F2923630E001D84AB /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				0B78201029236318001D84AB /* Random.swift */,
 				0B78201629236A2B001D84AB /* TimeUtilities.swift */,
 			);
-			path = Utilities;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		0B78201E29243A0E001D84AB /* Views */ = {
@@ -282,6 +293,7 @@
 				0B78200E29236219001D84AB /* Idea.swift in Sources */,
 				0B39F917292512DB00C21405 /* MyTabView.swift in Sources */,
 				0B39F91529250CB100C21405 /* GoalView.swift in Sources */,
+				0B39F92829291A9A00C21405 /* PreferenceKeys.swift in Sources */,
 				0B78201D2924315A001D84AB /* ColorConstants.swift in Sources */,
 				0B78200C29235FCC001D84AB /* User.swift in Sources */,
 				0B39F9252926CE7300C21405 /* SpacingExtensions.swift in Sources */,

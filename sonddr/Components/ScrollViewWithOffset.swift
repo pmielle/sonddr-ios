@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-private struct ScrollOffsetPreferenceKey: PreferenceKey {
-    static var defaultValue: CGPoint = .zero
-    static func reduce(value: inout CGPoint, nextValue: () -> CGPoint) {}
-}
-
 struct ScrollViewWithOffset<T: View>: View {
     let axes: Axis.Set
     let showsIndicators: Bool

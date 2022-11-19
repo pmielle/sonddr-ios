@@ -41,10 +41,15 @@ struct HomeView: View {
             ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: self.onScroll) {
                 VStack(spacing: mySpacing) {
                     header()
-                    IdeaList(ideas: self.ideas, showSortBy: self.showSortBy)
+                    IdeaList(
+                        ideas: self.ideas,
+                        showSortBy: self.showSortBy,
+                        pinnedHeaderColor: .blue
+                    )
                     Spacer()
                 }
             }
+            .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
