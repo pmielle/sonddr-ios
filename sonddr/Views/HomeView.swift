@@ -23,15 +23,41 @@ struct HomeView: View {
     ]
     let ideas: [Idea] = [
         dummyIdea(),
-        dummyIdea(),
+        Idea(
+            id: randomId(),
+            title: "OLDER OMG",
+            author: dummyUser(),
+            goals: [dummyGoal(), dummyGoal()],
+            cover: "DefaultIdeaCover",
+            rating: 66,
+            date: Date.distantPast
+        ),
+        Idea(
+            id: randomId(),
+            title: "OLDER OMG",
+            author: dummyUser(),
+            goals: [dummyGoal(), dummyGoal()],
+            cover: "DefaultIdeaCover",
+            rating: 66,
+            date: Date.distantPast
+        ),
+        Idea(
+            id: randomId(),
+            title: "OLDER OMG",
+            author: dummyUser(),
+            goals: [dummyGoal(), dummyGoal()],
+            cover: "DefaultIdeaCover",
+            rating: 66,
+            date: Date.distantPast
+        ),
         dummyIdea(),
         dummyIdea(),
     ]
-    @State var showSortBy = true
     @State var titleScale = 1.0
     @State var showNavigationBarTitle = false
     let loggedInUser = dummyUser()
     let title = "All ideas"
+    let accentColor: Color = .red
     
     
     // body
@@ -43,8 +69,7 @@ struct HomeView: View {
                     header()
                     IdeaList(
                         ideas: self.ideas,
-                        showSortBy: self.showSortBy,
-                        pinnedHeaderColor: .blue
+                        pinnedHeaderColor: self.accentColor
                     )
                     Spacer()
                 }
@@ -72,7 +97,7 @@ struct HomeView: View {
             HeaderHStack {
                 Label("Learn more", systemImage: "info.circle")
                     .myLabel(color: .white)
-                    .foregroundColor(myBackgroundColor)
+                    .foregroundColor(self.accentColor)
                 ForEach(self.goals) { goal in
                     NavigationLink(destination: GoalView()) {
                         GoalChip(goal: goal)
@@ -103,10 +128,6 @@ struct HomeView: View {
     // methods
     // ------------------------------------------
     func onScroll(offset: CGPoint) {
-        // sort by icon
-        withAnimation { 
-            self.showSortBy = offset.y < 50
-        }
         // title scale
         if offset.y < -1 {
             self.titleScale = 1 - 0.001 * offset.y

@@ -12,10 +12,9 @@ struct IdeaList: View {
     // attributes
     // ------------------------------------------
     var ideas: [Idea]
-    var showSortBy: Bool
     var pinnedHeaderColor: Color = myBackgroundColor
-    @State var sections: [ListSection] = []
-    @State private var pinnedHeaderIndex: Int? = nil
+    @State private var sections: [ListSection] = []
+    @State private var pinnedHeaderIndexes: [Int] = []
     
     
     // body
@@ -29,24 +28,28 @@ struct IdeaList: View {
                         id: \.self
                     ) { i in
                         let section = self.sections[i]
-                        Section(
-                            header: self.sectionHeader(
-                                name: section.name,
-                                index: i,
-                                pinned: self.pinnedHeaderIndex == i
-                            )
-                            .onPreferenceChange(ViewOffsetKey.self) { offset in
-                                if offset < 1 {
-                                    self.pinnedHeaderIndex = i
-                                } else if self.pinnedHeaderIndex == i {
-                                    self.pinnedHeaderIndex = nil
-                                }
-                            }
-                        ) {
+                        Section {
                             ForEach(section.ideas) { idea in
                                 IdeaCard(idea: idea)
                                     .padding(.bottom, mySpacing)
                                 
+                            }
+                        } header: {
+                            self.sectionHeader(
+                                name: section.name,
+                                index: i,
+                                pinned: self.pinnedHeaderIndexes.contains(i)
+                            )
+                        }
+                        .onPreferenceChange(ViewOffsetKey.self) { offset in
+                            if offset < 50 {
+                                if !self.pinnedHeaderIndexes.contains(i) {
+                                    self.pinnedHeaderIndexes.append(i)
+                                }
+                            } else if self.pinnedHeaderIndexes.contains(i) {
+                                self.pinnedHeaderIndexes.removeAll { elem in
+                                    elem == i
+                                }
                             }
                         }
                     }
@@ -67,12 +70,12 @@ struct IdeaList: View {
             Spacer()
             if (index == 0) {
                 self.sortBy()
-                    .opacity(self.showSortBy ? 1 : 0)
+                    .opacity(self.pinnedHeaderIndexes.count == 0 ? 1 : 0)
             }
         }
         .myGutter()
         .padding(.vertical, 15)
-        .background(pinned ? self.pinnedHeaderColor : myBackgroundColor)
+        .background(pinned || index == 0 && self.pinnedHeaderIndexes.count == 0 ? self.pinnedHeaderColor : myBackgroundColor)
         .background(ZStack {
             myBackgroundColor
             GeometryReader { geom in
@@ -125,12 +128,12 @@ struct IdeaList: View {
     }
 }
 
-struct ListSection {
+private struct ListSection {
     let name: String
     var ideas: [Idea]
 }
 
-enum SortBy {
+private enum SortBy {
     case date
     case rating
 }
@@ -142,9 +145,36 @@ struct IdeaList_Previews: PreviewProvider {
                 ScrollView {
                     IdeaList(ideas: [
                         dummyIdea(),
+                        Idea(
+                            id: randomId(),
+                            title: "OLDER OMG",
+                            author: dummyUser(),
+                            goals: [dummyGoal(), dummyGoal()],
+                            cover: "DefaultIdeaCover",
+                            rating: 66,
+                            date: Date.distantPast
+                        ),
+                        Idea(
+                            id: randomId(),
+                            title: "OLDER OMG",
+                            author: dummyUser(),
+                            goals: [dummyGoal(), dummyGoal()],
+                            cover: "DefaultIdeaCover",
+                            rating: 66,
+                            date: Date.distantPast
+                        ),
+                        Idea(
+                            id: randomId(),
+                            title: "OLDER OMG",
+                            author: dummyUser(),
+                            goals: [dummyGoal(), dummyGoal()],
+                            cover: "DefaultIdeaCover",
+                            rating: 66,
+                            date: Date.distantPast
+                        ),
                         dummyIdea(),
                         dummyIdea(),
-                    ], showSortBy: true)
+                    ], pinnedHeaderColor: .red)
                 }
             }
                 .coordinateSpace(name: "idea-list-container")
