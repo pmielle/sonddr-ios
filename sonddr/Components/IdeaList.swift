@@ -37,20 +37,11 @@ struct IdeaList: View {
                         } header: {
                             self.sectionHeader(
                                 name: section.name,
-                                index: i,
-                                pinned: self.pinnedHeaderIndexes.contains(i)
+                                index: i
                             )
                         }
                         .onPreferenceChange(ViewOffsetKey.self) { offset in
-                            if offset < 50 {
-                                if !self.pinnedHeaderIndexes.contains(i) {
-                                    self.pinnedHeaderIndexes.append(i)
-                                }
-                            } else if self.pinnedHeaderIndexes.contains(i) {
-                                self.pinnedHeaderIndexes.removeAll { elem in
-                                    elem == i
-                                }
-                            }
+                            self.processHeaderOffsetChange(offset: offset, index: i)
                         }
                     }
                 }
@@ -64,8 +55,9 @@ struct IdeaList: View {
     
     // subviews
     // ------------------------------------------
-    func sectionHeader(name: String, index: Int, pinned: Bool) -> some View {
-        HStack {
+    func sectionHeader(name: String, index: Int) -> some View {
+        let isPinned = self.pinnedHeaderIndexes.contains(index)
+        return HStack {
             Text(name)
             Spacer()
             if (index == 0) {
@@ -75,17 +67,19 @@ struct IdeaList: View {
         }
         .myGutter()
         .padding(.vertical, 15)
-        .background(pinned || index == 0 && self.pinnedHeaderIndexes.count == 0 ? self.pinnedHeaderColor : myBackgroundColor)
-        .background(ZStack {
-            myBackgroundColor
+        .background(
+            isPinned || index == 0 && self.pinnedHeaderIndexes.count == 0
+            ? self.pinnedHeaderColor
+            : myBackgroundColor
+        )
+        .background(
             GeometryReader { geom in
                 Color.clear.preference(
                     key: ViewOffsetKey.self,
                     value: geom.frame(in: .named("idea-list-container")).origin.y
                 )
             }
-        
-        })
+        )
     }
     
     func sortBy() -> some View {
@@ -99,6 +93,21 @@ struct IdeaList: View {
     
     // methods
     // ------------------------------------------
+    func processHeaderOffsetChange(offset: Double, index: Int) {
+        if offset == 0 {  // because it sometimes outputs 0.0s that I don't understand...
+            return
+        }
+        if offset < 50 {
+            if !self.pinnedHeaderIndexes.contains(index) {
+                self.pinnedHeaderIndexes.append(index)
+            }
+        } else if self.pinnedHeaderIndexes.contains(index) {
+            self.pinnedHeaderIndexes.removeAll { elem in
+                elem == index
+            }
+        }
+    }
+    
     func formatData() {
         // init
         var todaySection = ListSection(name: "Today", ideas: [])
@@ -177,7 +186,7 @@ struct IdeaList_Previews: PreviewProvider {
                     ], pinnedHeaderColor: .red)
                 }
             }
-                .coordinateSpace(name: "idea-list-container")
+            .coordinateSpace(name: "idea-list-container")
         }
     }
 }

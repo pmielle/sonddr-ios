@@ -23,33 +23,6 @@ struct HomeView: View {
     ]
     let ideas: [Idea] = [
         dummyIdea(),
-        Idea(
-            id: randomId(),
-            title: "OLDER OMG",
-            author: dummyUser(),
-            goals: [dummyGoal(), dummyGoal()],
-            cover: "DefaultIdeaCover",
-            rating: 66,
-            date: Date.distantPast
-        ),
-        Idea(
-            id: randomId(),
-            title: "OLDER OMG",
-            author: dummyUser(),
-            goals: [dummyGoal(), dummyGoal()],
-            cover: "DefaultIdeaCover",
-            rating: 66,
-            date: Date.distantPast
-        ),
-        Idea(
-            id: randomId(),
-            title: "OLDER OMG",
-            author: dummyUser(),
-            goals: [dummyGoal(), dummyGoal()],
-            cover: "DefaultIdeaCover",
-            rating: 66,
-            date: Date.distantPast
-        ),
         dummyIdea(),
         dummyIdea(),
     ]
@@ -57,7 +30,7 @@ struct HomeView: View {
     @State var showNavigationBarTitle = false
     let loggedInUser = dummyUser()
     let title = "All ideas"
-    let accentColor: Color = .red
+    let accentColor: Color = myBackgroundColor
     
     
     // body
@@ -65,8 +38,10 @@ struct HomeView: View {
     var body: some View {
         ZStack { MyBackground()
             ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: self.onScroll) {
-                VStack(spacing: mySpacing) {
+                VStack(spacing: 0) {
                     header()
+                        .padding(.bottom, mySpacing)
+                        .background(self.accentColor)
                     IdeaList(
                         ideas: self.ideas,
                         pinnedHeaderColor: self.accentColor
@@ -94,7 +69,7 @@ struct HomeView: View {
                 .padding(.top, mySpacing)
             Text("Every idea is linked to one or more goals it is trying to help with. You can filter them by using the chips below, or simply scroll down to see all of the latest ideas people have come up with.")
                 .myGutter()
-            HeaderHStack {
+            HeaderHStack(shadowColor: self.accentColor) {
                 Label("Learn more", systemImage: "info.circle")
                     .myLabel(color: .white)
                     .foregroundColor(self.accentColor)

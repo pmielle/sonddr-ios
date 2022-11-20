@@ -11,6 +11,7 @@ struct HeaderHStack<T: View>: View {
     
     // attributes
     // ------------------------------------------
+    let shadowColor: Color
     @ViewBuilder var content: T
     @State var showLeftShadow = false
     let shadowWidth = largeIconSize
@@ -60,7 +61,7 @@ struct HeaderHStack<T: View>: View {
             print("unhandled gradient direction: using .leading as fallback")
         }
         return Rectangle().fill(
-            LinearGradient(colors: [myBackgroundColor, .clear], startPoint: startPoint, endPoint: endPoint)
+            LinearGradient(colors: [self.shadowColor, .clear], startPoint: startPoint, endPoint: endPoint)
         )
         .frame(width: self.shadowWidth)
     }
@@ -77,7 +78,7 @@ struct HeaderHStack<T: View>: View {
 
 struct HeaderHStack_Previews: PreviewProvider {
     static var previews: some View {
-        HeaderHStack {
+        HeaderHStack(shadowColor: myBackgroundColor) {
             Text("AAA")
             Text("BBB")
             Text("CCC")

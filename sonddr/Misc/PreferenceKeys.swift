@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct ViewOffsetKey: PreferenceKey {
     public typealias Value = CGFloat
-    public static var defaultValue = CGFloat.zero
+    public static var defaultValue: CGFloat = 0
     public static func reduce(value: inout Value, nextValue: () -> Value) {
         value += nextValue()
     }
