@@ -11,6 +11,7 @@ struct HomeView: View {
 
     // attributes
     // ------------------------------------------
+    let accentColor: Color
     let goals: [Goal] = [
         Goal(id: "no_poverty", name: "No poverty", icon: "house.fill", color: Color("PinkGoalColor")),
         Goal(id: "health_and_well_being", name: "Health and well-being", icon: "cross.fill", color: Color("RedGoalColor")),
@@ -28,38 +29,55 @@ struct HomeView: View {
     ]
     @State var titleScale = 1.0
     @State var showNavigationBarTitle = false
+    @State var topBackgroundHeight: CGFloat = 0
     let loggedInUser = dummyUser()
     let title = "All ideas"
-    let accentColor: Color = myBackgroundColor
+    
+    
+    
+    // constructor
+    // ------------------------------------------
+    init(accentColor: Color) {
+        self.accentColor = accentColor
+        self.changeNavbarStyle(color: accentColor)
+    }
     
     
     // body
     // ------------------------------------------
     var body: some View {
-        ZStack { MyBackground()
-            ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: self.onScroll) {
-                VStack(spacing: 0) {
-                    header()
-                        .padding(.bottom, mySpacing)
-                        .background(self.accentColor)
-                    IdeaList(
-                        ideas: self.ideas,
-                        pinnedHeaderColor: self.accentColor
-                    )
-                    Spacer()
+        NavigationView {
+            ZStack(alignment: .top) { MyBackground()
+                self.topBackground()
+                ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: self.onScroll) {
+                    VStack(spacing: 0) {
+                        header()
+                            .padding(.bottom, mySpacing)
+                            .background(self.accentColor)
+                        IdeaList(
+                            ideas: self.ideas,
+                            pinnedHeaderColor: self.accentColor
+                        )
+                        Spacer()
+                    }
+                    .padding(.bottom, 100)
                 }
+                .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
             }
-            .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
-        }
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            self.toolbar()
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                self.toolbar()
+            }
         }
     }
     
     
     // subviews
     // ------------------------------------------
+    func topBackground() -> some View {
+        self.accentColor
+            .frame(height: self.topBackgroundHeight)
+    }
     func header() -> some View {
         VStack(alignment: .leading, spacing: mySpacing) {
             Text(self.title)
@@ -102,7 +120,24 @@ struct HomeView: View {
     
     // methods
     // ------------------------------------------
+    func changeNavbarStyle(color: Color) {
+        let coloredNavAppearance = UINavigationBarAppearance()
+        coloredNavAppearance.configureWithOpaqueBackground()
+        coloredNavAppearance.backgroundColor = UIColor(color)
+        coloredNavAppearance.shadowColor = .clear
+        UINavigationBar.appearance().standardAppearance = coloredNavAppearance
+        UINavigationBar.appearance().compactAppearance = coloredNavAppearance
+        UINavigationBar.appearance().scrollEdgeAppearance = coloredNavAppearance
+        UINavigationBar.appearance().compactScrollEdgeAppearance = coloredNavAppearance
+    }
+    
     func onScroll(offset: CGPoint) {
+        // sticky top background
+        if offset.y < 10 {  // 10px safety
+            self.topBackgroundHeight = -1 * offset.y + 10  // 10px safety
+        } else if self.topBackgroundHeight > 0 {
+            self.topBackgroundHeight = 0
+        }
         // title scale
         if offset.y < -1 {
             self.titleScale = 1 - 0.001 * offset.y
@@ -118,8 +153,6 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            HomeView()
-        }
+        HomeView(accentColor: .red)
     }
 }

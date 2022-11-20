@@ -22,23 +22,14 @@ struct MyTabView: View {
     let badgeSize: CGFloat = 20
     
     
-    // constructor
-    // ------------------------------------------
-    init() {
-        self.changeNavbarStyle()
-    }
-    
-    
     // body
     // ------------------------------------------
     var body: some View {
         ZStack(alignment: .bottom) {
             ZStack {
                 // ideas
-                NavigationView {
-                    HomeView()
-                }
-                .zIndex(self.selectedTab == .Ideas ? 1 : 0)
+                HomeView(accentColor: myBackgroundColor)
+                    .zIndex(self.selectedTab == .Ideas ? 1 : 0)
                 // search
                 SearchView()
                     .zIndex(self.selectedTab == .Search ? 1 : 0)
@@ -156,13 +147,7 @@ struct MyTabView: View {
     
     // methods
     // ------------------------------------------
-    func changeNavbarStyle() {
-        let coloredNavAppearance = UINavigationBarAppearance()
-        coloredNavAppearance.configureWithOpaqueBackground()
-        coloredNavAppearance.backgroundColor = UIColor(myBackgroundColor)
-        coloredNavAppearance.shadowColor = .clear
-        UINavigationBar.appearance().standardAppearance = coloredNavAppearance
-    }
+    // ...
 }
 
 struct MyTabView_Previews: PreviewProvider {
