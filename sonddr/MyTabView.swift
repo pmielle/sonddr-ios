@@ -43,9 +43,6 @@ struct MyTabView: View {
             self.bottomSafeArea()
             self.bottomBar()
         }
-        .onAppear {
-            self.setupNavigationNotificationCenter()
-        }
     }
     
     
@@ -101,7 +98,7 @@ struct MyTabView: View {
         let isSelected = self.selectedTab == tab
         return ZStack(alignment: .topTrailing) {
             Button(action: {
-                    self.selectedTab = tab
+                    self.onBottomBarIconTap(tab: tab)
             }) {
                 Image(systemName: isSelected ? selectedSystemName :  idleSystemName)
                     .resizable()
@@ -150,8 +147,17 @@ struct MyTabView: View {
     
     // methods
     // ------------------------------------------
-    func setupNavigationNotificationCenter() {
-        print("setting up...")
+    func onBottomBarIconTap(tab: Tab) {
+        if tab != self.selectedTab {
+            self.selectedTab = tab
+        } else {
+            switch tab {
+            case .Ideas:
+                NotificationCenter.default.post(Notification(name: .ideasBottomBarIconTap))
+            default:
+                print("bottomBarIconTap not implemented for \(tab)")
+            }
+        }
     }
 }
 

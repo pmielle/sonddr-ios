@@ -32,7 +32,7 @@ struct HomeView: View {
     @State var topBackgroundHeight: CGFloat = 0
     let loggedInUser = dummyUser()
     let title = "All ideas"
-    
+    let topViewId = "topViewId"
     
     
     // constructor
@@ -50,17 +50,25 @@ struct HomeView: View {
             ZStack(alignment: .top) { MyBackground()
                 self.topBackground()
                 ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: self.onScroll) {
-                    VStack(spacing: 0) {
-                        header()
-                            .padding(.bottom, mySpacing)
-                            .background(self.accentColor)
-                        IdeaList(
-                            ideas: self.ideas,
-                            pinnedHeaderColor: self.accentColor
-                        )
-                        Spacer()
+                    ScrollViewReader { reader in
+                        VStack(spacing: 0) {
+                            header()
+                                .padding(.bottom, mySpacing)
+                                .background(self.accentColor)
+                                .id(self.topViewId)
+                            IdeaList(
+                                ideas: self.ideas,
+                                pinnedHeaderColor: self.accentColor
+                            )
+                            Spacer()
+                        }
+                        .padding(.bottom, 100)
+                        .onReceive(NotificationCenter.default.publisher(for: .ideasBottomBarIconTap)) { _ in
+                            withAnimation {
+                                reader.scrollTo(self.topViewId)
+                            }
+                        }
                     }
-                    .padding(.bottom, 100)
                 }
                 .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
             }

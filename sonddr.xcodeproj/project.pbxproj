@@ -43,6 +43,7 @@
 		0B78201B29243109001D84AB /* MyBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201A29243109001D84AB /* MyBackground.swift */; };
 		0B78201D2924315A001D84AB /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201C2924315A001D84AB /* ColorConstants.swift */; };
 		0B78202029243A31001D84AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201F29243A31001D84AB /* HomeView.swift */; };
+		0BE4A3F6292B51150098AB62 /* NotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +84,7 @@
 		0B78201A29243109001D84AB /* MyBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyBackground.swift; sourceTree = "<group>"; };
 		0B78201C2924315A001D84AB /* ColorConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorConstants.swift; sourceTree = "<group>"; };
 		0B78201F29243A31001D84AB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +156,7 @@
 				0B781FFF29212619001D84AB /* LabelExtensions.swift */,
 				0B39F9182925807500C21405 /* ShapeExtensions.swift */,
 				0B39F9242926CE7300C21405 /* SpacingExtensions.swift */,
+				0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -307,6 +310,7 @@
 				0B78201529236476001D84AB /* IdeaCard.swift in Sources */,
 				0B78201929237E22001D84AB /* IdeaList.swift in Sources */,
 				0B781FFB29212146001D84AB /* GoalChip.swift in Sources */,
+				0BE4A3F6292B51150098AB62 /* NotificationExtensions.swift in Sources */,
 				0B78200429227632001D84AB /* ScrollViewWithOffset.swift in Sources */,
 				0B78200A29235FAA001D84AB /* ProfilePicture.swift in Sources */,
 				0B781FF529211925001D84AB /* TextExtensions.swift in Sources */,
