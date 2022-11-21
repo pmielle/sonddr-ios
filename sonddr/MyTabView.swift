@@ -43,6 +43,9 @@ struct MyTabView: View {
             self.bottomSafeArea()
             self.bottomBar()
         }
+        .onAppear {
+            self.setupNavigationNotificationCenter()
+        }
     }
     
     
@@ -147,7 +150,9 @@ struct MyTabView: View {
     
     // methods
     // ------------------------------------------
-    // ...
+    func setupNavigationNotificationCenter() {
+        print("setting up...")
+    }
 }
 
 struct MyTabView_Previews: PreviewProvider {
