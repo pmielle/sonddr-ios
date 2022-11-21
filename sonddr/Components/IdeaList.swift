@@ -39,6 +39,14 @@ struct IdeaList: View {
                                 name: section.name,
                                 index: i
                             )
+                            .background(
+                                GeometryReader { geom in
+                                    Color.clear.preference(
+                                        key: ViewOffsetKey.self,
+                                        value: geom.frame(in: .named("idea-list-container")).origin.y
+                                    )
+                                }
+                            )
                         }
                         .onPreferenceChange(ViewOffsetKey.self) { offset in
                             self.processHeaderOffsetChange(offset: offset, index: i)
@@ -48,7 +56,10 @@ struct IdeaList: View {
             }
         }
         .onAppear {
-            self.formatData()
+            self.formatData(ideas: self.ideas)
+        }
+        .onChange(of: ideas) { newValue in
+            self.formatData(ideas: newValue)
         }
     }
     
@@ -71,14 +82,6 @@ struct IdeaList: View {
             isPinned || index == 0 && self.pinnedHeaderIndexes.count == 0
             ? self.pinnedHeaderColor
             : myBackgroundColor
-        )
-        .background(
-            GeometryReader { geom in
-                Color.clear.preference(
-                    key: ViewOffsetKey.self,
-                    value: geom.frame(in: .named("idea-list-container")).origin.y
-                )
-            }
         )
     }
     
@@ -108,13 +111,13 @@ struct IdeaList: View {
         }
     }
     
-    func formatData() {
+    func formatData(ideas: [Idea]) {
         // init
         var todaySection = ListSection(name: "Today", ideas: [])
         var thisWeekSection = ListSection(name: "This week", ideas: [])
         var earlierSection = ListSection(name: "Earlier", ideas: [])
         // dispatch
-        self.ideas.forEach { idea in
+        ideas.forEach { idea in
             let delta = Date.now.timeIntervalSince(idea.date)
             if delta <= 24 * 3600 {
                 todaySection.ideas.append(idea)

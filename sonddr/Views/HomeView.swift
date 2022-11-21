@@ -22,11 +22,7 @@ struct HomeView: View {
         Goal(id: "decent_work", name: "Decent work", icon: "briefcase.fill", color: Color("BlueGoalColor")),
         Goal(id: "quality_education", name: "Quality education", icon: "graduationcap.fill", color: Color("PurpleGoalColor")),
     ]
-    let ideas: [Idea] = [
-        dummyIdea(),
-        dummyIdea(),
-        dummyIdea(),
-    ]
+    @State private var ideas: [Idea] = []
     @State var titleScale = 1.0
     @State var showNavigationBarTitle = false
     @State var topBackgroundHeight: CGFloat = 0
@@ -71,6 +67,12 @@ struct HomeView: View {
                     }
                 }
                 .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
+                .refreshable {
+                    self.getIdeas()
+                }
+                .onAppear {
+                    self.getIdeas()
+                }
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -128,6 +130,10 @@ struct HomeView: View {
     
     // methods
     // ------------------------------------------
+    func getIdeas() {
+        self.ideas = [dummyIdea(), dummyIdea()]
+    }
+    
     func changeNavbarStyle(color: Color) {
         let coloredNavAppearance = UINavigationBarAppearance()
         coloredNavAppearance.configureWithOpaqueBackground()
