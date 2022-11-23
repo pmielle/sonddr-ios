@@ -110,11 +110,15 @@ struct IdeaList: View {
         }
         if offset < 50 {
             if !self.pinnedHeaderIndexes.contains(index) {
-                self.pinnedHeaderIndexes.append(index)
+                withAnimation {
+                    self.pinnedHeaderIndexes.append(index)
+                }
             }
         } else if self.pinnedHeaderIndexes.contains(index) {
-            self.pinnedHeaderIndexes.removeAll { elem in
-                elem == index
+            withAnimation {
+                self.pinnedHeaderIndexes.removeAll { elem in
+                    elem == index
+                }
             }
         }
     }
