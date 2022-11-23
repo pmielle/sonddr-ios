@@ -22,13 +22,14 @@ struct HomeView: View {
         Goal(id: "decent_work", name: "Decent work", icon: "briefcase.fill", color: Color("BlueGoalColor")),
         Goal(id: "quality_education", name: "Quality education", icon: "graduationcap.fill", color: Color("PurpleGoalColor")),
     ]
-    @State private var ideas: [Idea] = []
+    @State var ideas: [Idea] = []
     @State var titleScale = 1.0
     @State var showNavigationBarTitle = false
     @State var topBackgroundHeight: CGFloat = 0
     let loggedInUser = dummyUser()
     let title = "All ideas"
     let topViewId = "topViewId"
+    @State var sortBy: SortBy = .date
     
     
     // constructor
@@ -54,7 +55,8 @@ struct HomeView: View {
                                 .id(self.topViewId)
                             IdeaList(
                                 ideas: self.ideas,
-                                pinnedHeaderColor: self.accentColor
+                                pinnedHeaderColor: self.accentColor,
+                                sortBy: self.$sortBy
                             )
                             Spacer()
                         }
@@ -71,6 +73,9 @@ struct HomeView: View {
                     self.getIdeas()
                 }
                 .onAppear {
+                    self.getIdeas()
+                }
+                .onChange(of: self.sortBy) { _ in
                     self.getIdeas()
                 }
             }

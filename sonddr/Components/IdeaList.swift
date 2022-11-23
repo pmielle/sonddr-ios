@@ -13,8 +13,9 @@ struct IdeaList: View {
     // ------------------------------------------
     var ideas: [Idea]
     var pinnedHeaderColor: Color = myBackgroundColor
-    @State private var sections: [ListSection] = []
-    @State private var pinnedHeaderIndexes: [Int] = []
+    @Binding var sortBy: SortBy
+    @State var sections: [ListSection] = []
+    @State var pinnedHeaderIndexes: [Int] = []
     
     
     // body
@@ -72,7 +73,7 @@ struct IdeaList: View {
             Text(name)
             Spacer()
             if (index == 0) {
-                self.sortBy()
+                self.sortByButton()
                     .opacity(self.pinnedHeaderIndexes.count == 0 ? 1 : 0)
             }
         }
@@ -85,10 +86,17 @@ struct IdeaList: View {
         )
     }
     
-    func sortBy() -> some View {
-        Button(action: {}) {
-            Text("Sort by")
-            Image(systemName: "line.3.horizontal.decrease")
+    func sortByButton() -> some View {
+        Menu {
+            Button("Date") { self.sortBy = .date }
+                .disabled(self.sortBy == .date)
+            Button("Rating") { self.sortBy = .rating }
+                .disabled(self.sortBy == .rating)
+        } label: {
+            HStack {
+                Text("Sort by")
+                Image(systemName: "line.3.horizontal.decrease")
+            }
         }
         .buttonStyle(.plain)
     }
@@ -140,12 +148,12 @@ struct IdeaList: View {
     }
 }
 
-private struct ListSection {
+struct ListSection {
     let name: String
     var ideas: [Idea]
 }
 
-private enum SortBy {
+enum SortBy {
     case date
     case rating
 }
@@ -186,7 +194,7 @@ struct IdeaList_Previews: PreviewProvider {
                         ),
                         dummyIdea(),
                         dummyIdea(),
-                    ], pinnedHeaderColor: .red)
+                    ], pinnedHeaderColor: .red, sortBy: .constant(.date))
                 }
             }
             .coordinateSpace(name: "idea-list-container")
