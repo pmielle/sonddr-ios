@@ -22,6 +22,8 @@ struct ContentView: View {
             MyFab(mode: .Add)
                 .padding(.trailing, mySpacing)
                 .padding(.bottom, 70)
+                SplashScreen()
+            
         }
     }
     

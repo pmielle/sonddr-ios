@@ -62,7 +62,7 @@ struct HomeView: View {
                         }
                         .padding(.bottom, 100)
                         .onReceive(NotificationCenter.default.publisher(for: .ideasBottomBarIconTap)) { _ in
-                            withAnimation {
+                            withAnimation(.easeIn(duration: myDurationInSec)) {
                                 reader.scrollTo(self.topViewId)
                             }
                         }
@@ -164,7 +164,7 @@ struct HomeView: View {
             self.titleScale = 1.0
         }
         // navigation bar title
-        withAnimation {
+        withAnimation(.easeIn(duration: myShortDurationInSec)) {
             self.showNavigationBarTitle = offset.y > 50
         }
     }

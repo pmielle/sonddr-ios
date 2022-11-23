@@ -70,7 +70,7 @@ struct HeaderHStack<T: View>: View {
     // methods
     // ------------------------------------------
     func onScroll(offset: CGPoint) {
-        withAnimation {
+        withAnimation(.easeIn(duration: myShortDurationInSec)) {
             self.showLeftShadow = offset.x >= 1
         }
     }

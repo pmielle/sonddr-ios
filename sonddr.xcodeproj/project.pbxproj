@@ -44,6 +44,7 @@
 		0B78201D2924315A001D84AB /* ColorConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201C2924315A001D84AB /* ColorConstants.swift */; };
 		0B78202029243A31001D84AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201F29243A31001D84AB /* HomeView.swift */; };
 		0BE4A3F6292B51150098AB62 /* NotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */; };
+		0BE4A3F9292EC5200098AB62 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3F8292EC5200098AB62 /* SplashScreen.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +87,7 @@
 		0B78201F29243A31001D84AB /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
 		0BE4A3F7292EB5100098AB62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0BE4A3F8292EC5200098AB62 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 		0B781FF929212133001D84AB /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				0BE4A3F8292EC5200098AB62 /* SplashScreen.swift */,
 				0B781FFA29212146001D84AB /* GoalChip.swift */,
 				0B78200129212D31001D84AB /* HeaderHStack.swift */,
 				0B78200329227632001D84AB /* ScrollViewWithOffset.swift */,
@@ -294,6 +297,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0BE4A3F9292EC5200098AB62 /* SplashScreen.swift in Sources */,
 				0B782013292363DE001D84AB /* SizeConstants.swift in Sources */,
 				0B78200E29236219001D84AB /* Idea.swift in Sources */,
 				0B39F917292512DB00C21405 /* MyTabView.swift in Sources */,
