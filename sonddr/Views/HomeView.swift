@@ -11,6 +11,7 @@ struct HomeView: View {
 
     // attributes
     // ------------------------------------------
+    @EnvironmentObject var auth: AuthenticationService
     let accentColor: Color
     let goals: [Goal] = [
         Goal(id: "no_poverty", name: "No poverty", icon: "house.fill", color: Color("PinkGoalColor")),
@@ -26,7 +27,6 @@ struct HomeView: View {
     @State var titleScale = 1.0
     @State var showNavigationBarTitle = false
     @State var topBackgroundHeight: CGFloat = 0
-    let loggedInUser = dummyUser()
     let title = "All ideas"
     let topViewId = "topViewId"
     @State var sortBy: SortBy = .date
@@ -128,7 +128,7 @@ struct HomeView: View {
                 .opacity(self.showNavigationBarTitle ? 1 : 0)
         }
         ToolbarItem(placement: .navigationBarTrailing) {
-            ProfilePicture(user: self.loggedInUser)
+            ProfilePicture(user: self.auth.loggedInUser!)
         }
     }
     
@@ -173,5 +173,6 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView(accentColor: .red)
+            .environmentObject(AuthenticationService(loggedInUser: dummyUser()))
     }
 }

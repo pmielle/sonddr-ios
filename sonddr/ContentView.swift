@@ -11,20 +11,29 @@ struct ContentView: View {
     
     // attributes
     // ------------------------------------------
-    // ...
+    @ObservedObject var auth = AuthenticationService(loggedInUser: dummyUser())
     
     
     // body
     // ------------------------------------------
     var body: some View {
-        ZStack(alignment: .bottomTrailing) {
-            MyTabView()
-            MyFab(mode: .Add)
-                .padding(.trailing, mySpacing)
-                .padding(.bottom, 70)
-                SplashScreen()
-            
+        
+        ZStack {
+            if (self.auth.loggedInUser == nil) {
+                LoginView()
+                
+            } else {
+                ZStack(alignment: .bottomTrailing) {
+                    MyTabView()
+                    MyFab(mode: .Add)
+                        .padding(.trailing, mySpacing)
+                        .padding(.bottom, 70)
+                }
+            }
+            SplashScreen()
         }
+        .environmentObject(self.auth)
+        
     }
     
     

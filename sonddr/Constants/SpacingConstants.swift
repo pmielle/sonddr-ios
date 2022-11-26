@@ -8,3 +8,4 @@
 import Foundation
 
 let mySpacing: CGFloat = 16.0
+let myLargeSpacing: CGFloat = 50.0

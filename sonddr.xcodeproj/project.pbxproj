@@ -45,6 +45,9 @@
 		0B78202029243A31001D84AB /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B78201F29243A31001D84AB /* HomeView.swift */; };
 		0BE4A3F6292B51150098AB62 /* NotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */; };
 		0BE4A3F9292EC5200098AB62 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3F8292EC5200098AB62 /* SplashScreen.swift */; };
+		0BE4A3FB292F823A0098AB62 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3FA292F823A0098AB62 /* LoginView.swift */; };
+		0BE4A3FD292F84710098AB62 /* ButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3FC292F84710098AB62 /* ButtonExtensions.swift */; };
+		0BE4A40029321E340098AB62 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3FF29321E340098AB62 /* AuthenticationService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -88,6 +91,9 @@
 		0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationExtensions.swift; sourceTree = "<group>"; };
 		0BE4A3F7292EB5100098AB62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0BE4A3F8292EC5200098AB62 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		0BE4A3FA292F823A0098AB62 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		0BE4A3FC292F84710098AB62 /* ButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtensions.swift; sourceTree = "<group>"; };
+		0BE4A3FF29321E340098AB62 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,18 +134,19 @@
 		0B781FE429211243001D84AB /* sonddr */ = {
 			isa = PBXGroup;
 			children = (
-				0BE4A3F7292EB5100098AB62 /* Info.plist */,
-				0B39F92629291A5E00C21405 /* Misc */,
 				0B78201E29243A0E001D84AB /* Views */,
-				0B78200F2923630E001D84AB /* Utils */,
-				0B781FFC292122A9001D84AB /* Interfaces */,
 				0B781FF929212133001D84AB /* Components */,
+				0BE4A3FE29321E240098AB62 /* Services */,
+				0B781FFC292122A9001D84AB /* Interfaces */,
 				0B781FF629211A6C001D84AB /* Constants */,
 				0B781FF329211900001D84AB /* Extensions */,
+				0B39F92629291A5E00C21405 /* Misc */,
+				0B78200F2923630E001D84AB /* Utils */,
 				0B781FE529211243001D84AB /* sonddrApp.swift */,
 				0B781FE729211243001D84AB /* ContentView.swift */,
 				0B39F916292512DB00C21405 /* MyTabView.swift */,
 				0B781FE929211244001D84AB /* Assets.xcassets */,
+				0BE4A3F7292EB5100098AB62 /* Info.plist */,
 				0B781FEB29211244001D84AB /* Preview Content */,
 			);
 			path = sonddr;
@@ -161,6 +168,7 @@
 				0B39F9182925807500C21405 /* ShapeExtensions.swift */,
 				0B39F9242926CE7300C21405 /* SpacingExtensions.swift */,
 				0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */,
+				0BE4A3FC292F84710098AB62 /* ButtonExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -223,8 +231,17 @@
 				0B39F91A292592C500C21405 /* SearchView.swift */,
 				0B39F91C292592D100C21405 /* MessagesView.swift */,
 				0B39F91E292592D800C21405 /* NotificationsView.swift */,
+				0BE4A3FA292F823A0098AB62 /* LoginView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		0BE4A3FE29321E240098AB62 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				0BE4A3FF29321E340098AB62 /* AuthenticationService.swift */,
+			);
+			path = Services;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -310,6 +327,7 @@
 				0B78202029243A31001D84AB /* HomeView.swift in Sources */,
 				0B782008292355A9001D84AB /* RatingBadge.swift in Sources */,
 				0B39F91D292592D100C21405 /* MessagesView.swift in Sources */,
+				0BE4A3FB292F823A0098AB62 /* LoginView.swift in Sources */,
 				0B781FE829211243001D84AB /* ContentView.swift in Sources */,
 				0B39F91F292592D800C21405 /* NotificationsView.swift in Sources */,
 				0B78201729236A2B001D84AB /* TimeUtilities.swift in Sources */,
@@ -320,9 +338,11 @@
 				0B78200429227632001D84AB /* ScrollViewWithOffset.swift in Sources */,
 				0B78200A29235FAA001D84AB /* ProfilePicture.swift in Sources */,
 				0B781FF529211925001D84AB /* TextExtensions.swift in Sources */,
+				0BE4A40029321E340098AB62 /* AuthenticationService.swift in Sources */,
 				0B7820062923530C001D84AB /* GoalBadge.swift in Sources */,
 				0B39F92329260D1C00C21405 /* TimeConstants.swift in Sources */,
 				0B781FE629211243001D84AB /* sonddrApp.swift in Sources */,
+				0BE4A3FD292F84710098AB62 /* ButtonExtensions.swift in Sources */,
 				0B39F911292509D100C21405 /* IdeaView.swift in Sources */,
 				0B39F9212925F91D00C21405 /* MyFab.swift in Sources */,
 				0B78201B29243109001D84AB /* MyBackground.swift in Sources */,
