@@ -20,6 +20,8 @@ struct MyTabView: View {
     // ------------------------------------------
     @State var selectedTab: Tab = .Ideas
     let badgeSize: CGFloat = 20
+    @State var newDiscussionsNb: Int? = nil
+    @State var newNotificationsNb: Int? = nil
     
     
     // body
@@ -27,17 +29,13 @@ struct MyTabView: View {
     var body: some View {
         ZStack(alignment: .bottom) {
             ZStack {
-                // ideas
                 HomeView(accentColor: myBackgroundColor)
                     .zIndex(self.selectedTab == .Ideas ? 1 : 0)
-                // search
                 SearchView()
                     .zIndex(self.selectedTab == .Search ? 1 : 0)
-                // messages
-                MessagesView()
+                MessagesView(newDiscussionsNb: self.$newDiscussionsNb)
                     .zIndex(self.selectedTab == .Messages ? 1 : 0)
-                // notifications
-                NotificationsView()
+                NotificationsView(newNotificationsNb: self.$newNotificationsNb)
                     .zIndex(self.selectedTab == .Notifications ? 1 : 0)
             }
             self.bottomSafeArea()
@@ -73,14 +71,14 @@ struct MyTabView: View {
                 idleSystemName: "bubble.left",
                 selectedSystemName: "bubble.left.fill",
                 tab: .Messages,
-                badge: "1"
+                badge: self.newDiscussionsNb
             )
             Spacer()
             self.bottomBarIcon(
                 idleSystemName: "bell",
                 selectedSystemName: "bell.fill",
                 tab: .Notifications,
-                badge: "99+"
+                badge: self.newNotificationsNb
             )
             Spacer()
         }
@@ -93,7 +91,7 @@ struct MyTabView: View {
         idleSystemName: String,
         selectedSystemName: String,
         tab: Tab,
-        badge: String = ""
+        badge: Int? = nil
     ) -> some View {
         let isSelected = self.selectedTab == tab
         return ZStack(alignment: .topTrailing) {
@@ -107,8 +105,9 @@ struct MyTabView: View {
                 .padding(10)
             }
             .buttonStyle(.plain)
-            if badge != "" {
-                self.BottomBarBadge(label: badge)
+            if badge != nil {
+                let label = badge! > 99 ? "99+" : "\(badge!)"
+                self.BottomBarBadge(label: label)
             }
             if (tab == .Ideas && isSelected) {
                 self.sparkles()
@@ -141,7 +140,6 @@ struct MyTabView: View {
             .frame(minWidth: badgeSize, minHeight: badgeSize, maxHeight: badgeSize)
             .background(.red)
             .cornerRadius(badgeSize / 2)
-            .offset(x: badgeSize / 3)
     }
     
     
@@ -163,6 +161,11 @@ struct MyTabView: View {
 
 struct MyTabView_Previews: PreviewProvider {
     static var previews: some View {
+        let db = DatabaseService(testMode: true)
+        let auth = AuthenticationService(db: db, testMode: true)
+        
         MyTabView()
+            .environmentObject(db)
+            .environmentObject(auth)
     }
 }

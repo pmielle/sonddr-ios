@@ -39,6 +39,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) { MyBackground()
+                
                 self.topBackground()
                 ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: self.onScroll) {
                     ScrollViewReader { reader in

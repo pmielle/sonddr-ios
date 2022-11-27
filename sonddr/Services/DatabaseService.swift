@@ -40,4 +40,12 @@ class DatabaseService: ObservableObject {
     func getIdeas() -> [Idea] {
         return [dummyIdea(), dummyIdea()]
     }
+    
+    func getNotifications(user: User) -> [MyNotification] {
+        return [dummyNotification(), dummyNotification()]
+    }
+    
+    func getDiscussions(user: User) -> [Discussion] {
+        return [dummyDiscussion(), dummyDiscussion()]
+    }
 }

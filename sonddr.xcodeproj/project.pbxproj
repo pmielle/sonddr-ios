@@ -49,6 +49,8 @@
 		0BE4A3FD292F84710098AB62 /* ButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3FC292F84710098AB62 /* ButtonExtensions.swift */; };
 		0BE4A40029321E340098AB62 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3FF29321E340098AB62 /* AuthenticationService.swift */; };
 		0BE4A4022933B5180098AB62 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A4012933B5180098AB62 /* DatabaseService.swift */; };
+		0BE4A405293404AE0098AB62 /* MyNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A404293404AE0098AB62 /* MyNotification.swift */; };
+		0BE4A409293406270098AB62 /* Discussion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A408293406270098AB62 /* Discussion.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -96,6 +98,8 @@
 		0BE4A3FC292F84710098AB62 /* ButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtensions.swift; sourceTree = "<group>"; };
 		0BE4A3FF29321E340098AB62 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		0BE4A4012933B5180098AB62 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		0BE4A404293404AE0098AB62 /* MyNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNotification.swift; sourceTree = "<group>"; };
+		0BE4A408293406270098AB62 /* Discussion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Discussion.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +214,8 @@
 				0B781FFD292122E6001D84AB /* Goal.swift */,
 				0B78200B29235FCC001D84AB /* User.swift */,
 				0B78200D29236219001D84AB /* Idea.swift */,
+				0BE4A404293404AE0098AB62 /* MyNotification.swift */,
+				0BE4A408293406270098AB62 /* Discussion.swift */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -320,6 +326,7 @@
 				0BE4A3F9292EC5200098AB62 /* SplashScreen.swift in Sources */,
 				0B782013292363DE001D84AB /* SizeConstants.swift in Sources */,
 				0B78200E29236219001D84AB /* Idea.swift in Sources */,
+				0BE4A409293406270098AB62 /* Discussion.swift in Sources */,
 				0B39F917292512DB00C21405 /* MyTabView.swift in Sources */,
 				0B39F91529250CB100C21405 /* GoalView.swift in Sources */,
 				0B39F92829291A9A00C21405 /* PreferenceKeys.swift in Sources */,
@@ -350,6 +357,7 @@
 				0B39F911292509D100C21405 /* IdeaView.swift in Sources */,
 				0B39F9212925F91D00C21405 /* MyFab.swift in Sources */,
 				0B78201B29243109001D84AB /* MyBackground.swift in Sources */,
+				0BE4A405293404AE0098AB62 /* MyNotification.swift in Sources */,
 				0B39F91329250C9800C21405 /* UserView.swift in Sources */,
 				0B39F9192925807500C21405 /* ShapeExtensions.swift in Sources */,
 				0B78200229212D31001D84AB /* HeaderHStack.swift in Sources */,
