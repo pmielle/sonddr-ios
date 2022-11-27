@@ -23,9 +23,7 @@ struct LoginView: View {
                     .myTitle()
                 VStack(spacing: mySpacing) {
                     Button("Log in") {
-                        withAnimation {  // fade from this view to main
-                            self.auth.logIn()
-                        }
+                        self.auth.logIn()
                     }
                     .myLargeButton(color: Color("GreenColor"))
                     Button("Sign up") {
