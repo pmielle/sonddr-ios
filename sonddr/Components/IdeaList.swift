@@ -11,7 +11,7 @@ struct IdeaList: View {
     
     // attributes
     // ------------------------------------------
-    var ideas: [Idea]
+    var ideas: [Idea]?  // nil upon first load
     var pinnedHeaderColor: Color = myBackgroundColor
     @Binding var sortBy: SortBy
     @State var sections: [ListSection] = []
@@ -23,7 +23,14 @@ struct IdeaList: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                if self.sections.count > 0 {
+                if self.ideas == nil {
+                    Section {
+                        IdeaCard(idea: dummyIdea()).redacted(reason: .placeholder)
+                        IdeaCard(idea: dummyIdea()).redacted(reason: .placeholder)
+                    } header: {
+                        self.sectionHeader(name: "Placeholder", index: 0).redacted(reason: .placeholder)
+                    }
+                } else if self.sections.count > 0 {
                     ForEach(
                         (0...self.sections.count - 1),
                         id: \.self
@@ -123,13 +130,17 @@ struct IdeaList: View {
         }
     }
     
-    func formatData(ideas: [Idea]) {
+    func formatData(ideas: [Idea]?) {
         // init
         var todaySection = ListSection(name: "Today", ideas: [])
         var thisWeekSection = ListSection(name: "This week", ideas: [])
         var earlierSection = ListSection(name: "Earlier", ideas: [])
-        // dispatch
-        ideas.forEach { idea in
+        // guard: nil case
+        if ideas == nil {
+            self.sections = []
+            return
+        }
+        ideas!.forEach { idea in
             let delta = Date.now.timeIntervalSince(idea.date)
             if delta <= 24 * 3600 {
                 todaySection.ideas.append(idea)
@@ -164,44 +175,56 @@ enum SortBy {
 
 struct IdeaList_Previews: PreviewProvider {
     static var previews: some View {
-            NavigationView {
-                ZStack { MyBackground()
+        NavigationView {
+            ZStack { MyBackground()
                 ScrollView {
-                    IdeaList(ideas: [
-                        dummyIdea(),
-                        Idea(
-                            id: randomId(),
-                            title: "OLDER OMG",
-                            author: dummyUser(),
-                            goals: [dummyGoal(), dummyGoal()],
-                            cover: "DefaultIdeaCover",
-                            rating: 66,
-                            date: Date.distantPast
-                        ),
-                        Idea(
-                            id: randomId(),
-                            title: "OLDER OMG",
-                            author: dummyUser(),
-                            goals: [dummyGoal(), dummyGoal()],
-                            cover: "DefaultIdeaCover",
-                            rating: 66,
-                            date: Date.distantPast
-                        ),
-                        Idea(
-                            id: randomId(),
-                            title: "OLDER OMG",
-                            author: dummyUser(),
-                            goals: [dummyGoal(), dummyGoal()],
-                            cover: "DefaultIdeaCover",
-                            rating: 66,
-                            date: Date.distantPast
-                        ),
-                        dummyIdea(),
-                        dummyIdea(),
-                    ], pinnedHeaderColor: .red, sortBy: .constant(.date))
+                    IdeaList(
+                        ideas: [
+                            dummyIdea(),
+                            Idea(
+                                id: randomId(),
+                                title: "OLDER OMG",
+                                author: dummyUser(),
+                                goals: [dummyGoal(), dummyGoal()],
+                                cover: "DefaultIdeaCover",
+                                rating: 66,
+                                date: Date.distantPast
+                            ),
+                            Idea(
+                                id: randomId(),
+                                title: "OLDER OMG",
+                                author: dummyUser(),
+                                goals: [dummyGoal(), dummyGoal()],
+                                cover: "DefaultIdeaCover",
+                                rating: 66,
+                                date: Date.distantPast
+                            ),
+                            Idea(
+                                id: randomId(),
+                                title: "OLDER OMG",
+                                author: dummyUser(),
+                                goals: [dummyGoal(), dummyGoal()],
+                                cover: "DefaultIdeaCover",
+                                rating: 66,
+                                date: Date.distantPast
+                            ),
+                            dummyIdea(),
+                            dummyIdea(),
+                        ],
+                        pinnedHeaderColor: .red, sortBy: .constant(.date))
                 }
             }
             .coordinateSpace(name: "idea-list-container")
+        }
+        
+        // 2nd preview with loading state
+        // ------------------------------
+        NavigationView {
+            ZStack { MyBackground()
+                ScrollView {
+                    IdeaList(ideas: nil, pinnedHeaderColor: .red, sortBy: .constant(.date))
+                }
+            }
         }
     }
 }

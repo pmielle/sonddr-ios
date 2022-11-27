@@ -23,18 +23,21 @@ struct HomeView: View {
         Goal(id: "decent_work", name: "Decent work", icon: "briefcase.fill", color: Color("BlueGoalColor")),
         Goal(id: "quality_education", name: "Quality education", icon: "graduationcap.fill", color: Color("PurpleGoalColor")),
     ]
-    @State var ideas: [Idea] = []
+    @State var ideas: [Idea]? = nil
     @State var titleScale = 1.0
     @State var showNavigationBarTitle = false
     @State var topBackgroundHeight: CGFloat = 0
     let title = "All ideas"
     let topViewId = "topViewId"
     @State var sortBy: SortBy = .date
+    @State var isLoading = true
+    let forceLoadingState: Bool
     
     
     // constructor
     // ------------------------------------------
-    init(accentColor: Color) {
+    init(accentColor: Color, forceLoadingState: Bool = false) {
+        self.forceLoadingState = forceLoadingState
         self.accentColor = accentColor
         self.changeNavbarStyle(color: accentColor)
     }
@@ -54,10 +57,11 @@ struct HomeView: View {
                                 .background(self.accentColor)
                                 .id(self.topViewId)
                             IdeaList(
-                                ideas: self.ideas,
+                                ideas: self.isLoading ? nil : self.ideas,
                                 pinnedHeaderColor: self.accentColor,
                                 sortBy: self.$sortBy
                             )
+                            .allowsHitTesting(!self.isLoading)
                             Spacer()
                         }
                         .padding(.bottom, 100)
@@ -68,12 +72,16 @@ struct HomeView: View {
                         }
                     }
                 }
+                .scrollDisabled(self.isLoading)
                 .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
                 .refreshable {
                     self.getIdeas()
                 }
                 .onAppear {
                     self.getIdeas()
+                    if !self.forceLoadingState {
+                        self.isLoading = false
+                    }
                 }
                 .onChange(of: self.sortBy) { _ in
                     self.getIdeas()
@@ -106,10 +114,15 @@ struct HomeView: View {
                 Label("Learn more", systemImage: "info.circle")
                     .myLabel(color: .white)
                     .foregroundColor(self.accentColor)
-                ForEach(self.goals) { goal in
-                    NavigationLink(destination: GoalView()) {
-                        GoalChip(goal: goal)
-                    }.buttonStyle(.plain)
+                if self.isLoading {
+                    GoalChip(goal: dummyGoal()).redacted(reason: .placeholder)
+                    GoalChip(goal: dummyGoal()).redacted(reason: .placeholder)
+                } else {
+                    ForEach(self.goals) { goal in
+                        NavigationLink(destination: GoalView()) {
+                            GoalChip(goal: goal)
+                        }.buttonStyle(.plain)
+                    }
                 }
             }
         }
@@ -173,6 +186,11 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView(accentColor: .red)
+            .environmentObject(AuthenticationService(loggedInUser: dummyUser()))
+        
+        // 2nd preview with loading state
+        // ------------------------------
+        HomeView(accentColor: .red, forceLoadingState: true)
             .environmentObject(AuthenticationService(loggedInUser: dummyUser()))
     }
 }
