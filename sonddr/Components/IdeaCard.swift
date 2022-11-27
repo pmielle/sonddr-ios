@@ -96,30 +96,5 @@ struct IdeaCard_Previews: PreviewProvider {
                 IdeaCard(idea: dummyIdea())
             }
         }
-        
-        // 2nd preview with loading state
-        // ------------------------------
-        loadingIdeaCard()
-    }
-}
-
-
-func loadingIdeaCard() -> some View {
-    let profilePictureSpacing: CGFloat = 10
-    return VStack(alignment: .leading, spacing: 0) {
-        Rectangle().fill(myLoadingColor)
-            .aspectRatio(16/9, contentMode: .fit)
-        VStack(alignment: .leading, spacing: 0) {
-            Rectangle().fill(myLoadingColor)
-                .frame(width: 200, height: 32)
-                .padding(.leading, profilePictureSpacing + profilePictureSize)
-            HStack(spacing: profilePictureSpacing) {
-                Circle().fill(myLoadingColor)
-                    .frame(height:32)
-                Rectangle().fill(myLoadingColor)
-                    .frame(width: 160, height: 20)
-            }
-        }
-        .padding(mySpacing)
     }
 }
