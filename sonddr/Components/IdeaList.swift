@@ -203,5 +203,33 @@ struct IdeaList_Previews: PreviewProvider {
             }
             .coordinateSpace(name: "idea-list-container")
         }
+        
+        
+        // 2nd preview with loading state
+        // ------------------------------
+        loadingIdeaList(pinnedHeaderColor: .red)
+    }
+}
+
+func loadingIdeaList(pinnedHeaderColor: Color) -> some View {
+    VStack(spacing: 0) {
+        // header
+        HStack() {
+            Rectangle().fill(myLoadingColor)
+                .frame(width: 50, height: 20)
+            Spacer()
+            Rectangle().fill(myLoadingColor)
+                .frame(width: 90, height: 20)
+        }
+        .myGutter()
+        .padding(.vertical, 15)
+        .background(pinnedHeaderColor)
+        // list
+        VStack(spacing: 0) {
+            loadingIdeaCard()
+                .padding(.bottom, mySpacing)
+            loadingIdeaCard()
+                .padding(.bottom, mySpacing)
+        }
     }
 }

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
-
+    
     // attributes
     // ------------------------------------------
     @EnvironmentObject var auth: AuthenticationService
@@ -30,11 +30,14 @@ struct HomeView: View {
     let title = "All ideas"
     let topViewId = "topViewId"
     @State var sortBy: SortBy = .date
+    @State var isLoading = true
+    let loadForever: Bool
     
     
     // constructor
     // ------------------------------------------
-    init(accentColor: Color) {
+    init(accentColor: Color, loadForever: Bool = false) {
+        self.loadForever = loadForever
         self.accentColor = accentColor
         self.changeNavbarStyle(color: accentColor)
     }
@@ -46,37 +49,46 @@ struct HomeView: View {
         NavigationView {
             ZStack(alignment: .top) { MyBackground()
                 self.topBackground()
-                ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: self.onScroll) {
-                    ScrollViewReader { reader in
-                        VStack(spacing: 0) {
-                            header()
-                                .padding(.bottom, mySpacing)
-                                .background(self.accentColor)
-                                .id(self.topViewId)
-                            IdeaList(
-                                ideas: self.ideas,
-                                pinnedHeaderColor: self.accentColor,
-                                sortBy: self.$sortBy
-                            )
-                            Spacer()
-                        }
-                        .padding(.bottom, 100)
-                        .onReceive(NotificationCenter.default.publisher(for: .ideasBottomBarIconTap)) { _ in
-                            withAnimation(.easeIn(duration: myDurationInSec)) {
-                                reader.scrollTo(self.topViewId)
+                
+                if self.isLoading {
+                    self.loadingView()
+                    
+                } else {
+                    ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: self.onScroll) {
+                        ScrollViewReader { reader in
+                            VStack(spacing: 0) {
+                                header()
+                                    .padding(.bottom, mySpacing)
+                                    .background(self.accentColor)
+                                    .id(self.topViewId)
+                                IdeaList(
+                                    ideas: self.ideas,
+                                    pinnedHeaderColor: self.accentColor,
+                                    sortBy: self.$sortBy
+                                )
+                                Spacer()
+                            }
+                            .padding(.bottom, 100)
+                            .onReceive(NotificationCenter.default.publisher(for: .ideasBottomBarIconTap)) { _ in
+                                withAnimation(.easeIn(duration: myDurationInSec)) {
+                                    reader.scrollTo(self.topViewId)
+                                }
                             }
                         }
                     }
+                    .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
+                    .refreshable {
+                        self.getIdeas()
+                    }
+                    .onChange(of: self.sortBy) { _ in
+                        self.getIdeas()
+                    }
                 }
-                .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
-                .refreshable {
-                    self.getIdeas()
-                }
-                .onAppear {
-                    self.getIdeas()
-                }
-                .onChange(of: self.sortBy) { _ in
-                    self.getIdeas()
+            }
+            .onAppear {
+                self.getIdeas()
+                if !self.loadForever {
+                    self.isLoading = false
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -89,11 +101,24 @@ struct HomeView: View {
     
     // subviews
     // ------------------------------------------
+    func loadingView() -> some View {
+        ScrollView {
+            VStack(spacing: 0) {
+                self.header(loading: true)
+                    .padding(.bottom, mySpacing)
+                    .background(self.accentColor)
+                loadingIdeaList(pinnedHeaderColor: self.accentColor)
+            }
+        }
+        .scrollDisabled(true)
+    }
+    
     func topBackground() -> some View {
         self.accentColor
             .frame(height: self.topBackgroundHeight)
     }
-    func header() -> some View {
+    
+    func header(loading: Bool = false) -> some View {
         VStack(alignment: .leading, spacing: mySpacing) {
             Text(self.title)
                 .myTitle()
@@ -106,10 +131,15 @@ struct HomeView: View {
                 Label("Learn more", systemImage: "info.circle")
                     .myLabel(color: .white)
                     .foregroundColor(self.accentColor)
-                ForEach(self.goals) { goal in
-                    NavigationLink(destination: GoalView()) {
-                        GoalChip(goal: goal)
-                    }.buttonStyle(.plain)
+                if loading {
+                    loadingGoalChip()
+                    loadingGoalChip()
+                } else {
+                    ForEach(self.goals) { goal in
+                        NavigationLink(destination: GoalView()) {
+                            GoalChip(goal: goal)
+                        }.buttonStyle(.plain)
+                    }
                 }
             }
         }
@@ -173,6 +203,11 @@ struct HomeView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView(accentColor: .red)
+            .environmentObject(AuthenticationService(loggedInUser: dummyUser()))
+        
+        // 2nd preview with loading state
+        // ------------------------------
+        HomeView(accentColor: .red, loadForever: true)
             .environmentObject(AuthenticationService(loggedInUser: dummyUser()))
     }
 }

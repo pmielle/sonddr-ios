@@ -27,3 +27,11 @@ struct GoalChip_Previews: PreviewProvider {
         GoalChip(goal: dummyGoal())
     }
 }
+
+
+func loadingGoalChip() -> some View {
+    Rectangle()
+        .fill(myLoadingColor)
+        .frame(width: 120, height: 32)
+        .cornerRadius(99)
+}
