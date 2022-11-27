@@ -43,7 +43,8 @@ struct ContentView: View {
             SplashScreen()
         }
         .environmentObject(self.auth)
-        
+        .environmentObject(self.db)
+
     }
     
     
