@@ -11,7 +11,17 @@ struct ContentView: View {
     
     // attributes
     // ------------------------------------------
-    @ObservedObject var auth = AuthenticationService(loggedInUser: dummyUser())
+    @ObservedObject var auth: AuthenticationService
+    @ObservedObject var db: DatabaseService
+    
+    
+    // constructor
+    // ------------------------------------------
+    init(testMode: Bool = false) {
+        let db = DatabaseService(testMode: testMode)
+        self.db = db
+        self.auth = AuthenticationService(db: db)
+    }
     
     
     // body
@@ -49,6 +59,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(testMode: true)
     }
 }

@@ -11,20 +11,23 @@ class AuthenticationService: ObservableObject {
     
     // attributes
     // ------------------------------------------
+    let db: DatabaseService
     @Published var loggedInUser: User?
     
     
     // constructor
     // ------------------------------------------
-    init(loggedInUser: User? = nil) {
-        self.loggedInUser = loggedInUser
+    init(db: DatabaseService, testMode: Bool = false) {
+        self.db = db
+        self.loggedInUser = testMode ? db.getUser() : nil
     }
     
     
     // methods
     // ------------------------------------------
     func logIn() {
-        self.loggedInUser = dummyUser()
+        self.db.loggedInUserToken = "TOKEN"
+        self.loggedInUser = self.db.getUser()
     }
     
     func logOut() {

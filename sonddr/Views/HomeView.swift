@@ -12,17 +12,8 @@ struct HomeView: View {
     // attributes
     // ------------------------------------------
     @EnvironmentObject var auth: AuthenticationService
+    @EnvironmentObject var db: DatabaseService
     let accentColor: Color
-    let goals: [Goal] = [
-        Goal(id: "no_poverty", name: "No poverty", icon: "house.fill", color: Color("PinkGoalColor")),
-        Goal(id: "health_and_well_being", name: "Health and well-being", icon: "cross.fill", color: Color("RedGoalColor")),
-        Goal(id: "reduced_inequalitied", name: "Reduced inequalities", icon: "figure.2.arms.open", color: Color("OrangeGoalColor")),
-        Goal(id: "sustainability", name: "Sustainability", icon: "infinity", color: Color("YellowGoalColor")),
-        Goal(id: "preserved_ecosystems", name: "Preserved ecosystems", icon: "leaf.fill", color: Color("GreenGoalColor")),
-        Goal(id: "peace_and_justice", name: "Peace and justice", icon: "bird.fill", color: Color("CyanGoalColor")),
-        Goal(id: "decent_work", name: "Decent work", icon: "briefcase.fill", color: Color("BlueGoalColor")),
-        Goal(id: "quality_education", name: "Quality education", icon: "graduationcap.fill", color: Color("PurpleGoalColor")),
-    ]
     @State var ideas: [Idea]? = nil
     @State var titleScale = 1.0
     @State var showNavigationBarTitle = false
@@ -75,22 +66,19 @@ struct HomeView: View {
                 .scrollDisabled(self.isLoading)
                 .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
                 .refreshable {
-                    self.getIdeas()
-                }
-                .onAppear {
-                    self.getIdeas()
-                    if !self.forceLoadingState {
-                        self.isLoading = false
-                    }
+                    self.ideas = self.db.getIdeas()
                 }
                 .onChange(of: self.sortBy) { _ in
-                    self.getIdeas()
+                    self.ideas = self.db.getIdeas()
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 self.toolbar()
             }
+        }
+        .onAppear {
+            self.initialLoad()
         }
     }
     
@@ -118,7 +106,7 @@ struct HomeView: View {
                     GoalChip(goal: dummyGoal()).redacted(reason: .placeholder)
                     GoalChip(goal: dummyGoal()).redacted(reason: .placeholder)
                 } else {
-                    ForEach(self.goals) { goal in
+                    ForEach(self.db.goals!) { goal in
                         NavigationLink(destination: GoalView()) {
                             GoalChip(goal: goal)
                         }.buttonStyle(.plain)
@@ -148,8 +136,12 @@ struct HomeView: View {
     
     // methods
     // ------------------------------------------
-    func getIdeas() {
-        self.ideas = [dummyIdea(), dummyIdea()]
+    func initialLoad() {
+        self.db.cacheGoals()
+        self.ideas = self.db.getIdeas()
+        if !self.forceLoadingState {
+            self.isLoading = false
+        }
     }
     
     func changeNavbarStyle(color: Color) {
@@ -185,12 +177,17 @@ struct HomeView: View {
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
+        let db = DatabaseService(testMode: true)
+        let auth = AuthenticationService(db: db, testMode: true)
+        
         HomeView(accentColor: .red)
-            .environmentObject(AuthenticationService(loggedInUser: dummyUser()))
+            .environmentObject(auth)
+            .environmentObject(db)
         
         // 2nd preview with loading state
         // ------------------------------
         HomeView(accentColor: .red, forceLoadingState: true)
-            .environmentObject(AuthenticationService(loggedInUser: dummyUser()))
+            .environmentObject(auth)
+            .environmentObject(db)
     }
 }

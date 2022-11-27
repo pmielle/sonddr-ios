@@ -51,9 +51,13 @@ struct LoginView: View {
 
 struct LoginView_Previews: PreviewProvider {
     static var previews: some View {
+        let db = DatabaseService(testMode: true)
+        let auth = AuthenticationService(db: db, testMode: true)
+        
         NavigationView {
             LoginView()
-                .environmentObject(AuthenticationService())
+                .environmentObject(auth)
+                .environmentObject(db)
         }
     }
 }
