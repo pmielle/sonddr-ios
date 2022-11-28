@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class DatabaseService: ObservableObject {
     
     // attributes
@@ -25,27 +26,33 @@ class DatabaseService: ObservableObject {
     
     // methods
     // ------------------------------------------
-    func getUser() -> User {
+    func getUser() async throws -> User {
+        await sleep(seconds: 0.1)
         return dummyUser()
     }
     
-    func cacheGoals() {
-        self.goals = self.getGoals()
+    func cacheGoals() async throws {
+        await sleep(seconds: 0.1)
+        self.goals = try await self.getGoals()
     }
     
-    func getGoals() ->[Goal] {
+    func getGoals() async throws ->[Goal] {
+        await sleep(seconds: 0.1)
         return [dummyGoal(), dummyGoal()]
     }
     
-    func getIdeas() -> [Idea] {
+    func getIdeas() async throws -> [Idea] {
+        await sleep(seconds: 0.1)
         return [dummyIdea(), dummyIdea()]
     }
     
-    func getNotifications(user: User) -> [MyNotification] {
+    func getNotifications(user: User) async throws -> [MyNotification] {
+        await sleep(seconds: 0.1)
         return [dummyNotification(), dummyNotification()]
     }
     
-    func getDiscussions(user: User) -> [Discussion] {
+    func getDiscussions(user: User) async throws -> [Discussion] {
+        await sleep(seconds: 0.1)
         return [dummyDiscussion(), dummyDiscussion()]
     }
 }

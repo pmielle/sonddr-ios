@@ -68,14 +68,20 @@ struct MessagesView: View {
     // methods
     // ------------------------------------------
     func initialLoad() {
-        self.discussions = self.getDiscussions()
-        if !self.forceLoadingState {
-            self.isLoading = false
+        Task {
+            await self.getDiscussions()
+            if !self.forceLoadingState {
+                self.isLoading = false
+            }
         }
     }
     
-    func getDiscussions() -> [Discussion] {
-        return self.db.getDiscussions(user: self.auth.loggedInUser!)
+    func getDiscussions() async {
+        do {
+            self.discussions = try await self.db.getDiscussions(user: self.auth.loggedInUser!)
+        } catch {
+            print("an error occured: \(error)")
+        }
     }
 }
 

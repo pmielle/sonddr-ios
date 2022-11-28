@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+@MainActor
 class AuthenticationService: ObservableObject {
     
     // attributes
@@ -19,18 +20,18 @@ class AuthenticationService: ObservableObject {
     // ------------------------------------------
     init(db: DatabaseService, testMode: Bool = false) {
         self.db = db
-        self.loggedInUser = testMode ? db.getUser() : nil
+        self.loggedInUser = testMode ? dummyUser() : nil
     }
     
     
     // methods
     // ------------------------------------------
-    func logIn() {
+    func logIn() async throws {
         self.db.loggedInUserToken = "TOKEN"
-        self.loggedInUser = self.db.getUser()
+        self.loggedInUser = try await self.db.getUser()
     }
     
-    func logOut() {
+    func logOut() async {
         self.loggedInUser = nil
     }
 }

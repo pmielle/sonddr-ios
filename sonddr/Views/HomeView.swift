@@ -67,10 +67,14 @@ struct HomeView: View {
                 .scrollDisabled(self.isLoading)
                 .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
                 .refreshable {
-                    self.ideas = self.db.getIdeas()
+                    Task {
+                        await self.getIdeas()
+                    }
                 }
                 .onChange(of: self.sortBy) { _ in
-                    self.ideas = self.db.getIdeas()
+                    Task {
+                        await self.getIdeas()
+                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -138,10 +142,21 @@ struct HomeView: View {
     // methods
     // ------------------------------------------
     func initialLoad() {
-        self.db.cacheGoals()
-        self.ideas = self.db.getIdeas()
-        if !self.forceLoadingState {
-            self.isLoading = false
+        Task {
+            async let cacheGoals: () = try await self.db.cacheGoals()
+            async let getIdeas: () = self.getIdeas()
+            _ = try await [cacheGoals, getIdeas]
+            if !self.forceLoadingState {
+                self.isLoading = false
+            }
+        }
+    }
+    
+    func getIdeas() async {
+        do {
+            self.ideas = try await self.db.getIdeas()
+        } catch {
+            print("an error occured: \(error)")
         }
     }
     

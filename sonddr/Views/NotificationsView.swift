@@ -68,14 +68,21 @@ struct NotificationsView: View {
     // methods
     // ------------------------------------------
     func initialLoad() {
-        self.notifications = self.getNotifications()
-        if !self.forceLoadingState {
-            self.isLoading = false
+        Task {
+            await self.getNotifications()
+            if !self.forceLoadingState {
+                self.isLoading = false
+            }
         }
     }
     
-    func getNotifications() -> [MyNotification] {
-        return self.db.getNotifications(user: self.auth.loggedInUser!)
+    func getNotifications() async {
+        do {
+            self.notifications = try await self.db.getNotifications(user: self.auth.loggedInUser!)
+        } catch {
+            print("an error occured: \(error)")
+        }
+        
     }
 }
 

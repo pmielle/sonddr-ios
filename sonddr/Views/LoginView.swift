@@ -12,6 +12,7 @@ struct LoginView: View {
     // attributes
     // ------------------------------------------
     @EnvironmentObject var auth: AuthenticationService
+    @State var isLoading = false
     
     
     // body
@@ -22,14 +23,8 @@ struct LoginView: View {
                 Text("sonddr is a place to share and contribute to each other ideas to make the world a little (or a lot) better")
                     .myTitle()
                 VStack(spacing: mySpacing) {
-                    Button("Log in") {
-                        self.auth.logIn()
-                    }
-                    .myLargeButton(color: Color("GreenColor"))
-                    Button("Sign up") {
-                        print("click")
-                    }
-                    .myLargeButton(color: .white.opacity(0.5))
+                    self.loginButton()
+                    self.signupButton()
                 }
             }
             .myGutter()
@@ -39,12 +34,36 @@ struct LoginView: View {
     
     // subviews
     // ------------------------------------------
-    // ...
+    func loginButton() -> some View {
+        Button("Log in") {
+            self.onLoginClick()
+        }
+        .myLargeButton(color: Color("GreenColor"))
+        .disabled(self.isLoading)
+    }
+    
+    func signupButton() -> some View {
+        Button("Sign up") {
+            print("click")
+        }
+        .myLargeButton(color: .white.opacity(0.5))
+        .disabled(self.isLoading)
+    }
     
     
     // methods
     // ------------------------------------------
-    // ...
+    func onLoginClick() {
+        Task {
+            self.isLoading = true
+            do {
+                try await self.auth.logIn()
+            } catch {
+                print("an error occured: \(error)")  // TODO: in a snack bar
+                self.isLoading = false
+            }
+        }
+    }
 }
 
 struct LoginView_Previews: PreviewProvider {
