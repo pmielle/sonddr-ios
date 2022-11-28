@@ -33,11 +33,11 @@ struct SplashScreen: View {
         .opacity(self.fadeOut ? 0 : 1)
         .onAppear {
             Task {
-                try? await Task.sleep(nanoseconds: myDurationInMs)
+                await sleep(seconds:myDurationInSec)
                 withAnimation(.easeOut(duration: myShortDurationInSec)) {
                     self.scaleDown = true
                 }
-                try? await Task.sleep(nanoseconds: myShortDurationInMs)
+                await sleep(seconds: myShortDurationInSec)
                 withAnimation(.easeIn(duration: myDurationInSec)) {
                     self.scaleUp = true
                 }

@@ -40,6 +40,6 @@ func prettyTimeDelta(date: Date) -> String {
     return timeDelta
 }
 
-func sleep(seconds: Float) async {
+func sleep(seconds: Double) async {
     try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
 }
