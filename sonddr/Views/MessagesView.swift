@@ -31,7 +31,7 @@ struct MessagesView: View {
     // body
     // ------------------------------------------
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack() { MyBackground()
                 
                 ScrollView {
@@ -90,7 +90,7 @@ struct MessagesView_Previews: PreviewProvider {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
         
-        NavigationView {
+        NavigationStack {
             MessagesView(newDiscussionsNb: .constant(nil))
                 .environmentObject(auth)
                 .environmentObject(db)
@@ -98,7 +98,7 @@ struct MessagesView_Previews: PreviewProvider {
         
         // 2nd preview with loading state
         // ------------------------------
-        NavigationView {
+        NavigationStack {
             MessagesView(newDiscussionsNb: .constant(nil), forceLoadingState: true)
                 .environmentObject(auth)
                 .environmentObject(db)

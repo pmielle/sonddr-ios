@@ -31,7 +31,7 @@ struct NotificationsView: View {
     // body
     // ------------------------------------------
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack() { MyBackground()
                 
                 ScrollView {
@@ -91,7 +91,7 @@ struct NotificationsView_Previews: PreviewProvider {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
         
-        NavigationView {
+        NavigationStack {
             NotificationsView(newNotificationsNb: .constant(nil))
                 .environmentObject(auth)
                 .environmentObject(db)
@@ -99,7 +99,7 @@ struct NotificationsView_Previews: PreviewProvider {
         
         // 2nd preview with loading state
         // ------------------------------
-        NavigationView {
+        NavigationStack {
             NotificationsView(newNotificationsNb: .constant(nil), forceLoadingState: true)
                 .environmentObject(auth)
                 .environmentObject(db)

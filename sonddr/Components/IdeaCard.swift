@@ -91,7 +91,7 @@ struct IdeaCard: View {
 
 struct IdeaCard_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             ZStack { MyBackground()
                 IdeaCard(idea: dummyIdea())
             }

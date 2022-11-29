@@ -37,7 +37,7 @@ struct HomeView: View {
     // body
     // ------------------------------------------
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack(alignment: .top) { MyBackground()
                 
                 self.topBackground()

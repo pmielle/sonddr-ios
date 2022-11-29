@@ -71,7 +71,7 @@ struct LoginView_Previews: PreviewProvider {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
         
-        NavigationView {
+        NavigationStack {
             LoginView()
                 .environmentObject(auth)
                 .environmentObject(db)

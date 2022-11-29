@@ -40,7 +40,7 @@ struct GoalView_Previews: PreviewProvider {
     static var previews: some View {
         let fab = FabService()
         
-        return NavigationView {
+        return NavigationStack {
             GoalView()
         }
         .environmentObject(fab)

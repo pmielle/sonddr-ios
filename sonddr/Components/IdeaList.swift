@@ -175,7 +175,7 @@ enum SortBy {
 
 struct IdeaList_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             ZStack { MyBackground()
                 ScrollView {
                     IdeaList(
@@ -219,7 +219,7 @@ struct IdeaList_Previews: PreviewProvider {
         
         // 2nd preview with loading state
         // ------------------------------
-        NavigationView {
+        NavigationStack {
             ZStack { MyBackground()
                 ScrollView {
                     IdeaList(ideas: nil, pinnedHeaderColor: .red, sortBy: .constant(.date))

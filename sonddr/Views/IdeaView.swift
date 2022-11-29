@@ -43,7 +43,7 @@ struct IdeaView: View {
 
 struct IdeaView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             IdeaView()
         }
     }

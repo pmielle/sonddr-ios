@@ -80,7 +80,7 @@ struct MyFab: View {
 
 struct MyFab_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        NavigationStack {
             ZStack { MyBackground()
                 MyFab(mode: .constant(.Add()))
             }
