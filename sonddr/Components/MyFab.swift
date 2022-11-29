@@ -44,28 +44,15 @@ struct MyFab: View {
     // ------------------------------------------
     func syncWithMode(mode: FabMode?) {
         Task {
-            // handle offset animation (animation before of after the rest of the properties
-            let newOffset = self.chooseOffset(mode: mode)
-            let animateOffsetFirst = !(newOffset == 0)
-            let animateOffset = newOffset != self.offset
-            // animate before?
-            if (animateOffset && animateOffsetFirst) {
-                withAnimation(.easeOut(duration: myDurationInSec)) {
-                    self.offset = newOffset
-                }
-                await sleep(seconds: myDurationInSec)
+            withAnimation(.easeOut(duration: myDurationInSec)) {
+                self.offset = self.chooseOffset(mode: mode)
             }
-            // rest of the updates
-            self.color = self.chooseColor(mode: mode)
-            self.icon = self.chooseIcon(mode: mode)
-            // animate after?
-            if (animateOffset && !animateOffsetFirst) {
-                withAnimation(.easeOut(duration: myDurationInSec)) {
-                    self.offset = newOffset
-                }
+            // only update if not hidden
+            if mode != nil {
+                self.color = self.chooseColor(mode: mode)
+                self.icon = self.chooseIcon(mode: mode)
             }
         }
-
     }
     
     func chooseColor(mode: FabMode?) -> Color {
