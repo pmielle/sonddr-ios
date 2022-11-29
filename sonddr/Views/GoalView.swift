@@ -39,6 +39,7 @@ struct GoalView: View {
 struct GoalView_Previews: PreviewProvider {
     static var previews: some View {
         let fab = FabService()
+        fab.selectedTab = .Ideas
         
         return NavigationStack {
             GoalView()
