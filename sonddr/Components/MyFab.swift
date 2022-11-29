@@ -30,6 +30,7 @@ struct MyFab: View {
                 Image(systemName: self.icon)
             }
             .offset(x: self.offset)
+            .onAppear { self.syncWithMode(mode: self.mode) }
             .onChange(of: self.mode, perform: self.syncWithMode)
     }
     
