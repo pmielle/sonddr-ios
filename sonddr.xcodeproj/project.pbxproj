@@ -52,6 +52,7 @@
 		0BE4A405293404AE0098AB62 /* MyNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A404293404AE0098AB62 /* MyNotification.swift */; };
 		0BE4A409293406270098AB62 /* Discussion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A408293406270098AB62 /* Discussion.swift */; };
 		0BE4A40B2935F0990098AB62 /* FabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A40A2935F0990098AB62 /* FabService.swift */; };
+		0BE4A40D29362F7B0098AB62 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A40C29362F7B0098AB62 /* ViewExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -102,6 +103,7 @@
 		0BE4A404293404AE0098AB62 /* MyNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNotification.swift; sourceTree = "<group>"; };
 		0BE4A408293406270098AB62 /* Discussion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Discussion.swift; sourceTree = "<group>"; };
 		0BE4A40A2935F0990098AB62 /* FabService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FabService.swift; sourceTree = "<group>"; };
+		0BE4A40C29362F7B0098AB62 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +179,7 @@
 				0B39F9242926CE7300C21405 /* SpacingExtensions.swift */,
 				0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */,
 				0BE4A3FC292F84710098AB62 /* ButtonExtensions.swift */,
+				0BE4A40C29362F7B0098AB62 /* ViewExtensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -348,6 +351,7 @@
 				0B78201529236476001D84AB /* IdeaCard.swift in Sources */,
 				0B78201929237E22001D84AB /* IdeaList.swift in Sources */,
 				0B781FFB29212146001D84AB /* GoalChip.swift in Sources */,
+				0BE4A40D29362F7B0098AB62 /* ViewExtensions.swift in Sources */,
 				0BE4A3F6292B51150098AB62 /* NotificationExtensions.swift in Sources */,
 				0B78200429227632001D84AB /* ScrollViewWithOffset.swift in Sources */,
 				0BE4A40B2935F0990098AB62 /* FabService.swift in Sources */,

@@ -11,7 +11,7 @@ struct GoalView: View {
 
     // attributes
     // ------------------------------------------
-    // ...
+    @EnvironmentObject var fab: FabService
     
     
     // body
@@ -22,6 +22,7 @@ struct GoalView: View {
             Text("GoalView works!")
             
         }
+        .stackFabMode(fab: self.fab, mode: nil)
     }
     
     
@@ -37,8 +38,11 @@ struct GoalView: View {
 
 struct GoalView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        let fab = FabService()
+        
+        return NavigationView {
             GoalView()
         }
+        .environmentObject(fab)
     }
 }
