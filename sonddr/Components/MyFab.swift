@@ -7,17 +7,12 @@
 
 import SwiftUI
 
-enum Mode {
-    case Add
-    case Disabled
-}
-
 struct MyFab: View {
 
     // attributes
     // ------------------------------------------
-    var mode: Mode
-    @State var offset: CGFloat = 0
+    @Binding var mode: FabMode?
+    @State var offset: CGFloat = mySpacing + 60  // FIXME: needs a custom init to get self.width
     @State var color: Color = .gray
     @State var icon: String = "questionmark"
     let width: CGFloat = 60
@@ -35,16 +30,7 @@ struct MyFab: View {
                 Image(systemName: self.icon)
             }
             .offset(x: self.offset)
-            .onAppear {
-                Task {
-                    await self.syncWithMode(mode: self.mode)
-                }
-            }
-            .onChange(of: self.mode) { mode in
-                Task {
-                    await self.syncWithMode(mode: mode)
-                }
-            }
+            .onChange(of: self.mode, perform: self.syncWithMode)
     }
     
     
@@ -55,41 +41,52 @@ struct MyFab: View {
     
     // methods
     // ------------------------------------------
-    func syncWithMode(mode: Mode) async {
-        // handle offset first: the rest is delayed if it changes
-        let newOffset = self.chooseOffset(mode: mode)
-        if (newOffset != self.offset) {
-            withAnimation(.easeOut(duration: myDurationInSec)) {
-                self.offset = newOffset
+    func syncWithMode(mode: FabMode?) {
+        Task {
+            // handle offset animation (animation before of after the rest of the properties
+            let newOffset = self.chooseOffset(mode: mode)
+            let animateOffsetFirst = !(newOffset == 0)
+            let animateOffset = newOffset != self.offset
+            // animate before?
+            if (animateOffset && animateOffsetFirst) {
+                withAnimation(.easeOut(duration: myDurationInSec)) {
+                    self.offset = newOffset
+                }
+                await sleep(seconds: myDurationInSec)
             }
-            try? await Task.sleep(nanoseconds: myDurationInMs)
+            // rest of the updates
+            self.color = self.chooseColor(mode: mode)
+            self.icon = self.chooseIcon(mode: mode)
+            // animate after?
+            if (animateOffset && !animateOffsetFirst) {
+                withAnimation(.easeOut(duration: myDurationInSec)) {
+                    self.offset = newOffset
+                }
+            }
         }
-        // rest of the updates
-        self.color = self.chooseColor(mode: mode)
-        self.icon = self.chooseIcon(mode: mode)
 
     }
     
-    func chooseColor(mode: Mode) -> Color {
+    func chooseColor(mode: FabMode?) -> Color {
         switch mode {
         case .Add:
             return myPrimaryColor
-        case .Disabled:
+        case nil:
             return .gray
         }
     }
     
-    func chooseIcon(mode: Mode) -> String {
+    func chooseIcon(mode: FabMode?) -> String {
         switch mode {
         case .Add:
             return "plus"
-        case .Disabled:
+        case nil:
             return "questionmark"
         }
     }
     
-    func chooseOffset(mode: Mode) -> CGFloat {
-        mode == .Disabled ? self.width + mySpacing : 0
+    func chooseOffset(mode: FabMode?) -> CGFloat {
+        mode == nil ? self.width + mySpacing : 0
     }
 }
 
@@ -97,7 +94,7 @@ struct MyFab_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             ZStack { MyBackground()
-                MyFab(mode: .Add)
+                MyFab(mode: .constant(.Add()))
             }
         }
     }

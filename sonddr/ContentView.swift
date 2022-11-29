@@ -13,6 +13,7 @@ struct ContentView: View {
     // ------------------------------------------
     @ObservedObject var auth: AuthenticationService
     @ObservedObject var db: DatabaseService
+    @ObservedObject var fab: FabService
     
     
     // constructor
@@ -21,6 +22,7 @@ struct ContentView: View {
         let db = DatabaseService(testMode: testMode)
         self.db = db
         self.auth = AuthenticationService(db: db)
+        self.fab = FabService()
     }
     
     
@@ -35,7 +37,7 @@ struct ContentView: View {
             } else {
                 ZStack(alignment: .bottomTrailing) {
                     MyTabView()
-                    MyFab(mode: .Add)
+                    MyFab(mode: self.$fab.mode)
                         .padding(.trailing, mySpacing)
                         .padding(.bottom, 70)
                 }
@@ -44,6 +46,7 @@ struct ContentView: View {
         }
         .environmentObject(self.auth)
         .environmentObject(self.db)
+        .environmentObject(self.fab)
 
     }
     

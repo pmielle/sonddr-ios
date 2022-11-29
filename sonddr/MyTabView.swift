@@ -18,7 +18,12 @@ struct MyTabView: View {
 
     // attributes
     // ------------------------------------------
-    @State var selectedTab: Tab = .Ideas
+    @EnvironmentObject private var fab: FabService
+    @State var selectedTab: Tab? {
+        didSet {
+            self.fab.selectedTab = self.selectedTab
+        }
+    }
     let badgeSize: CGFloat = 20
     @State var newDiscussionsNb: Int? = nil
     @State var newNotificationsNb: Int? = nil
@@ -40,6 +45,8 @@ struct MyTabView: View {
             }
             self.bottomSafeArea()
             self.bottomBar()
+        }.onAppear {
+            self.selectedTab = .Ideas
         }
     }
     
@@ -163,9 +170,11 @@ struct MyTabView_Previews: PreviewProvider {
     static var previews: some View {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
+        let fab = FabService()
         
         MyTabView()
             .environmentObject(db)
             .environmentObject(auth)
+            .environmentObject(fab)
     }
 }
