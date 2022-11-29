@@ -20,7 +20,11 @@ class FabService: ObservableObject {
         .Search: [nil],
         .Messages: [nil],
         .Notifications: [nil],
-    ]
+    ] {
+        didSet {
+            self.refreshMode()
+        }
+    }
     
     
     // constructor
