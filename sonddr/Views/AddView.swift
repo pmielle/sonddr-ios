@@ -21,12 +21,14 @@ struct AddView: View {
         NavigationStack {
             ZStack() { MyBackground()
                 
-                Text("AddView works!")
+                Text("preselected goal: \(preselectedGoal?.name ?? "nil")")
                 
             }
             .toolbar {
                 self.toolbar()
             }
+            .navigationTitle("Share an idea")
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
     

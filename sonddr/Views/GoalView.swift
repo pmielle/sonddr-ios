@@ -22,7 +22,7 @@ struct GoalView: View {
             Text("GoalView works!")
             
         }
-        .stackFabMode(fab: self.fab, mode: nil)
+        .stackFabMode(fab: self.fab, mode: .Add(goal: dummyGoal()))
     }
     
     
