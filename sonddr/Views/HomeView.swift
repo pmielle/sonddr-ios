@@ -24,6 +24,7 @@ struct HomeView: View {
     @State var isLoading = true
     let forceLoadingState: Bool
     @State var navigation = NavigationPath()
+    @State var inProfile = false
     
     
     // constructor
@@ -143,6 +144,12 @@ struct HomeView: View {
         }
         ToolbarItem(placement: .navigationBarTrailing) {
             ProfilePicture(user: self.auth.loggedInUser!)
+                .onTapGesture {
+                    self.inProfile = true
+                }
+                .fullScreenCover(isPresented: self.$inProfile) {
+                    ProfileView(isPresented: self.$inProfile)
+                }
         }
     }
     
@@ -213,15 +220,19 @@ struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
+        let fab = FabService()
+        fab.selectedTab = .Ideas
         
-        HomeView(accentColor: .red)
-            .environmentObject(auth)
-            .environmentObject(db)
+        return Group {
+            HomeView(accentColor: .red)
+                
+            // 2nd preview with loading state
+            // ------------------------------
+            HomeView(accentColor: .red, forceLoadingState: true)
+        }
+        .environmentObject(auth)
+        .environmentObject(db)
+        .environmentObject(fab)
         
-        // 2nd preview with loading state
-        // ------------------------------
-        HomeView(accentColor: .red, forceLoadingState: true)
-            .environmentObject(auth)
-            .environmentObject(db)
     }
 }

@@ -53,6 +53,8 @@
 		0BE4A409293406270098AB62 /* Discussion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A408293406270098AB62 /* Discussion.swift */; };
 		0BE4A40B2935F0990098AB62 /* FabService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A40A2935F0990098AB62 /* FabService.swift */; };
 		0BE4A40D29362F7B0098AB62 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A40C29362F7B0098AB62 /* ViewExtensions.swift */; };
+		0BE4A40F2937F7C30098AB62 /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A40E2937F7C30098AB62 /* AddView.swift */; };
+		0BE4A4112937FA850098AB62 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A4102937FA850098AB62 /* ProfileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +106,8 @@
 		0BE4A408293406270098AB62 /* Discussion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Discussion.swift; sourceTree = "<group>"; };
 		0BE4A40A2935F0990098AB62 /* FabService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FabService.swift; sourceTree = "<group>"; };
 		0BE4A40C29362F7B0098AB62 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
+		0BE4A40E2937F7C30098AB62 /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
+		0BE4A4102937FA850098AB62 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +249,8 @@
 				0B39F91C292592D100C21405 /* MessagesView.swift */,
 				0B39F91E292592D800C21405 /* NotificationsView.swift */,
 				0BE4A3FA292F823A0098AB62 /* LoginView.swift */,
+				0BE4A40E2937F7C30098AB62 /* AddView.swift */,
+				0BE4A4102937FA850098AB62 /* ProfileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -331,6 +337,7 @@
 			files = (
 				0BE4A3F9292EC5200098AB62 /* SplashScreen.swift in Sources */,
 				0B782013292363DE001D84AB /* SizeConstants.swift in Sources */,
+				0BE4A40F2937F7C30098AB62 /* AddView.swift in Sources */,
 				0B78200E29236219001D84AB /* Idea.swift in Sources */,
 				0BE4A409293406270098AB62 /* Discussion.swift in Sources */,
 				0B39F917292512DB00C21405 /* MyTabView.swift in Sources */,
@@ -368,6 +375,7 @@
 				0BE4A405293404AE0098AB62 /* MyNotification.swift in Sources */,
 				0B39F91329250C9800C21405 /* UserView.swift in Sources */,
 				0B39F9192925807500C21405 /* ShapeExtensions.swift in Sources */,
+				0BE4A4112937FA850098AB62 /* ProfileView.swift in Sources */,
 				0B78200229212D31001D84AB /* HeaderHStack.swift in Sources */,
 				0B39F91B292592C500C21405 /* SearchView.swift in Sources */,
 				0B781FFE292122E6001D84AB /* Goal.swift in Sources */,
