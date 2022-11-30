@@ -30,7 +30,8 @@ struct IdeaCard: View {
     // subviews
     // ------------------------------------------
     func cover() -> some View {
-        NavigationLink(destination: IdeaView()) {
+        NavigationLink(value: self.idea) {
+            
             // cover
             Image(self.idea.cover)
                 .resizable()
@@ -40,9 +41,9 @@ struct IdeaCard: View {
                     HStack {
                         HStack {
                             ForEach(self.idea.goals) { goal in
-                                NavigationLink(destination: GoalView()) {
+                                NavigationLink(value: goal) {
                                     GoalBadge(goal: goal)
-                                }.buttonStyle(.plain)
+                                }
                             }
                         }
                         Spacer()
@@ -52,28 +53,28 @@ struct IdeaCard: View {
                     .padding(.bottom, 10)
                     .padding(.leading, self.profilePictureSpacing + profilePictureSize)
                 }
-        }.buttonStyle(.plain)
+            
+        }
     }
     
     func bottomInfo() -> some View {
         VStack(alignment: .leading, spacing: 0) {
             // title
-            NavigationLink(destination: IdeaView()) {
+            NavigationLink(value: self.idea) {
                 Text(self.idea.title)
                     .font(.headline)
-            }.buttonStyle(.plain)
-                .padding(.leading, profilePictureSize + self.profilePictureSpacing)
+            }
+            .padding(.leading, profilePictureSize + self.profilePictureSpacing)
             // stuff below
             HStack(spacing: self.profilePictureSpacing) {
-                NavigationLink(destination: UserView()) {
+                NavigationLink(value: self.idea.author) {
                     ProfilePicture(user: self.idea.author)
                 }
                 HStack(spacing: 0) {
-                    NavigationLink(destination: UserView()) {
+                    NavigationLink(value: self.idea.author) {
                         Text(self.idea.author.name)
                             .font(.subheadline)
                     }
-                    .buttonStyle(.plain)
                     Text(" · \(prettyTimeDelta(date:self.idea.date))")
                         .font(.subheadline)
                 }

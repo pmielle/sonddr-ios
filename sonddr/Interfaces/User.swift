@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct User: Identifiable {
+struct User: Identifiable, Hashable {
     let id: String
     let name: String
     let profilePicture: String

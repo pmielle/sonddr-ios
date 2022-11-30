@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Goal: Identifiable, Equatable {
+struct Goal: Identifiable, Equatable, Hashable {
     let id: String
     let name: String
     let icon: String  // SF symbol

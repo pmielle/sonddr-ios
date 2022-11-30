@@ -14,7 +14,6 @@ struct MyLargeButton: ViewModifier {
             .frame(maxWidth: .infinity)
             .padding(20)
             .background(self.color)
-            .buttonStyle(.plain)
             .cornerRadius(20)
             .fontWeight(.bold)
     }

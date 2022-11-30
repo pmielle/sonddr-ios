@@ -23,6 +23,7 @@ struct HomeView: View {
     @State var sortBy: SortBy = .date
     @State var isLoading = true
     let forceLoadingState: Bool
+    @State var navigation = NavigationPath()
     
     
     // constructor
@@ -37,7 +38,7 @@ struct HomeView: View {
     // body
     // ------------------------------------------
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: self.$navigation) {
             ZStack(alignment: .top) { MyBackground()
                 
                 self.topBackground()
@@ -58,9 +59,7 @@ struct HomeView: View {
                         }
                         .padding(.bottom, 100)
                         .onReceive(NotificationCenter.default.publisher(for: .ideasBottomBarIconTap)) { _ in
-                            withAnimation(.easeIn(duration: myDurationInSec)) {
-                                reader.scrollTo(self.topViewId)
-                            }
+                            self.onBottomBarIconTap(proxy: reader)
                         }
                     }
                 }
@@ -80,6 +79,15 @@ struct HomeView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 self.toolbar()
+            }
+            .navigationDestination(for: Idea.self) { idea in
+                IdeaView()
+            }
+            .navigationDestination(for: Goal.self) { goal in
+                GoalView()
+            }
+            .navigationDestination(for: User.self) { user in
+                UserView()
             }
         }
         .onAppear {
@@ -112,9 +120,9 @@ struct HomeView: View {
                     GoalChip(goal: dummyGoal()).redacted(reason: .placeholder)
                 } else {
                     ForEach(self.db.goals!) { goal in
-                        NavigationLink(destination: GoalView()) {
+                        NavigationLink(value: goal) {
                             GoalChip(goal: goal)
-                        }.buttonStyle(.plain)
+                        }
                     }
                 }
             }
@@ -148,6 +156,16 @@ struct HomeView: View {
             _ = try await [cacheGoals, getIdeas]
             if !self.forceLoadingState {
                 self.isLoading = false
+            }
+        }
+    }
+    
+    func onBottomBarIconTap(proxy: ScrollViewProxy) {
+        if (self.navigation.count > 0) {
+            self.navigation.removeLast(self.navigation.count)
+        } else {
+            withAnimation(.easeIn(duration: myDurationInSec)) {
+                proxy.scrollTo(self.topViewId)
             }
         }
     }

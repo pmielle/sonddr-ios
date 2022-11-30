@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Idea: Identifiable, Equatable {
+struct Idea: Identifiable, Equatable, Hashable {
     static func == (lhs: Idea, rhs: Idea) -> Bool {
         lhs.id == rhs.id
     }

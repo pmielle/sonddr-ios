@@ -105,7 +105,6 @@ struct IdeaList: View {
                 Image(systemName: "line.3.horizontal.decrease")
             }
         }
-        .buttonStyle(.plain)
     }
     
     

@@ -22,12 +22,6 @@ struct IdeaView: View {
             Text("IdeaView works!")
             
         }
-        .onAppear {
-            print("APPEAR")
-        }
-        .onDisappear {
-            print("DISAPPEAR")
-        }
     }
     
     

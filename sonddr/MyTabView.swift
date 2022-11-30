@@ -111,7 +111,6 @@ struct MyTabView: View {
                     .frame(width: 24, height: 24)
                 .padding(10)
             }
-            .buttonStyle(.plain)
             if badge != nil {
                 let label = badge! > 99 ? "99+" : "\(badge!)"
                 self.BottomBarBadge(label: label)
