@@ -13,6 +13,7 @@ struct LoginView: View {
     // ------------------------------------------
     @EnvironmentObject var auth: AuthenticationService
     @State var isLoading = false
+    @State var scale = CGSize(width: 1.2, height: 1.5)
     
     
     // body
@@ -28,6 +29,12 @@ struct LoginView: View {
                 }
             }
             .myGutter()
+        }
+        .scaleEffect(self.scale)
+        .onAppear {
+            withAnimation(.easeOut(duration: myDurationInSec).delay(myDurationInSec + myShortDurationInSec)) {
+                self.scale = CGSize(width: 1, height: 1)
+            }
         }
     }
     
