@@ -17,6 +17,8 @@ struct MyFab: View {
     @State var icon: String = "questionmark"
     let width: CGFloat = 60
     let offsetAnimationDuration = 3
+    @State var inAdd: Bool = false
+    @State var preselectedGoal: Goal? = nil
     
     
     // body
@@ -32,6 +34,12 @@ struct MyFab: View {
             .offset(x: self.offset)
             .onAppear { self.syncWithMode(mode: self.mode) }
             .onChange(of: self.mode, perform: self.syncWithMode)
+            .fullScreenCover(isPresented: self.$inAdd) {
+                AddView(isPresented: self.$inAdd, preselectedGoal: self.preselectedGoal)
+            }
+            .onTapGesture {
+                self.onTap()
+            }
     }
     
     
@@ -42,16 +50,31 @@ struct MyFab: View {
     
     // methods
     // ------------------------------------------
+    func onTap() {
+        switch mode {
+        case .Add(_):
+            self.inAdd = true
+        default:
+            break
+        }
+    }
+    
     func syncWithMode(mode: FabMode?) {
-        Task {
-            withAnimation(.easeOut(duration: myDurationInSec)) {
-                self.offset = self.chooseOffset(mode: mode)
-            }
-            // only update if not hidden
-            if mode != nil {
-                self.color = self.chooseColor(mode: mode)
-                self.icon = self.chooseIcon(mode: mode)
-            }
+        // preselect goal if applicable
+        switch mode {
+        case let .Add(goal):
+            self.preselectedGoal = goal
+        default:
+            break
+        }
+        // hide or show if needed
+        withAnimation(.easeOut(duration: myDurationInSec)) {
+            self.offset = self.chooseOffset(mode: mode)
+        }
+        // udpate ui if visible
+        if mode != nil {
+            self.color = self.chooseColor(mode: mode)
+            self.icon = self.chooseIcon(mode: mode)
         }
     }
     
