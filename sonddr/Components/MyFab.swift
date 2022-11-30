@@ -52,7 +52,8 @@ struct MyFab: View {
     // ------------------------------------------
     func onTap() {
         switch mode {
-        case .Add(_):
+        case let .Add(goal):
+            self.preselectedGoal = goal
             self.inAdd = true
         default:
             break
@@ -60,13 +61,6 @@ struct MyFab: View {
     }
     
     func syncWithMode(mode: FabMode?) {
-        // preselect goal if applicable
-        switch mode {
-        case let .Add(goal):
-            self.preselectedGoal = goal
-        default:
-            break
-        }
         // hide or show if needed
         withAnimation(.easeOut(duration: myDurationInSec)) {
             self.offset = self.chooseOffset(mode: mode)
