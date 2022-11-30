@@ -114,6 +114,8 @@ struct MyTabView: View {
             if badge != nil {
                 let label = badge! > 99 ? "99+" : "\(badge!)"
                 self.BottomBarBadge(label: label)
+                    .opacity(tab == self.selectedTab ? 0 : 1)
+                    .animation(.easeOut(duration: myShortDurationInSec), value: selectedTab)
             }
             if (tab == .Ideas && isSelected) {
                 self.sparkles()
