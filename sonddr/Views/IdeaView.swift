@@ -11,7 +11,7 @@ struct IdeaView: View {
 
     // attributes
     // ------------------------------------------
-    // ...
+    @EnvironmentObject var fab: FabService
     
     
     // body
@@ -22,6 +22,7 @@ struct IdeaView: View {
             Text("IdeaView works!")
             
         }
+        .stackFabMode(fab: self.fab, mode: nil)
     }
     
     
@@ -37,8 +38,12 @@ struct IdeaView: View {
 
 struct IdeaView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
+        let fab = FabService()
+        fab.selectedTab = .Ideas
+        
+        return NavigationStack {
             IdeaView()
         }
+        .environmentObject(fab)
     }
 }

@@ -11,7 +11,7 @@ struct UserView: View {
 
     // attributes
     // ------------------------------------------
-    // ...
+    @EnvironmentObject var fab: FabService
     
     
     // body
@@ -22,6 +22,7 @@ struct UserView: View {
             Text("UserView works!")
             
         }
+        .stackFabMode(fab: self.fab, mode: nil)
     }
     
     
@@ -37,8 +38,12 @@ struct UserView: View {
 
 struct UserView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
+        let fab = FabService()
+        fab.selectedTab = .Ideas
+        
+        return NavigationStack {
             UserView()
         }
+        .environmentObject(fab)
     }
 }
