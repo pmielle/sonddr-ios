@@ -55,6 +55,7 @@
 		0BE4A40D29362F7B0098AB62 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A40C29362F7B0098AB62 /* ViewExtensions.swift */; };
 		0BE4A40F2937F7C30098AB62 /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A40E2937F7C30098AB62 /* AddView.swift */; };
 		0BE4A4112937FA850098AB62 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A4102937FA850098AB62 /* ProfileView.swift */; };
+		0BE4A413293BC7F60098AB62 /* NavigationBarUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A412293BC7F60098AB62 /* NavigationBarUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +109,7 @@
 		0BE4A40C29362F7B0098AB62 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		0BE4A40E2937F7C30098AB62 /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
 		0BE4A4102937FA850098AB62 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		0BE4A412293BC7F60098AB62 /* NavigationBarUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationBarUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -234,6 +236,7 @@
 			children = (
 				0B78201029236318001D84AB /* Random.swift */,
 				0B78201629236A2B001D84AB /* TimeUtils.swift */,
+				0BE4A412293BC7F60098AB62 /* NavigationBarUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 				0BE4A3F6292B51150098AB62 /* NotificationExtensions.swift in Sources */,
 				0B78200429227632001D84AB /* ScrollViewWithOffset.swift in Sources */,
 				0BE4A40B2935F0990098AB62 /* FabService.swift in Sources */,
+				0BE4A413293BC7F60098AB62 /* NavigationBarUtils.swift in Sources */,
 				0B78200A29235FAA001D84AB /* ProfilePicture.swift in Sources */,
 				0B781FF529211925001D84AB /* TextExtensions.swift in Sources */,
 				0BE4A40029321E340098AB62 /* AuthenticationService.swift in Sources */,

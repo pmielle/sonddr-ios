@@ -11,28 +11,32 @@ struct HomeView: View {
 
     // attributes
     // ------------------------------------------
+    // parameters
+    let forceLoadingState: Bool
+    // environment
     @EnvironmentObject var auth: AuthenticationService
     @EnvironmentObject var db: DatabaseService
-    let accentColor: Color
+    // constant
+    let accentColor: Color = myBackgroundColor
+    let title = "All ideas"
+    let topViewId = "topViewId"
+    // state
     @State var ideas: [Idea]? = nil
     @State var titleScale = 1.0
     @State var showNavigationBarTitle = false
     @State var topBackgroundHeight: CGFloat = 0
-    let title = "All ideas"
-    let topViewId = "topViewId"
     @State var sortBy: SortBy = .date
     @State var isLoading = true
-    let forceLoadingState: Bool
     @State var navigation = NavigationPath()
     @State var inProfile = false
+    @State var isTopBackgroundAbove = false
     
     
     // constructor
     // ------------------------------------------
-    init(accentColor: Color, forceLoadingState: Bool = false) {
+    init(forceLoadingState: Bool = false) {
+        setNavigationBarColor(color: .clear)
         self.forceLoadingState = forceLoadingState
-        self.accentColor = accentColor
-        self.changeNavbarStyle(color: accentColor)
     }
     
     
@@ -41,39 +45,52 @@ struct HomeView: View {
     var body: some View {
         NavigationStack(path: self.$navigation) {
             ZStack(alignment: .top) { MyBackground()
-                
-                self.topBackground()
-                ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: self.onScroll) {
-                    ScrollViewReader { reader in
-                        VStack(spacing: 0) {
-                            header()
-                                .padding(.bottom, mySpacing)
-                                .background(self.accentColor)
-                                .id(self.topViewId)
-                            IdeaList(
-                                ideas: self.isLoading ? nil : self.ideas,
-                                pinnedHeaderColor: self.accentColor,
-                                sortBy: self.$sortBy
+                GeometryReader { geom in
+                    self.topBackground().zIndex(self.isTopBackgroundAbove ? 2 : 1)
+                    
+                    // actual content starts here
+                    ScrollViewWithOffset(
+                        axes: .vertical,
+                        showsIndicators: true,
+                        offsetChanged: { value in
+                            self.onScroll(
+                                offset: value,
+                                height: geom.safeAreaInsets.top
                             )
-                            .allowsHitTesting(!self.isLoading)
-                            Spacer()
                         }
-                        .padding(.bottom, 100)
-                        .onReceive(NotificationCenter.default.publisher(for: .ideasBottomBarIconTap)) { _ in
-                            self.onBottomBarIconTap(proxy: reader)
+                    ) {
+                        ScrollViewReader { reader in
+                            VStack(spacing: 0) {
+                                header()
+                                    .padding(.bottom, mySpacing)
+                                    .background(self.accentColor)
+                                    .id(self.topViewId)
+                                IdeaList(
+                                    ideas: self.isLoading ? nil : self.ideas,
+                                    pinnedHeaderColor: self.accentColor,
+                                    sortBy: self.$sortBy
+                                )
+                                .allowsHitTesting(!self.isLoading)
+                                Spacer()
+                            }
+                            .padding(.bottom, 100)
+                            .onReceive(NotificationCenter.default.publisher(for: .ideasBottomBarIconTap)) { _ in
+                                self.onBottomBarIconTap(proxy: reader)
+                            }
                         }
                     }
-                }
-                .scrollDisabled(self.isLoading)
-                .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
-                .refreshable {
-                    Task {
-                        await self.getIdeas()
+                    .zIndex(self.isTopBackgroundAbove ? 1 : 2)
+                    .scrollDisabled(self.isLoading)
+                    .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
+                    .refreshable {
+                        Task {
+                            await self.getIdeas()
+                        }
                     }
-                }
-                .onChange(of: self.sortBy) { _ in
-                    Task {
-                        await self.getIdeas()
+                    .onChange(of: self.sortBy) { _ in
+                        Task {
+                            await self.getIdeas()
+                        }
                     }
                 }
             }
@@ -102,7 +119,9 @@ struct HomeView: View {
     func topBackground() -> some View {
         self.accentColor
             .frame(height: self.topBackgroundHeight)
+            .ignoresSafeArea()
     }
+    
     func header() -> some View {
         VStack(alignment: .leading, spacing: mySpacing) {
             Text(self.title)
@@ -185,23 +204,20 @@ struct HomeView: View {
         }
     }
     
-    func changeNavbarStyle(color: Color) {
-        let coloredNavAppearance = UINavigationBarAppearance()
-        coloredNavAppearance.configureWithOpaqueBackground()
-        coloredNavAppearance.backgroundColor = UIColor(color)
-        coloredNavAppearance.shadowColor = .clear
-        UINavigationBar.appearance().standardAppearance = coloredNavAppearance
-        UINavigationBar.appearance().compactAppearance = coloredNavAppearance
-        UINavigationBar.appearance().scrollEdgeAppearance = coloredNavAppearance
-        UINavigationBar.appearance().compactScrollEdgeAppearance = coloredNavAppearance
-    }
-    
-    func onScroll(offset: CGPoint) {
+    func onScroll(offset: CGPoint, height: CGFloat) {
         // sticky top background
-        if offset.y < 10 {  // 10px safety
-            self.topBackgroundHeight = -1 * offset.y + 10  // 10px safety
-        } else if self.topBackgroundHeight > 0 {
-            self.topBackgroundHeight = 0
+        if offset.y < 0 {
+            if self.isTopBackgroundAbove {
+                self.isTopBackgroundAbove = false
+            }
+            self.topBackgroundHeight = -1 * offset.y + height // safety
+        } else {
+            if !self.isTopBackgroundAbove {
+                self.isTopBackgroundAbove = true
+            }
+            if self.topBackgroundHeight > 0 {
+                self.topBackgroundHeight = height
+            }
         }
         // title scale
         if offset.y < -1 {
@@ -216,7 +232,7 @@ struct HomeView: View {
     }
 }
 
-struct HomeView_Previews: PreviewProvider {
+struct HomeView_Previews: PreviewProvider {    
     static var previews: some View {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
@@ -224,11 +240,11 @@ struct HomeView_Previews: PreviewProvider {
         fab.selectedTab = .Ideas
         
         return Group {
-            HomeView(accentColor: .red)
+            HomeView()
                 
             // 2nd preview with loading state
             // ------------------------------
-            HomeView(accentColor: .red, forceLoadingState: true)
+            HomeView(forceLoadingState: true)
         }
         .environmentObject(auth)
         .environmentObject(db)

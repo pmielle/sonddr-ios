@@ -29,12 +29,17 @@ struct MyTabView: View {
     @State var newNotificationsNb: Int? = nil
     
     
+    // constructor
+    // ------------------------------------------
+    // ...
+    
+    
     // body
     // ------------------------------------------
     var body: some View {
         ZStack(alignment: .bottom) {
             ZStack {
-                HomeView(accentColor: myBackgroundColor)
+                HomeView()
                     .zIndex(self.selectedTab == .Ideas ? 1 : 0)
                 SearchView()
                     .zIndex(self.selectedTab == .Search ? 1 : 0)
@@ -167,7 +172,7 @@ struct MyTabView: View {
     }
 }
 
-struct MyTabView_Previews: PreviewProvider {
+struct MyTabView_Previews: PreviewProvider {    
     static var previews: some View {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
