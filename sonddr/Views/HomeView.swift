@@ -16,10 +16,11 @@ struct HomeView: View {
     // environment
     @EnvironmentObject var auth: AuthenticationService
     @EnvironmentObject var db: DatabaseService
+    @EnvironmentObject var fab: FabService
     // constant
     let accentColor: Color = myBackgroundColor
     let title = "All ideas"
-    let topViewId = "topViewId"
+    let topViewId = randomId()
     // state
     @State var ideas: [Idea]? = nil
     @State var titleScale = 1.0
@@ -102,7 +103,7 @@ struct HomeView: View {
                 IdeaView()
             }
             .navigationDestination(for: Goal.self) { goal in
-                GoalView()
+                GoalView(goal: goal)
             }
             .navigationDestination(for: User.self) { user in
                 UserView()
@@ -188,12 +189,17 @@ struct HomeView: View {
     
     func onBottomBarIconTap(proxy: ScrollViewProxy) {
         if (self.navigation.count > 0) {
-            self.navigation.removeLast(self.navigation.count)
+            self.goBackToNavigationRoot()
         } else {
             withAnimation(.easeIn(duration: myDurationInSec)) {
                 proxy.scrollTo(self.topViewId)
             }
         }
+    }
+    
+    func goBackToNavigationRoot() {
+        self.navigation.removeLast(self.navigation.count)  // FIXME: emptying the whole stack *is not animated* when count > 1
+        self.fab.modeStack[.Ideas]!.removeLast(self.fab.modeStack[.Ideas]!.count - 1)
     }
     
     func getIdeas() async {

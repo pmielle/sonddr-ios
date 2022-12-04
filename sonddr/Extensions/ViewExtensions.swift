@@ -10,14 +10,20 @@ import SwiftUI
 struct StackFabMode: ViewModifier {
     @State var fab: FabService
     let mode: FabMode?
+    @State var stackIndex: Int? = nil
     func body(content: Content) -> some View {
         let tab = self.fab.selectedTab
         return content
             .onAppear {
-                self.fab.modeStack[tab!]!.append(self.mode)
+                if (self.stackIndex == nil) {
+                    self.fab.modeStack[tab!]!.append(self.mode)
+                    self.stackIndex = self.fab.modeStack[tab!]!.count
+                }
             }
             .onDisappear {
-                self.fab.modeStack[tab!]!.removeLast()
+                if self.stackIndex == self.fab.modeStack[tab!]!.count {
+                    self.fab.modeStack[tab!]!.removeLast()
+                }
             }
     }
 }
