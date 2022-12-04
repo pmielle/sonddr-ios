@@ -28,7 +28,6 @@ struct GoalView: View {
     @State var sortBy: SortBy = .date
     @State var isLoading = true
     @State var inProfile = false
-    @State var isTopBackgroundAbove = false
     
     
     // constructor
@@ -41,7 +40,7 @@ struct GoalView: View {
     var body: some View {
         ZStack(alignment: .top) { MyBackground()
             GeometryReader { geom in
-                self.topBackground().zIndex(self.isTopBackgroundAbove ? 2 : 1)
+                self.topBackground()
                 
                 // actual content starts here
                 ScrollViewWithOffset(
@@ -71,7 +70,6 @@ struct GoalView: View {
                         .padding(.bottom, 100)
                     }
                 }
-                .zIndex(self.isTopBackgroundAbove ? 1 : 2)
                 .scrollDisabled(self.isLoading)
                 .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
                 .refreshable {
@@ -87,6 +85,7 @@ struct GoalView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
+        .toolbarBackground(self.goal.color, for: .navigationBar)
         .toolbar {
             self.toolbar()
         }
@@ -177,14 +176,8 @@ struct GoalView: View {
     func onScroll(offset: CGPoint, height: CGFloat) {
         // sticky top background
         if offset.y < 0 {
-            if self.isTopBackgroundAbove {
-                self.isTopBackgroundAbove = false
-            }
             self.topBackgroundHeight = -1 * offset.y + height // safety
         } else {
-            if !self.isTopBackgroundAbove {
-                self.isTopBackgroundAbove = true
-            }
             if self.topBackgroundHeight > 0 {
                 self.topBackgroundHeight = height
             }

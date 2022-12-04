@@ -12,7 +12,7 @@ struct HomeView: View {
     // attributes
     // ------------------------------------------
     // parameters
-    let forceLoadingState: Bool
+    var forceLoadingState: Bool = false
     // environment
     @EnvironmentObject var auth: AuthenticationService
     @EnvironmentObject var db: DatabaseService
@@ -30,15 +30,11 @@ struct HomeView: View {
     @State var isLoading = true
     @State var navigation = NavigationPath()
     @State var inProfile = false
-    @State var isTopBackgroundAbove = false
     
     
     // constructor
     // ------------------------------------------
-    init(forceLoadingState: Bool = false) {
-        setNavigationBarColor(color: .clear)
-        self.forceLoadingState = forceLoadingState
-    }
+    // ...
     
     
     // body
@@ -47,7 +43,7 @@ struct HomeView: View {
         NavigationStack(path: self.$navigation) {
             ZStack(alignment: .top) { MyBackground()
                 GeometryReader { geom in
-                    self.topBackground().zIndex(self.isTopBackgroundAbove ? 2 : 1)
+                    self.topBackground()
                     
                     // actual content starts here
                     ScrollViewWithOffset(
@@ -80,7 +76,6 @@ struct HomeView: View {
                             }
                         }
                     }
-                    .zIndex(self.isTopBackgroundAbove ? 1 : 2)
                     .scrollDisabled(self.isLoading)
                     .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
                     .refreshable {
@@ -96,6 +91,7 @@ struct HomeView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(myBackgroundColor, for: .navigationBar)
             .toolbar {
                 self.toolbar()
             }
@@ -108,6 +104,7 @@ struct HomeView: View {
             .navigationDestination(for: User.self) { user in
                 UserView()
             }
+            
         }
         .onAppear {
             self.initialLoad()
@@ -213,14 +210,8 @@ struct HomeView: View {
     func onScroll(offset: CGPoint, height: CGFloat) {
         // sticky top background
         if offset.y < 0 {
-            if self.isTopBackgroundAbove {
-                self.isTopBackgroundAbove = false
-            }
             self.topBackgroundHeight = -1 * offset.y + height // safety
         } else {
-            if !self.isTopBackgroundAbove {
-                self.isTopBackgroundAbove = true
-            }
             if self.topBackgroundHeight > 0 {
                 self.topBackgroundHeight = height
             }

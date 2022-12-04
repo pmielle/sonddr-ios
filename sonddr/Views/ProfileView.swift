@@ -14,18 +14,29 @@ struct ProfileView: View {
     @Binding var isPresented: Bool
     
     
+    // constructor
+    // ------------------------------------------
+    // ...
+    
+    
     // body
     // ------------------------------------------
     var body: some View {
         NavigationStack {
             ZStack() { MyBackground()
-                
-                Text("ProfileView works!")
+                ScrollViewWithOffset(
+                    axes: .vertical,
+                    showsIndicators: true,
+                    offsetChanged: self.onScrollViewOffsetChange
+                ) {
+                    Text("ProfileView works!")
+                }
                 
             }
             .toolbar {
                 self.toolbar()
             }
+            .toolbarBackground(myBackgroundColor, for: .navigationBar)
         }
     }
     
@@ -45,7 +56,9 @@ struct ProfileView: View {
     
     // methods
     // ------------------------------------------
-    // ...
+    func onScrollViewOffsetChange(offset: CGPoint) {
+        print("offset changed: \(offset.y)")
+    }
 }
 
 struct ProfileView_Previews: PreviewProvider {
