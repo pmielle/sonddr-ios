@@ -93,13 +93,22 @@ struct ProfileView: View {
     }
     
     func header() -> some View {
-        VStack(alignment: .leading, spacing: mySpacing) {
-            Text(self.auth.loggedInUser!.name)
-                .myTitle()
-                .myGutter()
-                .padding(.top, mySpacing)
-            Text("User bio - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
-                .myGutter()
+        VStack(spacing: mySpacing) {
+            VStack(alignment: .center, spacing: 10) {
+                ProfilePicture(user: self.auth.loggedInUser!, large: true)
+                Text(self.auth.loggedInUser!.name)
+                    .myTitle()
+                    .myGutter()
+                HStack(spacing: 0) {
+                    Text("Member since 2014 · ")  // TODO: user.memberSince
+                    if self.isLoading {
+                        Text("9 ideas").redacted(reason: .placeholder)
+                    } else {
+                        Text("\(self.ideas!.count) ideas")
+                    }
+                }
+                .opacity(0.5)
+            }
             HeaderHStack(shadowColor: self.accentColor) {
                 if self.isLoading {
                     // ...
@@ -114,6 +123,9 @@ struct ProfileView: View {
                     .myLabel(color: .white)
                     .foregroundColor(self.accentColor)
             }
+            Text("User bio - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
+                .frame(maxWidth: .infinity, alignment: .leading)  // so that very short bio alignment.leading
+                .myGutter()
         }
     }
     

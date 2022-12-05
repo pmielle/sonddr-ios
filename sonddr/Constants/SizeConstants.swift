@@ -9,3 +9,4 @@ import Foundation
 
 let largeIconSize: CGFloat = 32
 let profilePictureSize: CGFloat = largeIconSize
+let largeProfilePictureSize: CGFloat = 60

@@ -9,7 +9,14 @@ import SwiftUI
 
 struct ProfilePicture: View {
     let user: User
-    let size = profilePictureSize
+    let large: Bool
+    let size: CGFloat
+    
+    init(user: User, large: Bool = false) {
+        self.user = user
+        self.large = large
+        self.size = large ? largeProfilePictureSize : profilePictureSize
+    }
     
     var body: some View {
         Rectangle()
@@ -25,5 +32,7 @@ struct ProfilePicture: View {
 struct ProfilePicture_Previews: PreviewProvider {
     static var previews: some View {
         ProfilePicture(user: dummyUser())
+        ProfilePicture(user: dummyUser(), large: true)
+            .previewDisplayName("Large")
     }
 }
