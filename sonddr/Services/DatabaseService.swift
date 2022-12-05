@@ -21,6 +21,9 @@ class DatabaseService: ObservableObject {
     // ------------------------------------------
     init(testMode: Bool = false) {
         self.testMode = testMode
+        if (testMode) {
+            self.goals = [dummyGoal(), dummyGoal()]
+        }
     }
     
     

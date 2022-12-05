@@ -53,22 +53,20 @@ struct GoalView: View {
                         )
                     }
                 ) {
-                    ScrollViewReader { reader in
-                        VStack(spacing: 0) {
-                            header()
-                                .padding(.bottom, mySpacing)
-                                .background(self.goal.color)
-                                .id(self.topViewId)
-                            IdeaList(
-                                ideas: self.isLoading ? nil : self.ideas,
-                                pinnedHeaderColor: self.goal.color,
-                                sortBy: self.$sortBy
-                            )
-                            .allowsHitTesting(!self.isLoading)
-                            Spacer()
-                        }
-                        .padding(.bottom, 100)
+                    VStack(spacing: 0) {
+                        self.header()
+                            .padding(.bottom, mySpacing)
+                            .background(self.goal.color)
+                            .id(self.topViewId)
+                        IdeaList(
+                            ideas: self.isLoading ? nil : self.ideas,
+                            pinnedHeaderColor: self.goal.color,
+                            sortBy: self.$sortBy
+                        )
+                        .allowsHitTesting(!self.isLoading)
+                        Spacer()
                     }
+                    .padding(.bottom, 100)
                 }
                 .scrollDisabled(self.isLoading)
                 .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
@@ -156,9 +154,7 @@ struct GoalView: View {
     // ------------------------------------------
     func initialLoad() {
         Task {
-            async let cacheGoals: () = try await self.db.cacheGoals()
-            async let getIdeas: () = self.getIdeas()
-            _ = try await [cacheGoals, getIdeas]
+            await self.getIdeas()
             if !self.forceLoadingState {
                 self.isLoading = false
             }
@@ -213,7 +209,7 @@ struct GoalView_Previews: PreviewProvider {
             NavigationStack {
                 GoalView(goal: dummyGoal(), forceLoadingState: true)
             }
-        }   
+        }
         .environmentObject(fab)
         .environmentObject(auth)
         .environmentObject(db)
