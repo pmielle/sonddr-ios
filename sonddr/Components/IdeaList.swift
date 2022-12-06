@@ -21,44 +21,42 @@ struct IdeaList: View {
     // body
     // ------------------------------------------
     var body: some View {
-        ZStack(alignment: .topTrailing) {
-            LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
-                if self.ideas == nil {
+        LazyVStack(spacing: 0, pinnedViews: [.sectionHeaders]) {
+            if self.ideas == nil {
+                Section {
+                    IdeaCard(idea: dummyIdea()).redacted(reason: .placeholder)
+                    IdeaCard(idea: dummyIdea()).redacted(reason: .placeholder)
+                } header: {
+                    self.sectionHeader(name: "Placeholder", index: 0).redacted(reason: .placeholder)
+                }
+            } else if self.sections.count > 0 {
+                ForEach(
+                    (0...self.sections.count - 1),
+                    id: \.self
+                ) { i in
+                    let section = self.sections[i]
                     Section {
-                        IdeaCard(idea: dummyIdea()).redacted(reason: .placeholder)
-                        IdeaCard(idea: dummyIdea()).redacted(reason: .placeholder)
+                        ForEach(section.ideas) { idea in
+                            IdeaCard(idea: idea)
+                                .padding(.bottom, mySpacing)
+                            
+                        }
                     } header: {
-                        self.sectionHeader(name: "Placeholder", index: 0).redacted(reason: .placeholder)
-                    }
-                } else if self.sections.count > 0 {
-                    ForEach(
-                        (0...self.sections.count - 1),
-                        id: \.self
-                    ) { i in
-                        let section = self.sections[i]
-                        Section {
-                            ForEach(section.ideas) { idea in
-                                IdeaCard(idea: idea)
-                                    .padding(.bottom, mySpacing)
-                                
+                        self.sectionHeader(
+                            name: section.name,
+                            index: i
+                        )
+                        .background(
+                            GeometryReader { geom in
+                                Color.clear.preference(
+                                    key: ViewOffsetKey.self,
+                                    value: geom.frame(in: .named("idea-list-container")).origin.y
+                                )
                             }
-                        } header: {
-                            self.sectionHeader(
-                                name: section.name,
-                                index: i
-                            )
-                            .background(
-                                GeometryReader { geom in
-                                    Color.clear.preference(
-                                        key: ViewOffsetKey.self,
-                                        value: geom.frame(in: .named("idea-list-container")).origin.y
-                                    )
-                                }
-                            )
-                        }
-                        .onPreferenceChange(ViewOffsetKey.self) { offset in
-                            self.processHeaderOffsetChange(offset: offset, index: i)
-                        }
+                        )
+                    }
+                    .onPreferenceChange(ViewOffsetKey.self) { offset in
+                        self.processHeaderOffsetChange(offset: offset, index: i)
                     }
                 }
             }
