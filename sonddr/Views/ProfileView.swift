@@ -24,6 +24,7 @@ struct ProfileView: View {
     @State var showNavigationBarTitle = false
     @State var sortBy: SortBy = .date
     @State var isLoading = true
+    @State var negativeOffset: CGFloat = 0
     
     
     // constructor
@@ -36,29 +37,32 @@ struct ProfileView: View {
     var body: some View {
         NavigationStack {
             ZStack() { MyBackground()
-                ScrollViewWithOffset(
-                    axes: .vertical,
-                    showsIndicators: true,
-                    offsetChanged: self.onScroll
-                ) {
-                    VStack(spacing: 0) {
-                        self.header()
-                            .padding(.bottom, mySpacing)
-                        IdeaList(
-                            ideas: self.isLoading ? nil : self.ideas,
-                            pinnedHeaderColor: self.accentColor,
-                            sortBy: self.$sortBy
-                        )
-                        .allowsHitTesting(!self.isLoading)
-                        Spacer()
+                GeometryReader {reader in
+                    
+                    ScrollViewWithOffset(
+                        axes: .vertical,
+                        showsIndicators: true,
+                        offsetChanged: self.onScroll
+                    ) {
+                        VStack(spacing: 0) {
+                            self.header(topInset: reader.safeAreaInsets.top)
+                                .padding(.bottom, mySpacing)
+                            IdeaList(
+                                ideas: self.isLoading ? nil : self.ideas,
+                                pinnedHeaderColor: self.accentColor,
+                                sortBy: self.$sortBy
+                            )
+                            .allowsHitTesting(!self.isLoading)
+                            Spacer()
+                        }
+                        .padding(.bottom, 100)
                     }
-                    .padding(.bottom, 100)
-                }
-                .scrollDisabled(self.isLoading)
-                .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
-                .onChange(of: self.sortBy) { _ in
-                    Task {
-                        await self.getIdeas()
+                    .scrollDisabled(self.isLoading)
+                    .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
+                    .onChange(of: self.sortBy) { _ in
+                        Task {
+                            await self.getIdeas()
+                        }
                     }
                 }
                 
@@ -92,40 +96,56 @@ struct ProfileView: View {
         }
     }
     
-    func header() -> some View {
-        VStack(spacing: mySpacing) {
-            VStack(alignment: .center, spacing: 10) {
-                ProfilePicture(user: self.auth.loggedInUser!, large: true)
-                Text(self.auth.loggedInUser!.name)
-                    .myTitle()
-                    .myGutter()
-                HStack(spacing: 0) {
-                    Text("Member since 2014 · ")  // TODO: user.memberSince
-                    if self.isLoading {
-                        Text("9 ideas").redacted(reason: .placeholder)
-                    } else {
-                        Text("\(self.ideas!.count) ideas")
+    func cover(topInset: CGFloat) -> some View {
+        GeometryReader { _ in
+            Image("DefaultProfileCover")
+                .resizable()
+                .frame(height: coverPictureHeight + self.negativeOffset)
+        }
+        .frame(height: coverPictureHeight)
+        .offset(y: -1 * (topInset + self.negativeOffset))
+    }
+    
+    func header(topInset: CGFloat) -> some View {
+        let VStackSpacing = mySpacing
+        return ZStack(alignment: .top) {
+            self.cover(topInset: topInset)
+            VStack(spacing: VStackSpacing) {
+                Spacer()
+                    .frame(height: coverPictureHeight - topInset - VStackSpacing - largeProfilePictureSize * 2/3)
+                VStack(alignment: .center, spacing: 10) {
+                    ProfilePicture(user: self.auth.loggedInUser!, large: true)
+                    Text(self.auth.loggedInUser!.name)
+                        .myTitle()
+                        .myGutter()
+                    HStack(spacing: 0) {
+                        Text("Member since 2014 · ")  // TODO: user.memberSince
+                        if self.isLoading {
+                            Text("9 ideas").redacted(reason: .placeholder)
+                        } else {
+                            Text("\(self.ideas!.count) ideas")
+                        }
                     }
+                    .opacity(0.5)
                 }
-                .opacity(0.5)
-            }
-            HeaderHStack(shadowColor: self.accentColor) {
-                if self.isLoading {
-                    // ...
-                    // TODO: 2 dummy external links
-                    // ...
-                } else {
-                    // ...
-                    // TODO: foreach external link, display icon
-                    // ...
+                HeaderHStack(shadowColor: self.accentColor) {
+                    if self.isLoading {
+                        // ...
+                        // TODO: 2 dummy external links
+                        // ...
+                    } else {
+                        // ...
+                        // TODO: foreach external link, display icon
+                        // ...
+                    }
+                    Label("External link", systemImage: "plus.circle")
+                        .myLabel(color: .white)
+                        .foregroundColor(self.accentColor)
                 }
-                Label("External link", systemImage: "plus.circle")
-                    .myLabel(color: .white)
-                    .foregroundColor(self.accentColor)
+                Text("User bio - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
+                    .frame(maxWidth: .infinity, alignment: .leading)  // so that very short bio alignment.leading
+                    .myGutter()
             }
-            Text("User bio - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
-                .frame(maxWidth: .infinity, alignment: .leading)  // so that very short bio alignment.leading
-                .myGutter()
         }
     }
     
@@ -151,14 +171,10 @@ struct ProfileView: View {
     
     func onScroll(offset: CGPoint) {
         // sticky top background
-        if offset.y < 0 {
-            // ...
-        } else {
-            // ...
-        }
+        self.negativeOffset = offset.y < 0 ? -1 * offset.y : 0
         // navigation bar title
         withAnimation(.easeIn(duration: myShortDurationInSec)) {
-            self.showNavigationBarTitle = offset.y > 50
+            self.showNavigationBarTitle = offset.y > coverPictureHeight
         }
     }
 }
