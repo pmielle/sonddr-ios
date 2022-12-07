@@ -44,9 +44,12 @@ struct AddView: View {
                         VStack(spacing: 0) {
                             self.header(topInset: reader.safeAreaInsets.top)
                                 .padding(.bottom, mySpacing)
-                            Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
-                                .frame(maxWidth: .infinity, alignment: .leading)  // so that very short bio alignment.leading
-                                .myGutter()
+                            HStack(alignment: .top, spacing: mySpacing) {
+                                ProfilePicture(user: self.auth.loggedInUser!)
+                                Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
+                                    .frame(maxWidth: .infinity, alignment: .leading)  // so that very short bio alignment.leading
+                            }
+                            .myGutter()
                             Spacer()
                         }
                         .padding(.bottom, 100)
@@ -91,7 +94,7 @@ struct AddView: View {
                 Spacer()
                     .frame(height: coverPictureHeight - topInset - 30 - mySpacing)  // 30 is the height of the goal chip
                 VStack(alignment: .leading, spacing: 2 * mySpacing) {
-                    HeaderHStack(shadowColor: self.coverPlaceholderColor) {
+                    HeaderHStack(shadowColor: self.coverPlaceholderColor, additionalLeftPadding: mySpacing + profilePictureSize) {
                         // ...
                         // TODO: foreach external link, display icon
                         // ...
@@ -102,6 +105,7 @@ struct AddView: View {
                     Text("Choose a title")
                         .myTitle()
                         .myGutter()
+                        .padding(.leading, mySpacing + profilePictureSize)
                 }
             }
         }

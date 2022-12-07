@@ -12,6 +12,7 @@ struct HeaderHStack<T: View>: View {
     // attributes
     // ------------------------------------------
     let shadowColor: Color
+    var additionalLeftPadding: CGFloat = 0
     @ViewBuilder var content: T
     @State var showLeftShadow = false
     let shadowWidth = largeIconSize
@@ -29,6 +30,7 @@ struct HeaderHStack<T: View>: View {
                 self.content
             }
             .myGutter()
+            .padding(.leading, self.additionalLeftPadding)
             .padding(.trailing, self.shadowWidth)
         }
         .overlay(content: self.shadows)
@@ -71,14 +73,14 @@ struct HeaderHStack<T: View>: View {
     // ------------------------------------------
     func onScroll(offset: CGPoint) {
         withAnimation(.easeIn(duration: myShortDurationInSec)) {
-            self.showLeftShadow = offset.x >= 1
+            self.showLeftShadow = (offset.x - self.additionalLeftPadding) >= 1
         }
     }
 }
 
 struct HeaderHStack_Previews: PreviewProvider {
     static var previews: some View {
-        HeaderHStack(shadowColor: myBackgroundColor) {
+        HeaderHStack(shadowColor: myBackgroundColor, additionalLeftPadding: 100) {
             Text("AAA")
             Text("BBB")
             Text("CCC")
