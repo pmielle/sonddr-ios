@@ -46,7 +46,9 @@ struct AddView: View {
                                 .padding(.bottom, mySpacing)
                             HStack(alignment: .top, spacing: mySpacing) {
                                 ProfilePicture(user: self.auth.loggedInUser!)
-                                Text("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
+                                Text("Explain your idea")
+                                    .foregroundColor(self.coverPlaceholderColor)
+                                    .padding(.top, 5)
                                     .frame(maxWidth: .infinity, alignment: .leading)  // so that very short bio alignment.leading
                             }
                             .myGutter()
@@ -99,14 +101,14 @@ struct AddView: View {
                         // TODO: foreach external link, display icon
                         // ...
                         Label("Goal(s) of interest", systemImage: "plus.circle")
-                            .myLabel(color: .white)
-                            .foregroundColor(self.accentColor)
+                            .myLabel(color: myBackgroundColor)
                     }
                     Text("Choose a title")
                         .myTitle()
                         .myGutter()
                         .padding(.leading, mySpacing + profilePictureSize)
                 }
+                .foregroundColor(self.coverPlaceholderColor)
             }
         }
     }
