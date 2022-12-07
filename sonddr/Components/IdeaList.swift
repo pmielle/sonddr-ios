@@ -89,6 +89,14 @@ struct IdeaList: View {
             ? self.pinnedHeaderColor
             : myBackgroundColor
         )
+        .overlay(alignment: .bottom) {
+            if isPinned {
+                Color.gray
+                    .opacity(0.5)
+                    .frame(height: 0.5)
+                    
+            }
+        }
     }
     
     func sortByButton() -> some View {
