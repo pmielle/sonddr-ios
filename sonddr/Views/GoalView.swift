@@ -24,10 +24,10 @@ struct GoalView: View {
     @State var ideas: [Idea]? = nil
     @State var titleScale = 1.0
     @State var showNavigationBarTitle = false
-    @State var topBackgroundHeight: CGFloat = 0
     @State var sortBy: SortBy = .date
     @State var isLoading = true
     @State var inProfile = false
+    @State var scrollOffset: CGFloat = 0
     
     
     // constructor
@@ -40,18 +40,14 @@ struct GoalView: View {
     var body: some View {
         ZStack(alignment: .top) { MyBackground()
             GeometryReader { geom in
-                self.topBackground()
+                self.topBackground(topInset: geom.safeAreaInsets.top)
+                    .zIndex(self.scrollOffset < 0 ? 1 : 2)
                 
                 // actual content starts here
                 ScrollViewWithOffset(
                     axes: .vertical,
                     showsIndicators: true,
-                    offsetChanged: { value in
-                        self.onScroll(
-                            offset: value,
-                            height: geom.safeAreaInsets.top
-                        )
-                    }
+                    offsetChanged: self.onScroll
                 ) {
                     VStack(spacing: 0) {
                         self.header()
@@ -68,6 +64,7 @@ struct GoalView: View {
                     }
                     .padding(.bottom, 100)
                 }
+                .zIndex(self.scrollOffset < 0 ? 2 : 1)
                 .scrollDisabled(self.isLoading)
                 .coordinateSpace(name: "idea-list-container")  // needed in IdeaList to style the pinned headers
                 .refreshable {
@@ -83,7 +80,7 @@ struct GoalView: View {
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarBackground(self.goal.color, for: .navigationBar)
+        .toolbarBackground(.hidden, for: .navigationBar)
         .toolbar {
             self.toolbar()
         }
@@ -96,10 +93,21 @@ struct GoalView: View {
     
     // subviews
     // ------------------------------------------
-    func topBackground() -> some View {
-        self.goal.color
-            .frame(height: self.topBackgroundHeight)
-            .ignoresSafeArea()
+    func topBackground(topInset: CGFloat) -> some View {
+        VStack(spacing: 0) {
+            
+            self.goal.color
+                .frame(height: topInset + -1 * (self.scrollOffset < 0 ? self.scrollOffset : 0))
+            
+            if self.scrollOffset > 0 {
+                Color.gray
+                    .opacity(0.33)
+                    .frame(height: 0.5)
+            }
+            
+        }
+        .ignoresSafeArea()
+        
     }
     
     func header() -> some View {
@@ -169,21 +177,11 @@ struct GoalView: View {
         }
     }
     
-    func onScroll(offset: CGPoint, height: CGFloat) {
+    func onScroll(offset: CGPoint) {
         // sticky top background
-        if offset.y < 0 {
-            self.topBackgroundHeight = -1 * offset.y + height // safety
-        } else {
-            if self.topBackgroundHeight > 0 {
-                self.topBackgroundHeight = height
-            }
-        }
+        self.scrollOffset = offset.y
         // title scale
-        if offset.y < -1 {
-            self.titleScale = 1 - 0.001 * offset.y
-        } else if self.titleScale > 1 {
-            self.titleScale = 1.0
-        }
+        self.titleScale = offset.y < 0 ? 1 - 0.001 * offset.y : 1.0
         // navigation bar title
         withAnimation(.easeIn(duration: myShortDurationInSec)) {
             self.showNavigationBarTitle = offset.y > 50
