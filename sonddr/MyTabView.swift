@@ -25,6 +25,7 @@ struct MyTabView: View {
         }
     }
     let badgeSize: CGFloat = 20
+    let bottomBarRadius: CGFloat = 20
     @State var newDiscussionsNb: Int? = nil
     @State var newNotificationsNb: Int? = nil
     
@@ -96,7 +97,19 @@ struct MyTabView: View {
         }
         .padding(.vertical, 5)
         .background(myBackgroundColor)
-        .cornerRadius(20, corners: [.topLeft, .topRight])
+        .cornerRadius(self.bottomBarRadius, corners: [.topLeft, .topRight])
+        .overlay {
+            // bottom border (a half-rectangle)
+            RoundedRectangle(cornerRadius: self.bottomBarRadius)
+                .stroke(.gray.opacity(0.5), lineWidth: 0.5)
+                .mask {
+                    VStack {
+                        Rectangle()
+                            .frame(height: self.bottomBarRadius)
+                        Spacer()
+                    }
+                }
+        }
     }
     
     func bottomBarIcon(
