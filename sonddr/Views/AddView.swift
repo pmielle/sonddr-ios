@@ -56,6 +56,7 @@ struct AddView: View {
                         }
                         .padding(.bottom, 100)
                     }
+                    
                 }
             }
             .toolbar {
@@ -81,12 +82,21 @@ struct AddView: View {
     }
     
     func cover(topInset: CGFloat) -> some View {
-        GeometryReader { _ in
-            Color.gray
-                .frame(height: coverPictureHeight + self.negativeOffset)
-        }
-        .frame(height: coverPictureHeight - topInset)
-        .offset(y: -1 * (topInset + self.negativeOffset))
+            GeometryReader { _ in
+                Color.gray
+                    .frame(height: coverPictureHeight + self.negativeOffset)
+            }
+            .frame(height: coverPictureHeight - topInset)
+            .offset(y: -1 * (topInset + self.negativeOffset))
+            .overlay {
+                // upload icon
+                VStack(spacing: 6) {
+                    Image(systemName: "icloud.and.arrow.up")
+                    Text("Upload a cover")
+                }
+                .offset(y: -1 * (30 + mySpacing) / 2)
+                .foregroundColor(myBackgroundColor)
+            }
     }
     
     func header(topInset: CGFloat) -> some View {
