@@ -55,6 +55,7 @@
 		0BE4A40D29362F7B0098AB62 /* ViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A40C29362F7B0098AB62 /* ViewExtensions.swift */; };
 		0BE4A40F2937F7C30098AB62 /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A40E2937F7C30098AB62 /* AddView.swift */; };
 		0BE4A4112937FA850098AB62 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A4102937FA850098AB62 /* ProfileView.swift */; };
+		0BE7CC5029413CF1000F7CDE /* StandaloneFab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE7CC4F29413CF1000F7CDE /* StandaloneFab.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -108,6 +109,7 @@
 		0BE4A40C29362F7B0098AB62 /* ViewExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtensions.swift; sourceTree = "<group>"; };
 		0BE4A40E2937F7C30098AB62 /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
 		0BE4A4102937FA850098AB62 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		0BE7CC4F29413CF1000F7CDE /* StandaloneFab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandaloneFab.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 				0B78201829237E22001D84AB /* IdeaList.swift */,
 				0B78201A29243109001D84AB /* MyBackground.swift */,
 				0B39F9202925F91D00C21405 /* MyFab.swift */,
+				0BE7CC4F29413CF1000F7CDE /* StandaloneFab.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				0B39F9212925F91D00C21405 /* MyFab.swift in Sources */,
 				0B78201B29243109001D84AB /* MyBackground.swift in Sources */,
 				0BE4A405293404AE0098AB62 /* MyNotification.swift in Sources */,
+				0BE7CC5029413CF1000F7CDE /* StandaloneFab.swift in Sources */,
 				0B39F91329250C9800C21405 /* UserView.swift in Sources */,
 				0B39F9192925807500C21405 /* ShapeExtensions.swift in Sources */,
 				0BE4A4112937FA850098AB62 /* ProfileView.swift in Sources */,

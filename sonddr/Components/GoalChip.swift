@@ -19,6 +19,7 @@ struct GoalChip: View {
     var body: some View {
         Label(self.goal.name, systemImage: self.goal.icon)
             .myLabel(color: self.goal.color)
+            .foregroundColor(.white)
     }
 }
 

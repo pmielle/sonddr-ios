@@ -36,9 +36,10 @@ struct ProfileView: View {
     // ------------------------------------------
     var body: some View {
         NavigationStack {
-            ZStack() { MyBackground()
-                GeometryReader {reader in
+            GeometryReader {reader in
+                ZStack(alignment: .bottomTrailing) { MyBackground()
                     
+                    // main content
                     ScrollViewWithOffset(
                         axes: .vertical,
                         showsIndicators: true,
@@ -64,16 +65,23 @@ struct ProfileView: View {
                             await self.getIdeas()
                         }
                     }
+                    
+                    // fab
+                    StandaloneFab(icon: "rectangle.portrait.and.arrow.right", color: .red) {
+                        print("log out...")
+                    }
+                    .padding(.bottom, bottomBarApproxHeight + mySpacing)
+                    .padding(.trailing, mySpacing)
+                    
                 }
-                
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                self.toolbar()
-            }
-            .toolbarBackground(self.accentColor, for: .navigationBar)
-            .onAppear {
-                self.initialLoad()
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    self.toolbar()
+                }
+                .toolbarBackground(self.accentColor, for: .navigationBar)
+                .onAppear {
+                    self.initialLoad()
+                }
             }
         }
     }
@@ -128,7 +136,7 @@ struct ProfileView: View {
                         }
                         .opacity(0.5)
                     }
-                    HeaderHStack(shadowColor: self.accentColor) {
+                    HeaderHStack(shadowColor: self.accentColor) {  // TODO: center content
                         if self.isLoading {
                             // ...
                             // TODO: 2 dummy external links
@@ -184,8 +192,8 @@ struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
-        
         return Group {
+            
             NavigationView {
                 ProfileView(isPresented: .constant(true))
             }

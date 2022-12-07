@@ -15,7 +15,6 @@ struct MyFab: View {
     @State var offset: CGFloat = mySpacing + 60  // FIXME: needs a custom init to get self.width
     @State var color: Color = .gray
     @State var icon: String = "questionmark"
-    let width: CGFloat = 60
     let offsetAnimationDuration = 3
     @State var inAdd: Bool = false
     @State var preselectedGoal: Goal? = nil
@@ -27,7 +26,7 @@ struct MyFab: View {
         Rectangle()
             .fill(self.color)
             .cornerRadius(99)
-            .frame(width: self.width, height: self.width)
+            .frame(width: fabSize, height: fabSize)
             .overlay {
                 Image(systemName: self.icon)
             }
@@ -91,7 +90,7 @@ struct MyFab: View {
     }
     
     func chooseOffset(mode: FabMode?) -> CGFloat {
-        mode == nil ? self.width + mySpacing : 0
+        mode == nil ? fabSize + mySpacing : 0
     }
 }
 

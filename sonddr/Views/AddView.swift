@@ -22,6 +22,7 @@ struct AddView: View {
     let coverPlaceholderColor: Color = .gray
     // state
     @State var negativeOffset: CGFloat = 0
+    @State var selectedGoals: [Goal] = []
     
     
     // constructor
@@ -33,9 +34,10 @@ struct AddView: View {
     // ------------------------------------------
     var body: some View {
         NavigationStack {
-            ZStack() { MyBackground()
-                GeometryReader {reader in
-                    
+            GeometryReader {reader in
+                ZStack(alignment: .bottomTrailing) { MyBackground()
+                
+                    // main content
                     ScrollViewWithOffset(
                         axes: .vertical,
                         showsIndicators: true,
@@ -57,14 +59,21 @@ struct AddView: View {
                         .padding(.bottom, 100)
                     }
                     
+                    // fab
+                    StandaloneFab(icon: "checkmark", color: .green) {
+                        print("send idea...")
+                    }
+                    .padding(.bottom, bottomBarApproxHeight + mySpacing)
+                    .padding(.trailing, mySpacing)
+                
                 }
+                .toolbar {
+                    self.toolbar()
+                }
+                .navigationTitle("Share an idea")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(myBackgroundColor, for: .navigationBar)
             }
-            .toolbar {
-                self.toolbar()
-            }
-            .navigationTitle("Share an idea")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbarBackground(myBackgroundColor, for: .navigationBar)
         }
     }
     
@@ -107,11 +116,16 @@ struct AddView: View {
                     .frame(height: coverPictureHeight - topInset - 30 - mySpacing)  // 30 is the height of the goal chip
                 VStack(alignment: .leading, spacing: 2 * mySpacing) {
                     HeaderHStack(shadowColor: self.coverPlaceholderColor, additionalLeftPadding: mySpacing + profilePictureSize) {
-                        // ...
-                        // TODO: foreach external link, display icon
-                        // ...
                         Label("Goal(s) of interest", systemImage: "plus.circle")
                             .myLabel(color: myBackgroundColor)
+                        ForEach(self.selectedGoals) { selectedGoal in
+                            GoalChip(goal: selectedGoal)
+                        }
+                    }
+                    .onAppear {
+                        if self.preselectedGoal != nil {
+                            self.selectedGoals.append(self.preselectedGoal!)
+                        }
                     }
                     Text("Choose a title")
                         .myTitle()
@@ -137,7 +151,7 @@ struct AddView_Previews: PreviewProvider {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
         
-        AddView(isPresented: .constant(true), preselectedGoal: nil)
+        AddView(isPresented: .constant(true), preselectedGoal: dummyGoal())
             .environmentObject(auth)
             .environmentObject(db)
     }
