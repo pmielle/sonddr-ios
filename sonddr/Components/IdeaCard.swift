@@ -62,6 +62,7 @@ struct IdeaCard: View {
             // title
             NavigationLink(value: self.idea) {
                 Text(self.idea.title)
+                    .multilineTextAlignment(.leading)
                     .font(.headline)
             }
             .padding(.leading, profilePictureSize + self.profilePictureSpacing)
