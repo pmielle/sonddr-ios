@@ -102,49 +102,50 @@ struct ProfileView: View {
                 .resizable()
                 .frame(height: coverPictureHeight + self.negativeOffset)
         }
-        .frame(height: coverPictureHeight)
+        .frame(height: coverPictureHeight - topInset)
         .offset(y: -1 * (topInset + self.negativeOffset))
     }
     
     func header(topInset: CGFloat) -> some View {
-        let VStackSpacing = mySpacing
-        return ZStack(alignment: .top) {
+        ZStack(alignment: .top) {
             self.cover(topInset: topInset)
-            VStack(spacing: VStackSpacing) {
+            VStack(spacing: 0) {
                 Spacer()
-                    .frame(height: coverPictureHeight - topInset - VStackSpacing - largeProfilePictureSize * 2/3)
-                VStack(alignment: .center, spacing: 10) {
-                    ProfilePicture(user: self.auth.loggedInUser!, large: true)
-                    Text(self.auth.loggedInUser!.name)
-                        .myTitle()
-                        .myGutter()
-                    HStack(spacing: 0) {
-                        Text("Member since 2014 · ")  // TODO: user.memberSince
-                        if self.isLoading {
-                            Text("9 ideas").redacted(reason: .placeholder)
-                        } else {
-                            Text("\(self.ideas!.count) ideas")
+                    .frame(height: coverPictureHeight - topInset - largeProfilePictureSize * 2/3)
+                VStack(spacing: mySpacing) {
+                    VStack(alignment: .center, spacing: 10) {
+                        ProfilePicture(user: self.auth.loggedInUser!, large: true)
+                        Text(self.auth.loggedInUser!.name)
+                            .myTitle()
+                            .myGutter()
+                        HStack(spacing: 0) {
+                            Text("Member since 2014 · ")  // TODO: user.memberSince
+                            if self.isLoading {
+                                Text("9 ideas").redacted(reason: .placeholder)
+                            } else {
+                                Text("\(self.ideas!.count) ideas")
+                            }
                         }
+                        .opacity(0.5)
                     }
-                    .opacity(0.5)
-                }
-                HeaderHStack(shadowColor: self.accentColor) {
-                    if self.isLoading {
-                        // ...
-                        // TODO: 2 dummy external links
-                        // ...
-                    } else {
-                        // ...
-                        // TODO: foreach external link, display icon
-                        // ...
+                    HeaderHStack(shadowColor: self.accentColor) {
+                        if self.isLoading {
+                            // ...
+                            // TODO: 2 dummy external links
+                            // ...
+                        } else {
+                            // ...
+                            // TODO: foreach external link, display icon
+                            // ...
+                        }
+                        Label("External link", systemImage: "plus.circle")
+                            .myLabel(color: .white)
+                            .foregroundColor(self.accentColor)
                     }
-                    Label("External link", systemImage: "plus.circle")
-                        .myLabel(color: .white)
-                        .foregroundColor(self.accentColor)
+                    Text("User bio - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
+                        .frame(maxWidth: .infinity, alignment: .leading)  // so that very short bio alignment.leading
+                        .myGutter()
                 }
-                Text("User bio - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
-                    .frame(maxWidth: .infinity, alignment: .leading)  // so that very short bio alignment.leading
-                    .myGutter()
             }
         }
     }

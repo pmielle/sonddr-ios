@@ -77,19 +77,19 @@ struct AddView: View {
     
     func cover(topInset: CGFloat) -> some View {
         GeometryReader { _ in
-            self.coverPlaceholderColor
+            Color.gray
                 .frame(height: coverPictureHeight + self.negativeOffset)
         }
-        .frame(height: coverPictureHeight)
+        .frame(height: coverPictureHeight - topInset)
         .offset(y: -1 * (topInset + self.negativeOffset))
     }
     
     func header(topInset: CGFloat) -> some View {
-        ZStack(alignment: .top) {
+        ZStack (alignment: .top) {
             self.cover(topInset: topInset)
             VStack(spacing: 0) {
                 Spacer()
-                    .frame(height: coverPictureHeight - topInset - 30 - mySpacing)  // 30 is the height if the goal chips
+                    .frame(height: coverPictureHeight - topInset - 30 - mySpacing)  // 30 is the height of the goal chip
                 VStack(alignment: .leading, spacing: 2 * mySpacing) {
                     HeaderHStack(shadowColor: self.coverPlaceholderColor) {
                         // ...
@@ -105,7 +105,6 @@ struct AddView: View {
                 }
             }
         }
-        .background(.red)
     }
     
     
