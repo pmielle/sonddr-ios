@@ -98,12 +98,14 @@ struct GoalView: View {
             
             self.goal.color
                 .frame(height: topInset + -1 * (self.scrollOffset < 0 ? self.scrollOffset : 0))
+                .overlay(alignment: .bottom) {
+                    if self.scrollOffset > 0 {
+                        Color.gray
+                            .opacity(0.5)
+                            .frame(height: 0.5)
+                    }
+                }
             
-            if self.scrollOffset > 0 {
-                Color.gray
-                    .opacity(0.33)
-                    .frame(height: 0.5)
-            }
             
         }
         .ignoresSafeArea()
