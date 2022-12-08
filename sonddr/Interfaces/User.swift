@@ -11,12 +11,14 @@ struct User: Identifiable, Hashable {
     let id: String
     let name: String
     let profilePicture: String
+    let externalLinks: [ExternalLink]
 }
 
 func dummyUser() -> User {
     User(
         id: randomId(),
         name: "Dummy User",
-        profilePicture: "DefaultProfilePicture"
+        profilePicture: "DefaultProfilePicture",
+        externalLinks: [.Instagram]
     )
 }

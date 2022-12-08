@@ -103,7 +103,7 @@ struct AddView: View {
                     Image(systemName: "icloud.and.arrow.up")
                     Text("Upload a cover")
                 }
-                .offset(y: -1 * (30 + mySpacing) / 2)
+                .offset(y: -1 * (goalChipHeight + mySpacing) / 2)
                 .foregroundColor(myBackgroundColor)
             }
     }
@@ -113,7 +113,7 @@ struct AddView: View {
             self.cover(topInset: topInset)
             VStack(spacing: 0) {
                 Spacer()
-                    .frame(height: coverPictureHeight - topInset - 30 - mySpacing)  // 30 is the height of the goal chip
+                    .frame(height: coverPictureHeight - topInset - goalChipHeight - mySpacing)
                 VStack(alignment: .leading, spacing: 2 * mySpacing) {
                     HeaderHStack(shadowColor: self.coverPlaceholderColor, additionalLeftPadding: mySpacing + profilePictureSize) {
                         Label("Goal(s) of interest", systemImage: "plus.circle")

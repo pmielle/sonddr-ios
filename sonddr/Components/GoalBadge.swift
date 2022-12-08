@@ -13,7 +13,7 @@ struct GoalBadge: View {
     var body: some View {
         Circle()
             .fill(self.goal.color)
-            .frame(height: largeIconSize)
+            .frame(height: goalChipHeight)
             .overlay {
                 Image(systemName: self.goal.icon)
             }

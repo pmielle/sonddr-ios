@@ -138,13 +138,12 @@ struct ProfileView: View {
                     }
                     HeaderHStack(shadowColor: self.accentColor) {  // TODO: center content
                         if self.isLoading {
-                            // ...
-                            // TODO: 2 dummy external links
-                            // ...
+                            ExternalLinkButton(externalLink: dummyExternalLink())
                         } else {
-                            // ...
-                            // TODO: foreach external link, display icon
-                            // ...
+                            ForEach(self.auth.loggedInUser!.externalLinks, id: \.self) { externalLink in
+                                ExternalLinkButton(externalLink: externalLink)
+                                
+                            }
                         }
                         Label("External link", systemImage: "plus.circle")
                             .myLabel(color: .white)

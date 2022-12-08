@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-enum Tab {
-    case Ideas
-    case Search
-    case Messages
-    case Notifications
-}
-
 struct MyTabView: View {
 
     // attributes

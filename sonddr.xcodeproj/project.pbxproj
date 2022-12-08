@@ -56,6 +56,9 @@
 		0BE4A40F2937F7C30098AB62 /* AddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A40E2937F7C30098AB62 /* AddView.swift */; };
 		0BE4A4112937FA850098AB62 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A4102937FA850098AB62 /* ProfileView.swift */; };
 		0BE7CC5029413CF1000F7CDE /* StandaloneFab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE7CC4F29413CF1000F7CDE /* StandaloneFab.swift */; };
+		0BE7CC522941C22A000F7CDE /* ExternalLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE7CC512941C22A000F7CDE /* ExternalLink.swift */; };
+		0BE7CC542941C2F9000F7CDE /* Tab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE7CC532941C2F9000F7CDE /* Tab.swift */; };
+		0BE7CC562941C403000F7CDE /* ExternalLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE7CC552941C403000F7CDE /* ExternalLinkButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -110,6 +113,9 @@
 		0BE4A40E2937F7C30098AB62 /* AddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddView.swift; sourceTree = "<group>"; };
 		0BE4A4102937FA850098AB62 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		0BE7CC4F29413CF1000F7CDE /* StandaloneFab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandaloneFab.swift; sourceTree = "<group>"; };
+		0BE7CC512941C22A000F7CDE /* ExternalLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLink.swift; sourceTree = "<group>"; };
+		0BE7CC532941C2F9000F7CDE /* Tab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tab.swift; sourceTree = "<group>"; };
+		0BE7CC552941C403000F7CDE /* ExternalLinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalLinkButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +222,7 @@
 				0B78201A29243109001D84AB /* MyBackground.swift */,
 				0B39F9202925F91D00C21405 /* MyFab.swift */,
 				0BE7CC4F29413CF1000F7CDE /* StandaloneFab.swift */,
+				0BE7CC552941C403000F7CDE /* ExternalLinkButton.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -228,6 +235,8 @@
 				0B78200D29236219001D84AB /* Idea.swift */,
 				0BE4A404293404AE0098AB62 /* MyNotification.swift */,
 				0BE4A408293406270098AB62 /* Discussion.swift */,
+				0BE7CC512941C22A000F7CDE /* ExternalLink.swift */,
+				0BE7CC532941C2F9000F7CDE /* Tab.swift */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -350,6 +359,7 @@
 				0B78201D2924315A001D84AB /* ColorConstants.swift in Sources */,
 				0B78200C29235FCC001D84AB /* User.swift in Sources */,
 				0B39F9252926CE7300C21405 /* SpacingExtensions.swift in Sources */,
+				0BE7CC562941C403000F7CDE /* ExternalLinkButton.swift in Sources */,
 				0B78201129236318001D84AB /* Random.swift in Sources */,
 				0B78202029243A31001D84AB /* HomeView.swift in Sources */,
 				0B782008292355A9001D84AB /* RatingBadge.swift in Sources */,
@@ -372,6 +382,7 @@
 				0B39F92329260D1C00C21405 /* TimeConstants.swift in Sources */,
 				0B781FE629211243001D84AB /* sonddrApp.swift in Sources */,
 				0BE4A3FD292F84710098AB62 /* ButtonExtensions.swift in Sources */,
+				0BE7CC542941C2F9000F7CDE /* Tab.swift in Sources */,
 				0B39F911292509D100C21405 /* IdeaView.swift in Sources */,
 				0B39F9212925F91D00C21405 /* MyFab.swift in Sources */,
 				0B78201B29243109001D84AB /* MyBackground.swift in Sources */,
@@ -384,6 +395,7 @@
 				0B39F91B292592C500C21405 /* SearchView.swift in Sources */,
 				0B781FFE292122E6001D84AB /* Goal.swift in Sources */,
 				0B78200029212619001D84AB /* LabelExtensions.swift in Sources */,
+				0BE7CC522941C22A000F7CDE /* ExternalLink.swift in Sources */,
 				0B781FF829211A7F001D84AB /* SpacingConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
