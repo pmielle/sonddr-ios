@@ -25,6 +25,7 @@ struct ProfileView: View {
     @State var sortBy: SortBy = .date
     @State var isLoading = true
     @State var negativeOffset: CGFloat = 0
+    @State var leftHeaderHStackOffset: CGFloat = 0
     
     
     // constructor
@@ -136,18 +137,23 @@ struct ProfileView: View {
                         }
                         .opacity(0.5)
                     }
-                    HeaderHStack(shadowColor: self.accentColor) {  // TODO: center content
-                        if self.isLoading {
-                            ExternalLinkButton(externalLink: dummyExternalLink())
-                        } else {
-                            ForEach(self.auth.loggedInUser!.externalLinks, id: \.self) { externalLink in
-                                ExternalLinkButton(externalLink: externalLink)
-                                
+                    HeaderHStack(shadowColor: self.accentColor, additionalLeftPadding: self.leftHeaderHStackOffset) {  // TODO: center content
+                        HStack(spacing: mySpacing) {
+                            if self.isLoading {
+                                ExternalLinkButton(externalLink: dummyExternalLink())
+                            } else {
+                                ForEach(self.auth.loggedInUser!.externalLinks, id: \.self) { externalLink in
+                                    ExternalLinkButton(externalLink: externalLink)
+                                    
+                                }
                             }
+                            Label("External link", systemImage: "plus.circle")
+                                .myLabel(color: .white)
+                                .foregroundColor(self.accentColor)
                         }
-                        Label("External link", systemImage: "plus.circle")
-                            .myLabel(color: .white)
-                            .foregroundColor(self.accentColor)
+                        .readSize { newSize in
+                            self.leftHeaderHStackOffset = max(0, (UIScreen.main.bounds.width - newSize.width) / 2)
+                        }
                     }
                     Text("User bio - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
                         .frame(maxWidth: .infinity, alignment: .leading)  // so that very short bio alignment.leading

@@ -7,6 +7,21 @@
 
 import SwiftUI
 
+
+// size of child
+extension View {
+  func readSize(onChange: @escaping (CGSize) -> Void) -> some View {
+    background(
+      GeometryReader { geometryProxy in
+        Color.clear
+          .preference(key: SizePreferenceKey.self, value: geometryProxy.size)
+      }
+    )
+    .onPreferenceChange(SizePreferenceKey.self, perform: onChange)
+  }
+}
+
+// fab
 struct StackFabMode: ViewModifier {
     @State var fab: FabService
     let mode: FabMode?
