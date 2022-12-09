@@ -104,7 +104,9 @@ struct IdeaView: View {
                 VStack(spacing: mySpacing) {
                     HeaderHStack(shadowColor: .clear, additionalLeftPadding: profilePictureSize + mySpacing) {
                         ForEach(self.idea.goals) { goal in
-                            GoalChip(goal: goal)
+                            NavigationLink(value: goal) {
+                                GoalChip(goal: goal)
+                            }
                         }
                     }
                     Spacer().frame(height: 0)
@@ -113,7 +115,9 @@ struct IdeaView: View {
                             .myTitle()
                             .padding(.leading, profilePictureSize + 2 * mySpacing)
                         HStack(spacing: mySpacing) {
-                            ProfilePicture(user: self.idea.author)
+                            NavigationLink(value: self.idea.author) {
+                                ProfilePicture(user: self.idea.author)
+                            }
                             HStack(spacing: 0) {
                                 NavigationLink(value: self.idea.author) {
                                     Text(self.idea.author.name)
