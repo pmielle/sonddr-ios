@@ -186,33 +186,9 @@ struct IdeaList_Previews: PreviewProvider {
                     IdeaList(
                         ideas: [
                             dummyIdea(),
-                            Idea(
-                                id: randomId(),
-                                title: "OLDER OMG",
-                                author: dummyUser(),
-                                goals: [dummyGoal(), dummyGoal()],
-                                cover: "DefaultIdeaCover",
-                                rating: 66,
-                                date: Date.distantPast
-                            ),
-                            Idea(
-                                id: randomId(),
-                                title: "OLDER OMG",
-                                author: dummyUser(),
-                                goals: [dummyGoal(), dummyGoal()],
-                                cover: "DefaultIdeaCover",
-                                rating: 66,
-                                date: Date.distantPast
-                            ),
-                            Idea(
-                                id: randomId(),
-                                title: "OLDER OMG",
-                                author: dummyUser(),
-                                goals: [dummyGoal(), dummyGoal()],
-                                cover: "DefaultIdeaCover",
-                                rating: 66,
-                                date: Date.distantPast
-                            ),
+                            dummyIdea(old: true),
+                            dummyIdea(old: true),
+                            dummyIdea(old: true),
                             dummyIdea(),
                             dummyIdea(),
                         ],

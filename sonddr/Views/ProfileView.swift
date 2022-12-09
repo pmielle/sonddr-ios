@@ -100,7 +100,7 @@ struct ProfileView: View {
         }
         ToolbarItem(placement: .principal) {
             Text(self.auth.loggedInUser!.name)
-                .font(.headline)
+                .myInlineToolbarTitle()
                 .opacity(self.showNavigationBarTitle ? 1 : 0)
         }
     }
@@ -137,7 +137,7 @@ struct ProfileView: View {
                         }
                         .opacity(0.5)
                     }
-                    HeaderHStack(shadowColor: self.accentColor, additionalLeftPadding: self.leftHeaderHStackOffset) {  // TODO: center content
+                    HeaderHStack(shadowColor: self.accentColor, additionalLeftPadding: self.leftHeaderHStackOffset) {
                         HStack(spacing: mySpacing) {
                             if self.isLoading {
                                 ExternalLinkButton(externalLink: dummyExternalLink())

@@ -145,7 +145,7 @@ struct GoalView: View {
     func toolbar() -> some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text(self.goal.name)
-                .font(.headline)
+                .myInlineToolbarTitle()
                 .opacity(self.showNavigationBarTitle ? 1 : 0)
         }
         ToolbarItem(placement: .navigationBarTrailing) {

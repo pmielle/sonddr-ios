@@ -96,7 +96,7 @@ struct HomeView: View {
                 self.toolbar()
             }
             .navigationDestination(for: Idea.self) { idea in
-                IdeaView()
+                IdeaView(idea: idea)
             }
             .navigationDestination(for: Goal.self) { goal in
                 GoalView(goal: goal)
@@ -156,7 +156,7 @@ struct HomeView: View {
         }
         ToolbarItem(placement: .principal) {
             Text(self.title)
-                .font(.headline)
+                .myInlineToolbarTitle()
                 .opacity(self.showNavigationBarTitle ? 1 : 0)
         }
         ToolbarItem(placement: .navigationBarTrailing) {
