@@ -60,7 +60,7 @@ struct IdeaView: View {
             self.toolbar()
         }
         .toolbarBackground(self.accentColor, for: .navigationBar)
-        .stackFabMode(fab: self.fab, mode: nil)
+        .stackFabMode(fab: self.fab, mode: .Rate)
     }
     
     

@@ -12,33 +12,34 @@ struct MyFab: View {
     // attributes
     // ------------------------------------------
     @Binding var mode: FabMode?
-    @State var offset: CGFloat = mySpacing + 60  // FIXME: needs a custom init to get self.width
-    @State var color: Color = .gray
-    @State var icon: String = "questionmark"
-    let offsetAnimationDuration = 3
-    @State var inAdd: Bool = false
-    @State var preselectedGoal: Goal? = nil
+    let offsetToHide = mySpacing + fabSize
+    @State var isHidden = true
+    @State var color: Color = MyFab.undefColor
+    @State var icon: String = MyFab.undefIcon
+    @State var secondaryIcon: String? = nil
+    @State var showRatingFab = false
+    static let undefColor: Color = .gray
+    static let undefIcon: String = "questionmark"
     
     
     // body
     // ------------------------------------------
     var body: some View {
-        Rectangle()
-            .fill(self.color)
-            .cornerRadius(99)
-            .frame(width: fabSize, height: fabSize)
-            .overlay {
-                Image(systemName: self.icon)
+        ZStack {
+            if self.showRatingFab {
+                RatingFab(rating: 75)
+            } else {
+                NormalFab(
+                    color: self.$color,
+                    icon: self.$icon,
+                    secondaryIcon: self.$secondaryIcon)
             }
-            .offset(x: self.offset)
-            .onAppear { self.syncWithMode(mode: self.mode) }
-            .onChange(of: self.mode, perform: self.syncWithMode)
-            .fullScreenCover(isPresented: self.$inAdd) {
-                AddView(isPresented: self.$inAdd, preselectedGoal: self.preselectedGoal)
-            }
-            .onTapGesture {
-                self.onTap()
-            }
+        }
+        .offset(x: self.isHidden ? self.offsetToHide : 0)
+        .onAppear(perform: self.onModeInit)
+        .onChange(of: self.mode) { [mode] newMode in
+            self.onModeChange(oldMode: mode, newMode: newMode)
+        }
     }
     
     
@@ -49,48 +50,70 @@ struct MyFab: View {
     
     // methods
     // ------------------------------------------
-    func onTap() {
-        switch mode {
-        case let .Add(goal):
-            self.preselectedGoal = goal
-            self.inAdd = true
-        default:
-            break
+    func onModeInit() {
+        self.chooseUI(newMode: self.mode)
+        if self.mode != nil {
+            self.show()
         }
     }
     
-    func syncWithMode(mode: FabMode?) {
-        // hide or show if needed
+    func onModeChange(oldMode: FabMode?, newMode: FabMode?) {
+        let toOrFromRating = oldMode != .Rate && newMode == .Rate || oldMode == .Rate && newMode != .Rate
+        let fromNil = oldMode == nil && newMode != nil
+        let toNil = oldMode != nil && newMode == nil
+        // choose a transition depending on the situation
+        if toOrFromRating {
+            Task {
+                self.hide()
+                await sleep(seconds: myDurationInSec)
+                self.chooseUI(newMode: newMode)
+                self.show()
+            }
+        } else if fromNil {
+            self.chooseUI(newMode: newMode)
+            self.show()
+        } else if toNil {
+            Task {
+                self.hide()
+                await sleep(seconds: myDurationInSec)
+                self.chooseUI(newMode: newMode)
+            }
+        } else {
+            self.chooseUI(newMode: newMode)
+        }
+        // n.b. else do nothing
+    }
+    
+    func show() {
         withAnimation(.easeOut(duration: myDurationInSec)) {
-            self.offset = self.chooseOffset(mode: mode)
-        }
-        // udpate ui if visible
-        if mode != nil {
-            self.color = self.chooseColor(mode: mode)
-            self.icon = self.chooseIcon(mode: mode)
+            self.isHidden = false
         }
     }
     
-    func chooseColor(mode: FabMode?) -> Color {
-        switch mode {
+    func hide() {
+        withAnimation(.easeIn(duration: myDurationInSec)) {
+            self.isHidden = true
+        }
+    }
+    
+    func chooseUI(newMode: FabMode?) {
+        switch newMode {
         case .Add:
-            return myPrimaryColor
+            self.color = myPrimaryColor
+            self.icon = "lightbulb"
+            self.secondaryIcon = "plus"
+            self.showRatingFab = false
+        case .Rate:
+            self.color = MyFab.undefColor
+            self.icon = MyFab.undefIcon
+            self.secondaryIcon = nil
+            self.showRatingFab = true
         case nil:
-            return .gray
+            self.color = MyFab.undefColor
+            self.icon = MyFab.undefIcon
+            self.secondaryIcon = nil
+            self.showRatingFab = false
         }
-    }
-    
-    func chooseIcon(mode: FabMode?) -> String {
-        switch mode {
-        case .Add:
-            return "plus"
-        case nil:
-            return "questionmark"
-        }
-    }
-    
-    func chooseOffset(mode: FabMode?) -> CGFloat {
-        mode == nil ? fabSize + mySpacing : 0
     }
 }
 
@@ -98,7 +121,11 @@ struct MyFab_Previews: PreviewProvider {
     static var previews: some View {
         NavigationStack {
             ZStack { MyBackground()
-                MyFab(mode: .constant(.Add()))
+                VStack {
+                    MyFab(mode: .constant(.Add()))
+                    MyFab(mode: .constant(.Rate))
+                    MyFab(mode: .constant(nil))
+                }
             }
         }
     }

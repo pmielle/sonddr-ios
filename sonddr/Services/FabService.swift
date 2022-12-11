@@ -45,7 +45,3 @@ class FabService: ObservableObject {
         self.mode = activeStack.count > 0 ? activeStack.last! : nil
     }
 }
-
-enum FabMode: Equatable {
-    case Add(goal: Goal? = nil)
-}

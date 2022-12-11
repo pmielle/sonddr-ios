@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0B0A7D312943684C0012489F /* FabMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A7D302943684C0012489F /* FabMode.swift */; };
+		0B0A7D3329436AE70012489F /* RatingFab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A7D3229436AE70012489F /* RatingFab.swift */; };
+		0B0A7D3529436AFA0012489F /* NormalFab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A7D3429436AFA0012489F /* NormalFab.swift */; };
 		0B39F911292509D100C21405 /* IdeaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F910292509D100C21405 /* IdeaView.swift */; };
 		0B39F91329250C9800C21405 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F91229250C9700C21405 /* UserView.swift */; };
 		0B39F91529250CB100C21405 /* GoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F91429250CB100C21405 /* GoalView.swift */; };
@@ -62,6 +65,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0B0A7D302943684C0012489F /* FabMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FabMode.swift; sourceTree = "<group>"; };
+		0B0A7D3229436AE70012489F /* RatingFab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingFab.swift; sourceTree = "<group>"; };
+		0B0A7D3429436AFA0012489F /* NormalFab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalFab.swift; sourceTree = "<group>"; };
 		0B39F910292509D100C21405 /* IdeaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaView.swift; sourceTree = "<group>"; };
 		0B39F91229250C9700C21405 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		0B39F91429250CB100C21405 /* GoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalView.swift; sourceTree = "<group>"; };
@@ -223,6 +229,8 @@
 				0B39F9202925F91D00C21405 /* MyFab.swift */,
 				0BE7CC4F29413CF1000F7CDE /* StandaloneFab.swift */,
 				0BE7CC552941C403000F7CDE /* ExternalLinkButton.swift */,
+				0B0A7D3229436AE70012489F /* RatingFab.swift */,
+				0B0A7D3429436AFA0012489F /* NormalFab.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -237,6 +245,7 @@
 				0BE4A408293406270098AB62 /* Discussion.swift */,
 				0BE7CC512941C22A000F7CDE /* ExternalLink.swift */,
 				0BE7CC532941C2F9000F7CDE /* Tab.swift */,
+				0B0A7D302943684C0012489F /* FabMode.swift */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -364,8 +373,10 @@
 				0B78202029243A31001D84AB /* HomeView.swift in Sources */,
 				0B782008292355A9001D84AB /* RatingBadge.swift in Sources */,
 				0B39F91D292592D100C21405 /* MessagesView.swift in Sources */,
+				0B0A7D312943684C0012489F /* FabMode.swift in Sources */,
 				0BE4A3FB292F823A0098AB62 /* LoginView.swift in Sources */,
 				0B781FE829211243001D84AB /* ContentView.swift in Sources */,
+				0B0A7D3329436AE70012489F /* RatingFab.swift in Sources */,
 				0B39F91F292592D800C21405 /* NotificationsView.swift in Sources */,
 				0B78201729236A2B001D84AB /* TimeUtils.swift in Sources */,
 				0B78201529236476001D84AB /* IdeaCard.swift in Sources */,
@@ -391,6 +402,7 @@
 				0B39F91329250C9800C21405 /* UserView.swift in Sources */,
 				0B39F9192925807500C21405 /* ShapeExtensions.swift in Sources */,
 				0BE4A4112937FA850098AB62 /* ProfileView.swift in Sources */,
+				0B0A7D3529436AFA0012489F /* NormalFab.swift in Sources */,
 				0B78200229212D31001D84AB /* HeaderHStack.swift in Sources */,
 				0B39F91B292592C500C21405 /* SearchView.swift in Sources */,
 				0B781FFE292122E6001D84AB /* Goal.swift in Sources */,
