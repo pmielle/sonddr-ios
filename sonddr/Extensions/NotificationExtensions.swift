@@ -9,4 +9,5 @@ import Foundation
 
 extension Notification.Name {
     static let ideasBottomBarIconTap = Notification.Name("ideasBottomBarIconTap")
+    static let addFabTap = Notification.Name("addFabTap")
 }

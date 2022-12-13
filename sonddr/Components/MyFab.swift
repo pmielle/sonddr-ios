@@ -20,6 +20,9 @@ struct MyFab: View {
     @State var showRatingFab = false
     static let undefColor: Color = .gray
     static let undefIcon: String = "questionmark"
+    // add view
+    @State var inAdd = false
+    @State var preselectedGoal: Goal? = nil
     
     
     // body
@@ -33,12 +36,18 @@ struct MyFab: View {
                     color: self.$color,
                     icon: self.$icon,
                     secondaryIcon: self.$secondaryIcon)
+                .onTapGesture {
+                    self.onNormalFabTap()
+                }
             }
         }
         .offset(x: self.isHidden ? self.offsetToHide : 0)
         .onAppear(perform: self.onModeInit)
         .onChange(of: self.mode) { [mode] newMode in
             self.onModeChange(oldMode: mode, newMode: newMode)
+        }
+        .fullScreenCover(isPresented: self.$inAdd) {
+            AddView(isPresented: self.$inAdd, preselectedGoal: self.preselectedGoal)
         }
     }
     
@@ -50,6 +59,17 @@ struct MyFab: View {
     
     // methods
     // ------------------------------------------
+    func onNormalFabTap() {
+        switch self.mode {
+        case .Add(let goal):
+            self.preselectedGoal = goal
+            self.inAdd = true
+        default:
+            print("no action defined for mode \(String(describing: self.mode))")
+            break
+        }
+    }
+    
     func onModeInit() {
         self.chooseUI(newMode: self.mode)
         if self.mode != nil {
