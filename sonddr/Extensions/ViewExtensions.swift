@@ -49,8 +49,7 @@ struct StackFabMode: ViewModifier {
             .onDisappear {
                 // back navigation ends
                 if self.backNavigationStarted {
-                    self.fab.modeStack[tab!]!.removeLast()
-                    self.fab.modeStack[tab!]!.removeLast()
+                    self.fab.modeStack[tab!]!.removeLast(2)  // nil + self.mode
                 }
             }
             .onAppear {
