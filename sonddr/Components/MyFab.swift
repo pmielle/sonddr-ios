@@ -62,14 +62,7 @@ struct MyFab: View {
         let fromNil = oldMode == nil && newMode != nil
         let toNil = oldMode != nil && newMode == nil
         // choose a transition depending on the situation
-        if toOrFromRating {
-            Task {
-                self.hide()
-                await sleep(seconds: fabOffsetAnimationDuration)
-                self.chooseUI(newMode: newMode)
-                self.show()
-            }
-        } else if fromNil {
+        if fromNil {
             self.chooseUI(newMode: newMode)
             self.show()
         } else if toNil {
@@ -77,6 +70,13 @@ struct MyFab: View {
                 self.hide()
                 await sleep(seconds: fabOffsetAnimationDuration)
                 self.chooseUI(newMode: newMode)
+            }
+        } else if toOrFromRating {
+            Task {
+                self.hide()
+                await sleep(seconds: fabOffsetAnimationDuration)
+                self.chooseUI(newMode: newMode)
+                self.show()
             }
         } else {
             self.chooseUI(newMode: newMode)
