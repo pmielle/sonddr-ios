@@ -195,7 +195,9 @@ struct HomeView: View {
     }
     
     func goBackToNavigationRoot() {
-        self.navigation.removeLast(self.navigation.count)  // FIXME: emptying the whole stack *is not animated* when count > 1
+        // FIXME: emptying the whole stack is not animated if count > 1
+        // FIXME: tap mid-navigation breaks things
+        self.navigation.removeLast(self.navigation.count)
         self.fab.modeStack[.Ideas]!.removeLast(self.fab.modeStack[.Ideas]!.count - 1)
     }
     
