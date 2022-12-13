@@ -33,7 +33,7 @@ struct StandaloneFab: View {
                 self.onTap()
             }
             .onAppear {
-                withAnimation(.easeOut(duration: myDurationInSec).delay(myDurationInSec)) {
+                withAnimation(.easeOut(duration: fabOffsetAnimationDuration).delay(myDurationInSec)) {
                     self.isHidden = false
                 }
             }

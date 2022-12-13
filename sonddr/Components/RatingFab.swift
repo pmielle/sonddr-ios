@@ -39,12 +39,8 @@ struct RatingFab: View {
             }
             .cornerRadius(99)
             .onAppear {
-                withAnimation(.linear(duration: myShortDurationInSec).delay(myShortDurationInSec)) {
-                    self.setIcon()
-                }
-                withAnimation(.easeOut(duration: myDurationInSec).delay(myShortDurationInSec)) {
-                    self.setMaskHeight()
-                }
+                self.setIcon()
+                self.setMaskHeight()
             }
 
     }

@@ -65,7 +65,7 @@ struct MyFab: View {
         if toOrFromRating {
             Task {
                 self.hide()
-                await sleep(seconds: myDurationInSec)
+                await sleep(seconds: fabOffsetAnimationDuration)
                 self.chooseUI(newMode: newMode)
                 self.show()
             }
@@ -75,7 +75,7 @@ struct MyFab: View {
         } else if toNil {
             Task {
                 self.hide()
-                await sleep(seconds: myDurationInSec)
+                await sleep(seconds: fabOffsetAnimationDuration)
                 self.chooseUI(newMode: newMode)
             }
         } else {
@@ -85,13 +85,13 @@ struct MyFab: View {
     }
     
     func show() {
-        withAnimation(.easeOut(duration: myDurationInSec)) {
+        withAnimation(.easeOut(duration: fabOffsetAnimationDuration)) {
             self.isHidden = false
         }
     }
     
     func hide() {
-        withAnimation(.easeIn(duration: myDurationInSec)) {
+        withAnimation(.easeIn(duration: fabOffsetAnimationDuration)) {
             self.isHidden = true
         }
     }
