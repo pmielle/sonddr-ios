@@ -27,15 +27,30 @@ struct StackFabMode: ViewModifier {
     @State var fab: FabService
     let mode: FabMode?
     @State var stackIndex: Int? = nil
+    @State var backNavigationStarted = false
     func body(content: Content) -> some View {
         let tab = self.fab.selectedTab
         return content
             .onChange(of: self.isPresented) { isPresented in
                 if isPresented == false {
                     if self.stackIndex == self.fab.modeStack[tab!]!.count {
-                        // back navigation
-                        self.fab.modeStack[tab!]!.removeLast()
+                        // back navigation start...
+                        self.fab.modeStack[tab!]!.append(nil)
+                        self.backNavigationStarted = true
                     }
+                } else {
+                    if self.backNavigationStarted == true {
+                        // back navigation has been cancelled (e.g. half swipe back)
+                        self.fab.modeStack[tab!]!.removeLast()
+                        self.backNavigationStarted = false
+                    }
+                }
+            }
+            .onDisappear {
+                // back navigation ends
+                if self.backNavigationStarted {
+                    self.fab.modeStack[tab!]!.removeLast()
+                    self.fab.modeStack[tab!]!.removeLast()
                 }
             }
             .onAppear {
