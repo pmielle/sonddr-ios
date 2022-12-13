@@ -23,21 +23,26 @@ extension View {
 
 // fab
 struct StackFabMode: ViewModifier {
+    @Environment(\.isPresented) private var isPresented
     @State var fab: FabService
     let mode: FabMode?
     @State var stackIndex: Int? = nil
     func body(content: Content) -> some View {
         let tab = self.fab.selectedTab
         return content
-            .onAppear {
-                if (self.stackIndex == nil) {
-                    self.fab.modeStack[tab!]!.append(self.mode)
-                    self.stackIndex = self.fab.modeStack[tab!]!.count
+            .onChange(of: self.isPresented) { isPresented in
+                if isPresented == false {
+                    if self.stackIndex == self.fab.modeStack[tab!]!.count {
+                        // back navigation
+                        self.fab.modeStack[tab!]!.removeLast()
+                    }
                 }
             }
-            .onDisappear {
-                if self.stackIndex == self.fab.modeStack[tab!]!.count {
-                    self.fab.modeStack[tab!]!.removeLast()
+            .onAppear {
+                if (self.stackIndex == nil) {
+                    // first presentation
+                    self.fab.modeStack[tab!]!.append(self.mode)
+                    self.stackIndex = self.fab.modeStack[tab!]!.count
                 }
             }
     }
