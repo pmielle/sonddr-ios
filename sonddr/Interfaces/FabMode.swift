@@ -8,6 +8,6 @@
 import SwiftUI
 
 enum FabMode: Equatable {
-    case Add(goal: Goal? = nil)
+    case Add
     case Rate
 }

@@ -19,10 +19,7 @@ struct MyFab: View {
     @State var secondaryIcon: String? = nil
     @State var showRatingFab = false
     static let undefColor: Color = .gray
-    static let undefIcon: String = "questionmark"
-    // add view
-    @State var inAdd = false
-    @State var preselectedGoal: Goal? = nil
+    static let undefIcon: String = "questionmark"    
     
     
     // body
@@ -46,9 +43,6 @@ struct MyFab: View {
         .onChange(of: self.mode) { [mode] newMode in
             self.onModeChange(oldMode: mode, newMode: newMode)
         }
-        .fullScreenCover(isPresented: self.$inAdd) {
-            AddView(isPresented: self.$inAdd, preselectedGoal: self.preselectedGoal)
-        }
     }
     
     
@@ -61,9 +55,8 @@ struct MyFab: View {
     // ------------------------------------------
     func onNormalFabTap() {
         switch self.mode {
-        case .Add(let goal):
-            self.preselectedGoal = goal
-            self.inAdd = true
+        case .Add:
+            NotificationCenter.default.post(Notification(name: .addFabTap))
         default:
             print("no action defined for mode \(String(describing: self.mode))")
             break
@@ -142,7 +135,7 @@ struct MyFab_Previews: PreviewProvider {
         NavigationStack {
             ZStack { MyBackground()
                 VStack {
-                    MyFab(mode: .constant(.Add()))
+                    MyFab(mode: .constant(.Add))
                     MyFab(mode: .constant(.Rate))
                     MyFab(mode: .constant(nil))
                 }

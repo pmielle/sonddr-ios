@@ -16,7 +16,7 @@ class FabService: ObservableObject {
         }
     }
     var modeStack: [Tab: [FabMode?]] = [
-        .Ideas: [.Add()],
+        .Ideas: [.Add],
         .Search: [nil],
         .Messages: [nil],
         .Notifications: [nil],

@@ -30,6 +30,7 @@ struct HomeView: View {
     @State var isLoading = true
     @State var navigation = NavigationPath()
     @State var inProfile = false
+    @State var inAdd = false
     
     
     // constructor
@@ -104,10 +105,16 @@ struct HomeView: View {
             .navigationDestination(for: User.self) { user in
                 UserView()
             }
-            
-        }
-        .onAppear {
-            self.initialLoad()
+            .onAppear {
+                self.initialLoad()
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .addFabTap)) { _ in
+                if !self.navigation.isEmpty { return }
+                self.inAdd = true
+            }
+            .fullScreenCover(isPresented: self.$inAdd) {
+                AddView(isPresented: self.$inAdd, preselectedGoal: nil)
+            }
         }
     }
     
