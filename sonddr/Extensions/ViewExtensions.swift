@@ -21,7 +21,35 @@ extension View {
   }
 }
 
-// fab
+
+// react to fab tap
+struct OnFabTap: ViewModifier {
+    let notificationName: Notification.Name
+    let perform: () -> Void
+    @State var active = false
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                self.active = true
+            }
+            .onDisappear {
+                self.active = false
+            }
+            .onReceive(NotificationCenter.default.publisher(for: self.notificationName)) { _ in
+                if !self.active { return }
+                self.perform()
+            }
+    }
+}
+
+extension View {
+    func onFabTap(notificationName: Notification.Name, perform: @escaping () -> Void) -> some View {
+        modifier(OnFabTap(notificationName: notificationName, perform: perform))
+    }
+}
+
+
+// fab mode
 struct StackFabMode: ViewModifier {
     @Environment(\.isPresented) private var isPresented
     @State var fab: FabService

@@ -18,7 +18,6 @@ struct GoalView: View {
     @EnvironmentObject var auth: AuthenticationService
     @EnvironmentObject var db: DatabaseService
     @EnvironmentObject var fab: FabService
-    @Environment(\.isPresented) private var isPresented
     // constant
     let topViewId = randomId()
     // state
@@ -90,8 +89,7 @@ struct GoalView: View {
             self.initialLoad()
         }
         .stackFabMode(fab: self.fab, mode: .Add)
-        .onReceive(NotificationCenter.default.publisher(for: .addFabTap)) { _ in
-            if self.isPresented == false { return }
+        .onFabTap(notificationName: .addFabTap) {
             self.inAdd = true
         }
         .fullScreenCover(isPresented: self.$inAdd) {

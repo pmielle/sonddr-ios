@@ -108,8 +108,7 @@ struct HomeView: View {
             .onAppear {
                 self.initialLoad()
             }
-            .onReceive(NotificationCenter.default.publisher(for: .addFabTap)) { _ in
-                if !self.navigation.isEmpty { return }
+            .onFabTap(notificationName: .addFabTap) {
                 self.inAdd = true
             }
             .fullScreenCover(isPresented: self.$inAdd) {
