@@ -11,11 +11,18 @@ struct RatingFab: View {
 
     // attributes
     // ------------------------------------------
+    // parameters
     @State var rating: CGFloat
+    // environment
+    @EnvironmentObject var auth: AuthenticationService
+    // constant
     let height = 2 * fabSize
+    // state
     @State var maskHeight: CGFloat? = nil
     @State var icon: String? = nil
     @State var ratingOverride: CGFloat? = nil
+    @State var userRating: CGFloat? = nil
+    @State var bubbleLocation: CGFloat? = nil
     
     
     // body
@@ -38,15 +45,20 @@ struct RatingFab: View {
                         .padding(.bottom, 12)
                 }
             }
-            .cornerRadius(99)
+            .cornerRadius(99)  // between the 2 so that only ProfilePicture overflows
+            .overlay {
+                self.userRatingBubble()
+            }
             .onAppear {
                 self.setIcon()
                 self.updateMaskHeight()
+                self.updateBubbleLocation()
             }
             .onChange(of: ratingOverride) { _ in
                 withAnimation {
                     self.setIcon()
                     self.updateMaskHeight()
+                    self.updateBubbleLocation()
                 }
             }
             .gesture(
@@ -55,6 +67,7 @@ struct RatingFab: View {
                         self.ratingOverride = self.computeRatingFromLocation(location: drag.location)
                     }
                     .onEnded { val in
+                        self.userRating = self.ratingOverride
                         self.ratingOverride = nil
                     }
             )
@@ -64,11 +77,38 @@ struct RatingFab: View {
     
     // subviews
     // ------------------------------------------
-    // ...
+    func userRatingBubble() -> some View {
+        ZStack {
+            Rectangle()
+                .fill(.white)
+                .frame(height: profilePictureSize + 4)
+                .aspectRatio(1, contentMode: .fit)
+                .cornerRadius(profilePictureSize / 2, corners: [.bottomLeft, .topLeft, .topRight])
+                .cornerRadius(2, corners: .bottomRight)
+                .rotationEffect(Angle(degrees: -45))
+            ProfilePicture(user: self.auth.loggedInUser!)
+        }
+        .scaleEffect(self.bubbleLocation == nil ? 0.5 : 1, anchor: .trailing)
+        .opacity(self.bubbleLocation == nil ? 0 : 1)
+        .position(x: 0, y: self.bubbleLocation ?? self.computeMaskHeight(rating: self.rating))
+    }
     
     
     // methods
     // ------------------------------------------
+    func updateBubbleLocation() {
+        self.bubbleLocation = self.computeBubbleLocationFromRating(rating: self.ratingOverride ?? self.userRating ?? nil)
+    }
+    
+    func computeBubbleLocationFromRating(rating: CGFloat?) -> CGFloat? {
+        if (rating == nil) {
+            return nil
+        }
+        let computedY = self.height - self.height * rating! / 100
+        let padding: CGFloat = 5
+        return min(self.height - padding, max(padding, computedY))
+    }
+    
     func computeRatingFromLocation(location: CGPoint) -> CGFloat {
         let boundedY = max(0, min(self.height, location.y))
         return 100 - (boundedY / self.height * 100)
@@ -93,7 +133,9 @@ struct RatingFab: View {
 
 struct RatingFab_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        let db = DatabaseService(testMode: true)
+        let auth = AuthenticationService(db: db, testMode: true)
+        return NavigationView {
             ZStack { MyBackground()
                 HStack {
                     RatingFab(rating: 0)
@@ -101,9 +143,9 @@ struct RatingFab_Previews: PreviewProvider {
                     RatingFab(rating: 50)
                     RatingFab(rating: 75)
                     RatingFab(rating: 100)
-                    
                 }
             }
         }
+        .environmentObject(auth)
     }
 }
