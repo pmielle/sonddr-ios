@@ -23,6 +23,7 @@ struct RatingFab: View {
     @State var ratingOverride: CGFloat? = nil
     @State var userRating: CGFloat? = nil
     @State var bubbleLocation: CGFloat? = nil
+    @State var bubbleVisible: Bool = false
     
     
     // body
@@ -52,14 +53,26 @@ struct RatingFab: View {
             .onAppear {
                 self.setIcon()
                 self.updateMaskHeight()
-                self.updateBubbleLocation()
+                self.updateBubble()
             }
             .onChange(of: ratingOverride) { _ in
-                withAnimation {
+                withAnimation() {
                     self.setIcon()
                     self.updateMaskHeight()
+                }
+                withAnimation(.linear(duration: myShortDurationInSec)) {
+                    self.updateBubble()
+                }
+            }
+            .onChange(of: userRating) { _ in
+                Task {
+                    withAnimation(.linear(duration: myShortDurationInSec)) {
+                        self.updateBubbleVisible()
+                    }
+                    await sleep(seconds: myShortDurationInSec)
                     self.updateBubbleLocation()
                 }
+                
             }
             .gesture(
                 DragGesture()
@@ -67,7 +80,7 @@ struct RatingFab: View {
                         self.ratingOverride = self.computeRatingFromLocation(location: drag.location)
                     }
                     .onEnded { val in
-                        self.userRating = self.ratingOverride
+                        self.rate(rating: self.ratingOverride)
                         self.ratingOverride = nil
                     }
             )
@@ -88,16 +101,32 @@ struct RatingFab: View {
                 .rotationEffect(Angle(degrees: -45))
             ProfilePicture(user: self.auth.loggedInUser!)
         }
-        .scaleEffect(self.bubbleLocation == nil ? 0.5 : 1, anchor: .trailing)
-        .opacity(self.bubbleLocation == nil ? 0 : 1)
+        .scaleEffect(self.bubbleVisible ? 1 : 0.5, anchor: .trailing)
+        .opacity(self.bubbleVisible ? 1 : 0)
         .position(x: 0, y: self.bubbleLocation ?? self.computeMaskHeight(rating: self.rating))
+        .onTapGesture {
+            self.rate(rating: nil)
+        }
     }
     
     
     // methods
     // ------------------------------------------
+    func rate(rating: CGFloat?) {
+        self.userRating = rating
+    }
+    
+    func updateBubble() {
+        self.updateBubbleLocation()
+        self.updateBubbleVisible()
+    }
+    
     func updateBubbleLocation() {
         self.bubbleLocation = self.computeBubbleLocationFromRating(rating: self.ratingOverride ?? self.userRating ?? nil)
+    }
+    
+    func updateBubbleVisible() {
+        self.bubbleVisible = self.ratingOverride != nil || self.userRating != nil
     }
     
     func computeBubbleLocationFromRating(rating: CGFloat?) -> CGFloat? {
