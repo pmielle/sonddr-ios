@@ -11,8 +11,14 @@ struct MyFab: View {
 
     // attributes
     // ------------------------------------------
-    @Binding var mode: FabMode?
+    // parameters
+    let tab: Tab
+    // environment
+    @EnvironmentObject var fab: FabService
+    // constant
     let offsetToHide = mySpacing + fabSize
+    // state
+    @State var mode: FabMode? = nil
     @State var isHidden = true
     @State var color: Color = MyFab.undefColor
     @State var icon: String = MyFab.undefIcon
@@ -40,8 +46,10 @@ struct MyFab: View {
         }
         .offset(x: self.isHidden ? self.offsetToHide : 0)
         .onAppear(perform: self.onModeInit)
-        .onChange(of: self.mode) { [mode] newMode in
-            self.onModeChange(oldMode: mode, newMode: newMode)
+        .onChange(of: self.fab.modeStack) { [oldModeStack = fab.modeStack] newModeStack in
+            self.onModeChange(
+                oldMode: oldModeStack[self.tab]!.last!,
+                newMode: newModeStack[self.tab]!.last!)
         }
     }
     
@@ -64,6 +72,7 @@ struct MyFab: View {
     }
     
     func onModeInit() {
+        self.mode = fab.modeStack[self.tab]!.last!
         self.chooseUI(newMode: self.mode)
         if self.mode != nil {
             self.show()
@@ -132,14 +141,11 @@ struct MyFab: View {
 
 struct MyFab_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationStack {
+        let fab = FabService()
+        return NavigationStack {
             ZStack { MyBackground()
-                VStack {
-                    MyFab(mode: .constant(.Add))
-                    MyFab(mode: .constant(.Rate))
-                    MyFab(mode: .constant(nil))
-                }
+                MyFab(tab: .Ideas)
             }
-        }
+        }.environmentObject(fab)
     }
 }

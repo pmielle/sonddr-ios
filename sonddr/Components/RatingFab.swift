@@ -56,11 +56,9 @@ struct RatingFab: View {
                 self.updateBubble()
             }
             .onChange(of: ratingOverride) { _ in
-                withAnimation() {
-                    self.setIcon()
-                    self.updateMaskHeight()
-                }
+                self.updateMaskHeight()
                 withAnimation(.linear(duration: myShortDurationInSec)) {
+                    self.setIcon()
                     self.updateBubble()
                 }
             }

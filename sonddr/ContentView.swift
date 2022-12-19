@@ -13,7 +13,7 @@ struct ContentView: View {
     // ------------------------------------------
     @ObservedObject var auth: AuthenticationService
     @ObservedObject var db: DatabaseService
-    @ObservedObject var fab: FabService
+    @ObservedObject var fab: FabService = FabService()
     
     
     // constructor
@@ -22,7 +22,6 @@ struct ContentView: View {
         let db = DatabaseService(testMode: testMode)
         self.db = db
         self.auth = AuthenticationService(db: db)
-        self.fab = FabService()
     }
     
     
@@ -37,9 +36,18 @@ struct ContentView: View {
             } else {
                 ZStack(alignment: .bottomTrailing) {
                     MyTabView()
-                    MyFab(mode: self.$fab.mode)
-                        .padding(.trailing, mySpacing)
-                        .padding(.bottom, 70)
+                    ZStack {
+                        MyFab(tab: .Ideas)
+                            .opacity(self.fab.selectedTab == .Ideas ? 1 : 0)
+                        MyFab(tab: .Search)
+                            .opacity(self.fab.selectedTab == .Search ? 1 : 0)
+                        MyFab(tab: .Messages)
+                            .opacity(self.fab.selectedTab == .Messages ? 1 : 0)
+                        MyFab(tab: .Notifications)
+                            .opacity(self.fab.selectedTab == .Notifications ? 1 : 0)
+                    }
+                    .padding(.trailing, mySpacing)
+                    .padding(.bottom, 70)
                 }
             }
             SplashScreen()
