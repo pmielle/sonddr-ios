@@ -11,6 +11,7 @@
 		0B0A7D3329436AE70012489F /* RatingFab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A7D3229436AE70012489F /* RatingFab.swift */; };
 		0B0A7D3529436AFA0012489F /* NormalFab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A7D3429436AFA0012489F /* NormalFab.swift */; };
 		0B2D139C29521E4E00F25018 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2D139B29521E4E00F25018 /* Comment.swift */; };
+		0B2D139E2952555D00F25018 /* CommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2D139D2952555D00F25018 /* CommentView.swift */; };
 		0B39F911292509D100C21405 /* IdeaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F910292509D100C21405 /* IdeaView.swift */; };
 		0B39F91329250C9800C21405 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F91229250C9700C21405 /* UserView.swift */; };
 		0B39F91529250CB100C21405 /* GoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F91429250CB100C21405 /* GoalView.swift */; };
@@ -70,6 +71,7 @@
 		0B0A7D3229436AE70012489F /* RatingFab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingFab.swift; sourceTree = "<group>"; };
 		0B0A7D3429436AFA0012489F /* NormalFab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalFab.swift; sourceTree = "<group>"; };
 		0B2D139B29521E4E00F25018 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
+		0B2D139D2952555D00F25018 /* CommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentView.swift; sourceTree = "<group>"; };
 		0B39F910292509D100C21405 /* IdeaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaView.swift; sourceTree = "<group>"; };
 		0B39F91229250C9700C21405 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		0B39F91429250CB100C21405 /* GoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalView.swift; sourceTree = "<group>"; };
@@ -233,6 +235,7 @@
 				0BE7CC552941C403000F7CDE /* ExternalLinkButton.swift */,
 				0B0A7D3229436AE70012489F /* RatingFab.swift */,
 				0B0A7D3429436AFA0012489F /* NormalFab.swift */,
+				0B2D139D2952555D00F25018 /* CommentView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -412,6 +415,7 @@
 				0B781FFE292122E6001D84AB /* Goal.swift in Sources */,
 				0B78200029212619001D84AB /* LabelExtensions.swift in Sources */,
 				0BE7CC522941C22A000F7CDE /* ExternalLink.swift in Sources */,
+				0B2D139E2952555D00F25018 /* CommentView.swift in Sources */,
 				0B781FF829211A7F001D84AB /* SpacingConstants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -48,7 +48,6 @@ struct IdeaView: View {
                 ) {
                     VStack(spacing: myLargeSpacing) {
                         self.header(topInset: reader.safeAreaInsets.top)
-                            .padding(.bottom, mySpacing)
                         self.content()
                         self.commentsPreview()
                             .onAppear {
@@ -179,27 +178,32 @@ struct IdeaView: View {
     
     func commentsPreview() -> some View {
         let firstComment = self.isLoading ? dummyComment() : self.comments!.first
+        let nbComments = self.isLoading ? 2 : self.comments!.count
         return VStack {
-            
             if firstComment == nil {
                 Text("No comments...")
             } else {
-                VStack {
-                    Text(firstComment!.from.name)
-                    Text(firstComment!.body)
+                VStack(alignment: .leading) {
+                    CommentView(comment: firstComment!)
+                    Label("See \(nbComments) comment\(nbComments > 1 ? "s" : "")", systemImage: "chevron.down")
+                        .labelStyle(TrailingIcon())
+                        .myLabel(color: .clear, border: .white)
+                        .foregroundColor(.white)
+                        .padding(.horizontal, mySpacing)
+                        .padding(.leading, profilePictureSize + mySpacing)
                 }
                 .redacted(reason: self.isLoading ? .placeholder : [])
             }
         }
-        .frame(maxWidth: .infinity)
-        .background(.black)
+        .padding(.bottom, myLargeSpacing)
+        .background(.black.opacity(0.5))
     }
     
     
     // methods
     // ------------------------------------------
     func getComments() {
-        self.comments = [dummyComment()]
+        self.comments = [dummyComment(), dummyComment()]
     }
     
     func onScroll(offset: CGPoint) {
