@@ -25,7 +25,7 @@ struct IdeaView: View {
     @State var showNavigationBarTitle = false
     @State var negativeOffset: CGFloat = 0
     @State var inProfile = false
-    @State var comments: [Comment]? = nil
+    @State var comments: [Comment] = [dummyComment(), dummyComment()]
     @State var previewCommentsSortBy: SortBy = .date
     
     
@@ -40,7 +40,6 @@ struct IdeaView: View {
         ZStack(alignment: .bottomTrailing) { MyBackground()
             GeometryReader {reader in
                 
-                // main content
                 ScrollViewWithOffset(
                     axes: .vertical,
                     showsIndicators: true,
@@ -49,26 +48,26 @@ struct IdeaView: View {
                     VStack(spacing: myLargeSpacing) {
                         self.header(topInset: reader.safeAreaInsets.top)
                         self.content()
-                        self.commentsPreview()
-                            .onAppear {
-                                self.getComments()
-                                if !self.forceLoadingState {
-                                    self.isLoading = false
-                                }
-                            }
+                        CommentsPreview(comments: self.comments, sortBy: self.$previewCommentsSortBy)
+                            .redacted(reason: self.isLoading ? .placeholder : [])
                         Spacer()
                     }
                     .padding(.bottom, 100)
                 }
                 
             }
-            
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             self.toolbar()
         }
         .toolbarBackground(self.accentColor, for: .navigationBar)
+        .onAppear {
+            self.initialLoad()
+        }
+        .onChange(of: previewCommentsSortBy) { _ in
+            self.getComments()
+        }
         .stackFabMode(fab: self.fab, mode: .Rate)
     }
     
@@ -175,33 +174,17 @@ struct IdeaView: View {
         }
         .myGutter()
     }
-    
-    func commentsPreview() -> some View {
-        let firstComment = self.isLoading ? dummyComment() : self.comments!.first
-        let nbComments = self.isLoading ? 2 : self.comments!.count
-        return VStack {
-            if firstComment == nil {
-                Text("No comments...")
-            } else {
-                VStack(alignment: .leading) {
-                    CommentView(comment: firstComment!)
-                    Label("See \(nbComments) comment\(nbComments > 1 ? "s" : "")", systemImage: "chevron.down")
-                        .labelStyle(TrailingIcon())
-                        .myLabel(color: .clear, border: .white)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, mySpacing)
-                        .padding(.leading, profilePictureSize + mySpacing)
-                }
-                .redacted(reason: self.isLoading ? .placeholder : [])
-            }
-        }
-        .padding(.bottom, myLargeSpacing)
-        .background(.black.opacity(0.5))
-    }
-    
+
     
     // methods
     // ------------------------------------------
+    func initialLoad() {
+        self.getComments()
+        if !self.forceLoadingState {
+            self.isLoading = false
+        }
+    }
+    
     func getComments() {
         self.comments = [dummyComment(), dummyComment()]
     }
