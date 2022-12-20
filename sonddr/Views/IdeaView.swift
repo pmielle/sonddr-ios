@@ -21,9 +21,12 @@ struct IdeaView: View {
     // constant
     let accentColor: Color = myBackgroundColor
     // state
+    @State var isLoading = true
     @State var showNavigationBarTitle = false
     @State var negativeOffset: CGFloat = 0
     @State var inProfile = false
+    @State var comments: [Comment]? = nil
+    @State var previewCommentsSortBy: SortBy = .date
     
     
     // constructor
@@ -47,6 +50,13 @@ struct IdeaView: View {
                         self.header(topInset: reader.safeAreaInsets.top)
                             .padding(.bottom, mySpacing)
                         self.content()
+                        self.commentsPreview()
+                            .onAppear {
+                                self.getComments()
+                                if !self.forceLoadingState {
+                                    self.isLoading = false
+                                }
+                            }
                         Spacer()
                     }
                     .padding(.bottom, 100)
@@ -167,9 +177,31 @@ struct IdeaView: View {
         .myGutter()
     }
     
+    func commentsPreview() -> some View {
+        let firstComment = self.isLoading ? dummyComment() : self.comments!.first
+        return VStack {
+            
+            if firstComment == nil {
+                Text("No comments...")
+            } else {
+                VStack {
+                    Text(firstComment!.from.name)
+                    Text(firstComment!.body)
+                }
+                .redacted(reason: self.isLoading ? .placeholder : [])
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .background(.black)
+    }
+    
     
     // methods
     // ------------------------------------------
+    func getComments() {
+        self.comments = [dummyComment()]
+    }
+    
     func onScroll(offset: CGPoint) {
         // sticky top background
         self.negativeOffset = offset.y < 0 ? -1 * offset.y : 0
@@ -188,8 +220,13 @@ struct IdeaView_Previews: PreviewProvider {
         let fab = FabService()
         fab.selectedTab = .Ideas
         
-        return NavigationStack {
-            IdeaView(idea: dummyIdea())
+        return Group {
+            NavigationStack {
+                IdeaView(idea: dummyIdea())
+            }
+            NavigationStack {
+                IdeaView(idea: dummyIdea(), forceLoadingState: true)
+            }
         }
         .environmentObject(fab)
         .environmentObject(db)

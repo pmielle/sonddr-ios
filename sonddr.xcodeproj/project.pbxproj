@@ -10,6 +10,7 @@
 		0B0A7D312943684C0012489F /* FabMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A7D302943684C0012489F /* FabMode.swift */; };
 		0B0A7D3329436AE70012489F /* RatingFab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A7D3229436AE70012489F /* RatingFab.swift */; };
 		0B0A7D3529436AFA0012489F /* NormalFab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B0A7D3429436AFA0012489F /* NormalFab.swift */; };
+		0B2D139C29521E4E00F25018 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B2D139B29521E4E00F25018 /* Comment.swift */; };
 		0B39F911292509D100C21405 /* IdeaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F910292509D100C21405 /* IdeaView.swift */; };
 		0B39F91329250C9800C21405 /* UserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F91229250C9700C21405 /* UserView.swift */; };
 		0B39F91529250CB100C21405 /* GoalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B39F91429250CB100C21405 /* GoalView.swift */; };
@@ -68,6 +69,7 @@
 		0B0A7D302943684C0012489F /* FabMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FabMode.swift; sourceTree = "<group>"; };
 		0B0A7D3229436AE70012489F /* RatingFab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingFab.swift; sourceTree = "<group>"; };
 		0B0A7D3429436AFA0012489F /* NormalFab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NormalFab.swift; sourceTree = "<group>"; };
+		0B2D139B29521E4E00F25018 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		0B39F910292509D100C21405 /* IdeaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdeaView.swift; sourceTree = "<group>"; };
 		0B39F91229250C9700C21405 /* UserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserView.swift; sourceTree = "<group>"; };
 		0B39F91429250CB100C21405 /* GoalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalView.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 				0BE7CC512941C22A000F7CDE /* ExternalLink.swift */,
 				0BE7CC532941C2F9000F7CDE /* Tab.swift */,
 				0B0A7D302943684C0012489F /* FabMode.swift */,
+				0B2D139B29521E4E00F25018 /* Comment.swift */,
 			);
 			path = Interfaces;
 			sourceTree = "<group>";
@@ -381,6 +384,7 @@
 				0B78201729236A2B001D84AB /* TimeUtils.swift in Sources */,
 				0B78201529236476001D84AB /* IdeaCard.swift in Sources */,
 				0B78201929237E22001D84AB /* IdeaList.swift in Sources */,
+				0B2D139C29521E4E00F25018 /* Comment.swift in Sources */,
 				0B781FFB29212146001D84AB /* GoalChip.swift in Sources */,
 				0BE4A40D29362F7B0098AB62 /* ViewExtensions.swift in Sources */,
 				0BE4A3F6292B51150098AB62 /* NotificationExtensions.swift in Sources */,
