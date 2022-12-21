@@ -20,6 +20,7 @@ struct IdeaView: View {
     @EnvironmentObject var fab: FabService
     // constant
     let accentColor: Color = myBackgroundColor
+    let fabTransitionThreshold: CGFloat = 150
     // state
     @State var isLoading = true
     @State var showNavigationBarTitle = false
@@ -50,10 +51,14 @@ struct IdeaView: View {
                         self.content()
                         CommentsPreview(comments: self.comments, sortBy: self.$previewCommentsSortBy)
                             .redacted(reason: self.isLoading ? .placeholder : [])
+                            .offsetIn(space: .named("idea-scroll-container")) { offset in
+                                self.onCommentsPreviewOffsetChange(offset: offset, containerHeight: reader.size.height)
+                            }
                         Spacer()
                     }
                     .padding(.bottom, 100)
                 }
+                .coordinateSpace(name: "idea-scroll-container")
                 
             }
         }
@@ -178,6 +183,11 @@ struct IdeaView: View {
     
     // methods
     // ------------------------------------------
+    func onCommentsPreviewOffsetChange(offset: CGFloat, containerHeight: CGFloat) {
+        let effectiveOffset = offset - containerHeight + bottomBarApproxHeight + self.fabTransitionThreshold
+        print(effectiveOffset)
+    }
+    
     func initialLoad() {
         self.getComments()
         if !self.forceLoadingState {
