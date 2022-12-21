@@ -46,17 +46,9 @@ struct IdeaList: View {
                             name: section.name,
                             index: i
                         )
-                        .background(
-                            GeometryReader { geom in
-                                Color.clear.preference(
-                                    key: ViewOffsetKey.self,
-                                    value: geom.frame(in: .named("idea-list-container")).origin.y
-                                )
-                            }
-                        )
-                    }
-                    .onPreferenceChange(ViewOffsetKey.self) { offset in
-                        self.processHeaderOffsetChange(offset: offset, index: i)
+                        .offsetIn(space: .named("idea-list-container")) { offset in
+                            self.processHeaderOffsetChange(offset: offset, index: i)
+                        }
                     }
                 }
             }
@@ -116,7 +108,7 @@ struct IdeaList: View {
     
     // methods
     // ------------------------------------------
-    func processHeaderOffsetChange(offset: Double, index: Int) {
+    func processHeaderOffsetChange(offset: CGFloat, index: Int) {
         if offset == 0 {  // because it sometimes outputs 0.0s that I don't understand...
             return
         }

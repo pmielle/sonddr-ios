@@ -22,6 +22,22 @@ extension View {
 }
 
 
+// offset in parent change
+extension View {
+    func offsetIn(space: CoordinateSpace, onChange: @escaping (CGFloat) -> Void) -> some View {
+        background(
+            GeometryReader { geom in
+                Color.clear.preference(
+                    key: ViewOffsetKey.self,
+                    value: geom.frame(in: space).origin.y
+                )
+            }
+        )
+        .onPreferenceChange(ViewOffsetKey.self, perform: onChange)
+    }
+}
+
+
 // react to fab tap
 struct OnFabTap: ViewModifier {
     let notificationName: Notification.Name
