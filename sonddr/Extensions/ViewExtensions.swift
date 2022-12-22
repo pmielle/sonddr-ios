@@ -66,43 +66,70 @@ extension View {
 
 
 // fab mode
+@MainActor
 struct StackFabMode: ViewModifier {
     @Environment(\.isPresented) private var isPresented
     @State var fab: FabService
     let mode: FabMode?
     @State var stackIndex: Int? = nil
-    @State var pendingBackNavigation: FabMode? = nil
+    @State var pendingBackNavigation: [FabMode?]? = nil
+    
+    func isFirstPresentation() -> Bool {
+        return self.stackIndex == nil
+    }
+    
+    func addModeToStack() {
+        self.fab.modeStack[self.fab.selectedTab!]!.append([self.mode])
+        self.stackIndex = self.fab.modeStack[self.fab.selectedTab!]!.count
+    }
+    
+    func isLastInStack() -> Bool {
+        return self.stackIndex == self.fab.modeStack[self.fab.selectedTab!]!.count
+    }
+    
+    func popLastToPending() {
+        self.pendingBackNavigation = self.fab.modeStack[self.fab.selectedTab!]!.popLast()
+    }
+    
+    func restorePending() {
+        self.fab.modeStack[self.fab.selectedTab!]!.append(self.pendingBackNavigation!)
+        self.pendingBackNavigation = nil
+    }
+    
     func body(content: Content) -> some View {
-        let tab = self.fab.selectedTab
         return content
             .onChange(of: self.isPresented) { isPresented in
                 if isPresented {
                     if self.pendingBackNavigation != nil {
                         // back navigation has been cancelled (e.g. half swipe back)
-                        // ...
+                        self.restorePending()
                     }
                 } else {
-                    // back navigation starts
-                    // ...
+                    if self.isLastInStack() {
+                        // back navigation starts
+                        self.popLastToPending()
+                    }
+                    
                 }
             }
             .onDisappear {
                 // back navigation ends
-                // ...
+                self.pendingBackNavigation = nil
             }
             .onAppear {
-                // first presentation
-                // ...
+                if self.isFirstPresentation() {
+                    self.addModeToStack()
+                }
             }
     }
 }
 
+@MainActor
 struct StackFabModeOverride: ViewModifier {
     @Environment(\.isPresented) private var isPresented
     @State var fab: FabService
     let mode: FabMode?
     func body(content: Content) -> some View {
-        let tab = self.fab.selectedTab
         return content
             // ...
     }
