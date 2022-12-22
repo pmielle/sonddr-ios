@@ -48,8 +48,8 @@ struct MyFab: View {
         .onAppear(perform: self.onModeInit)
         .onChange(of: self.fab.modeStack) { [oldModeStack = fab.modeStack] newModeStack in
             self.onModeChange(
-                oldMode: oldModeStack[self.tab]!.last!,
-                newMode: newModeStack[self.tab]!.last!)
+                oldMode: oldModeStack[self.tab]!.last!.last!,
+                newMode: newModeStack[self.tab]!.last!.last!)
         }
     }
     
@@ -72,7 +72,7 @@ struct MyFab: View {
     }
     
     func onModeInit() {
-        self.mode = fab.modeStack[self.tab]!.last!
+        self.mode = fab.modeStack[self.tab]!.last!.last!
         self.chooseUI(newMode: self.mode)
         if self.mode != nil {
             self.show()

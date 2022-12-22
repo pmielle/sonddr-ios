@@ -57,7 +57,7 @@ struct IdeaView: View {
                             }
                         if self.showCommentsFab {
                             Color.clear
-                                .stackFabMode(fab: self.fab, mode: .Add, isOverride: true)
+                                .stackFabModeOverride(fab: self.fab, mode: .Add)
                         }
                         Spacer()
                     }
