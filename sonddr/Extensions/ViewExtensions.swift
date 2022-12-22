@@ -70,29 +70,43 @@ struct StackFabMode: ViewModifier {
     @Environment(\.isPresented) private var isPresented
     @State var fab: FabService
     let mode: FabMode?
+    let isOverride: Bool
     @State var stackIndex: Int? = nil
-    @State var pendingBackNavigation: FabMode? = nil
+    @State var pendingBackNavigation = false
     func body(content: Content) -> some View {
         let tab = self.fab.selectedTab
         return content
             .onChange(of: self.isPresented) { isPresented in
                 if isPresented == false {
-                    if self.stackIndex == self.fab.modeStack[tab!]!.count {
+                    if self.fab.modeStack[tab!]!.count > 1 && self.stackIndex! >= self.fab.modeStack[tab!]!.count - self.fab.nbOverride[tab!]! {
                         // back navigation start...
-                        self.pendingBackNavigation = self.fab.modeStack[tab!]!.popLast()!
+                        self.pendingBackNavigation = true
+                        self.fab.pendingBackNavigation.append(self.fab.modeStack[tab!]!.popLast()!)
                     }
                 } else {
-                    if self.pendingBackNavigation != nil {
+                    if self.pendingBackNavigation {
                         // back navigation has been cancelled (e.g. half swipe back)
-                        self.fab.modeStack[tab!]!.append(self.pendingBackNavigation)
-                        self.pendingBackNavigation = nil
+                        self.pendingBackNavigation = false
+                        if self.fab.pendingBackNavigation.count > 0 {
+                            self.fab.modeStack[tab!]!.append(contentsOf: self.fab.pendingBackNavigation.reversed())
+                            self.fab.pendingBackNavigation = []
+                        }
                     }
                 }
             }
             .onDisappear {
                 // back navigation ends
-                if self.pendingBackNavigation != nil {
-                    self.pendingBackNavigation = nil
+                if self.fab.pendingBackNavigation.count > 0 {
+                    self.fab.pendingBackNavigation = []
+                    if self.isOverride {
+                        self.fab.nbOverride[tab!]! -= 1
+                    }
+                } else {
+                    // overide disappears without navigation
+                    if self.isOverride && self.stackIndex! == self.fab.modeStack[tab!]!.count {
+                        self.fab.modeStack[tab!]!.removeLast()
+                        self.fab.nbOverride[tab!]! -= 1
+                    }
                 }
             }
             .onAppear {
@@ -100,14 +114,19 @@ struct StackFabMode: ViewModifier {
                     // first presentation
                     self.fab.modeStack[tab!]!.append(self.mode)
                     self.stackIndex = self.fab.modeStack[tab!]!.count
+                    if self.isOverride {
+                        self.fab.nbOverride[tab!]! += 1
+                    }
                 }
             }
     }
 }
 
 extension View {
-    func stackFabMode(fab: FabService, mode: FabMode?) -> some View {
-        modifier(StackFabMode(fab: fab, mode: mode))
+    func stackFabMode(fab: FabService, mode: FabMode?, isOverride: Bool = false) -> some View {
+        modifier(StackFabMode(fab: fab, mode: mode, isOverride: isOverride))
     }
 }
+
+
 

@@ -28,6 +28,7 @@ struct IdeaView: View {
     @State var inProfile = false
     @State var comments: [Comment] = [dummyComment(), dummyComment()]
     @State var previewCommentsSortBy: SortBy = .date
+    @State var showCommentsFab = false
     
     
     // constructor
@@ -54,6 +55,10 @@ struct IdeaView: View {
                             .offsetIn(space: .named("idea-scroll-container")) { offset in
                                 self.onCommentsPreviewOffsetChange(offset: offset, containerHeight: reader.size.height)
                             }
+                        if self.showCommentsFab {
+                            Color.clear
+                                .stackFabMode(fab: self.fab, mode: .Add, isOverride: true)
+                        }
                         Spacer()
                     }
                     .padding(.bottom, 100)
@@ -185,7 +190,7 @@ struct IdeaView: View {
     // ------------------------------------------
     func onCommentsPreviewOffsetChange(offset: CGFloat, containerHeight: CGFloat) {
         let effectiveOffset = offset - containerHeight + bottomBarApproxHeight + self.fabTransitionThreshold
-        print(effectiveOffset)
+        self.showCommentsFab = effectiveOffset < 0
     }
     
     func initialLoad() {

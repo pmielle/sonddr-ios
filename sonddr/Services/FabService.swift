@@ -16,6 +16,13 @@ class FabService: ObservableObject {
         .Messages: [nil],
         .Notifications: [nil],
     ]
+    @Published var nbOverride: [Tab: Int] = [
+        .Ideas: 0,
+        .Search: 0,
+        .Messages: 0,
+        .Notifications: 0,
+    ]
+    @Published var pendingBackNavigation: [FabMode?] = []
     
     
     // constructor
