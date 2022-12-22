@@ -129,9 +129,33 @@ struct StackFabModeOverride: ViewModifier {
     @Environment(\.isPresented) private var isPresented
     @State var fab: FabService
     let mode: FabMode?
+    @State var isFirstPresentation = true
+    
+    func getLastIndexOfStack() -> Int {
+        return self.fab.modeStack[self.fab.selectedTab!]!.count - 1
+    }
+    
+    func addModeToSubStack() {
+        self.fab.modeStack[self.fab.selectedTab!]![self.getLastIndexOfStack()].append(self.mode)
+        self.isFirstPresentation = false
+    }
+    
+    func removeModeFromSubStack() {
+        self.fab.modeStack[self.fab.selectedTab!]![self.getLastIndexOfStack()].removeLast()
+    }
+    
     func body(content: Content) -> some View {
         return content
-            // ...
+            .onAppear {
+                if self.isFirstPresentation {
+                    self.addModeToSubStack()
+                }
+            }
+            .onDisappear {
+                if self.isPresented {
+                    self.removeModeFromSubStack()
+                }
+            }
     }
 }
 

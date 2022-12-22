@@ -17,7 +17,7 @@ class FabService: ObservableObject {
         .Notifications: [[nil]],
     ] {
         didSet {
-            print(self.modeStack[.Ideas])
+            //print(self.modeStack[.Ideas])
         }
     }
     
