@@ -72,14 +72,14 @@ struct StackFabMode: ViewModifier {
     @State var fab: FabService
     let mode: FabMode?
     @State var stackIndex: Int? = nil
-    @State var pendingBackNavigation: [FabMode?]? = nil
+    @State var pendingBackNavigation: FabModeSubStack? = nil
     
     func isFirstPresentation() -> Bool {
         return self.stackIndex == nil
     }
     
     func addModeToStack() {
-        self.fab.modeStack[self.fab.selectedTab!]!.append([self.mode])
+        self.fab.modeStack[self.fab.selectedTab!]!.append(FabModeSubStack(mainMode: self.mode))
         self.stackIndex = self.fab.modeStack[self.fab.selectedTab!]!.count
     }
     
@@ -136,12 +136,12 @@ struct StackFabModeOverride: ViewModifier {
     }
     
     func addModeToSubStack() {
-        self.fab.modeStack[self.fab.selectedTab!]![self.getLastIndexOfStack()].append(self.mode)
+        self.fab.modeStack[self.fab.selectedTab!]![self.getLastIndexOfStack()].overrideMode = OverrideMode(fabMode: self.mode)
         self.isFirstPresentation = false
     }
     
     func removeModeFromSubStack() {
-        self.fab.modeStack[self.fab.selectedTab!]![self.getLastIndexOfStack()].removeLast()
+        self.fab.modeStack[self.fab.selectedTab!]![self.getLastIndexOfStack()].overrideMode = nil
     }
     
     func body(content: Content) -> some View {

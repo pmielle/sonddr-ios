@@ -7,19 +7,24 @@
 
 import SwiftUI
 
+struct FabModeSubStack: Equatable {
+    let mainMode: FabMode?
+    var overrideMode: OverrideMode? = nil
+}
+
+struct OverrideMode: Equatable {
+    let fabMode: FabMode?
+}
+
 @MainActor
 class FabService: ObservableObject {
     @Published var selectedTab: Tab? = nil
-    @Published var modeStack: [Tab: [[FabMode?]]] = [
-        .Ideas: [[.Add]],
-        .Search: [[nil]],
-        .Messages: [[nil]],
-        .Notifications: [[nil]],
-    ] {
-        didSet {
-            //print(self.modeStack[.Ideas])
-        }
-    }
+    @Published var modeStack: [Tab: [FabModeSubStack]] = [
+        .Ideas: [FabModeSubStack(mainMode: .Add)],
+        .Search: [FabModeSubStack(mainMode: nil)],
+        .Messages: [FabModeSubStack(mainMode: nil)],
+        .Notifications: [FabModeSubStack(mainMode: nil)],
+    ]
     
     
     // constructor

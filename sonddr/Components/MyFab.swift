@@ -18,92 +18,59 @@ struct MyFab: View {
     // constant
     let offsetToHide = mySpacing + fabSize
     // state
-    @State var mode: FabMode? = nil
     @State var isHidden = true
-    @State var color: Color = MyFab.undefColor
-    @State var icon: String = MyFab.undefIcon
-    @State var secondaryIcon: String? = nil
-    @State var showRatingFab = false
-    static let undefColor: Color = .gray
-    static let undefIcon: String = "questionmark"    
+    @State var mainMode: FabMode? = nil
+    @State var overrideMode: OverrideMode? = nil
     
     
     // body
     // ------------------------------------------
     var body: some View {
         ZStack {
-            if self.showRatingFab {
-                RatingFab(rating: 75)
-            } else {
-                NormalFab(
-                    color: self.$color,
-                    icon: self.$icon,
-                    secondaryIcon: self.$secondaryIcon)
-                .onTapGesture {
-                    self.onNormalFabTap()
-                }
+            self.mainFab(mode: self.mainMode)
+                .opacity(self.overrideMode != nil ? 0 : 1)
+            if self.overrideMode != nil {
+                self.overrideFab(mode: self.overrideMode!.fabMode)
             }
         }
         .offset(x: self.isHidden ? self.offsetToHide : 0)
-        .onAppear(perform: self.onModeInit)
-        .onChange(of: self.fab.modeStack) { [oldModeStack = fab.modeStack] newModeStack in
-            self.onModeChange(
-                oldMode: oldModeStack[self.tab]!.last!.last!,
-                newMode: newModeStack[self.tab]!.last!.last!)
+        .onAppear {
+            // ...
+        }
+        .onChange(of: self.fab.modeStack) { [modeStack = fab.modeStack] newModeStack in
+            if self.fab.selectedTab != self.tab { return }
+            let oldModeStack = modeStack[self.tab]!
+            let newModeStack = newModeStack[self.tab]!
+            let oldModeSubStack = oldModeStack.last!
+            let newModeSubStack = newModeStack.last!
+            if oldModeStack.count != newModeStack.count {
+                self.onModeSubStackChange(oldModeSubStack: oldModeSubStack, newModeSubStack: newModeSubStack)
+            } else {
+                self.onOverrideModeChange(oldOverride: oldModeSubStack.overrideMode, newOverride: newModeSubStack.overrideMode)
+            }
         }
     }
     
     
     // subviews
     // ------------------------------------------
-    // ...
+    func mainFab(mode: FabMode?) -> some View {
+        return Text("MAIN")
+    }
+    
+    func overrideFab(mode: FabMode?) -> some View {
+        Text("OVERRIDE")
+    }
     
     
     // methods
     // ------------------------------------------
-    func onNormalFabTap() {
-        switch self.mode {
-        case .Add:
-            NotificationCenter.default.post(Notification(name: .addFabTap))
-        default:
-            print("no action defined for mode \(String(describing: self.mode))")
-            break
-        }
+    func onModeSubStackChange(oldModeSubStack: FabModeSubStack, newModeSubStack: FabModeSubStack) {
+        print("SUBSTACK CHANGE")
     }
     
-    func onModeInit() {
-        self.mode = fab.modeStack[self.tab]!.last!.last!
-        self.chooseUI(newMode: self.mode)
-        if self.mode != nil {
-            self.show()
-        }
-    }
-    
-    func onModeChange(oldMode: FabMode?, newMode: FabMode?) {
-        let toOrFromRating = oldMode != .Rate && newMode == .Rate || oldMode == .Rate && newMode != .Rate
-        let fromNil = oldMode == nil && newMode != nil
-        let toNil = oldMode != nil && newMode == nil
-        // choose a transition depending on the situation
-        if fromNil {
-            self.chooseUI(newMode: newMode)
-            self.show()
-        } else if toNil {
-            Task {
-                self.hide()
-                await sleep(seconds: fabOffsetAnimationDuration)
-                self.chooseUI(newMode: newMode)
-            }
-        } else if toOrFromRating {
-            Task {
-                self.hide()
-                await sleep(seconds: fabOffsetAnimationDuration)
-                self.chooseUI(newMode: newMode)
-                self.show()
-            }
-        } else {
-            self.chooseUI(newMode: newMode)
-        }
-        // n.b. else do nothing
+    func onOverrideModeChange(oldOverride: OverrideMode?, newOverride: OverrideMode?) {
+        print("OVERRIDE CHANGE")
     }
     
     func show() {
@@ -118,30 +85,12 @@ struct MyFab: View {
         }
     }
     
-    func chooseUI(newMode: FabMode?) {
-        switch newMode {
-        case .Add:
-            self.color = myPrimaryColor
-            self.icon = "lightbulb"
-            self.secondaryIcon = "plus"
-            self.showRatingFab = false
-        case .Rate:
-            self.color = MyFab.undefColor
-            self.icon = MyFab.undefIcon
-            self.secondaryIcon = nil
-            self.showRatingFab = true
-        case nil:
-            self.color = MyFab.undefColor
-            self.icon = MyFab.undefIcon
-            self.secondaryIcon = nil
-            self.showRatingFab = false
-        }
-    }
 }
 
 struct MyFab_Previews: PreviewProvider {
     static var previews: some View {
         let fab = FabService()
+        fab.selectedTab = .Ideas
         return NavigationStack {
             ZStack { MyBackground()
                 MyFab(tab: .Ideas)
