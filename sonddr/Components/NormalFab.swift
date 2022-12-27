@@ -11,9 +11,9 @@ struct NormalFab: View {
 
     // attributes
     // ------------------------------------------
-    @Binding var color: Color
-    @Binding var icon: String
-    @Binding var secondaryIcon: String?
+    let color: Color
+    let icon: String
+    var secondaryIcon: String? = nil
     
     
     
@@ -55,10 +55,10 @@ struct NormalFab_Previews: PreviewProvider {
             ZStack { MyBackground()
                 
                 VStack {
-                    NormalFab(color: .constant(myPrimaryColor), icon: .constant("lightbulb"), secondaryIcon: .constant("plus"))
-                    NormalFab(color: .constant(.green), icon: .constant("checkmark"), secondaryIcon: .constant(nil))
-                    NormalFab(color: .constant(.blue), icon: .constant("arrowshape.turn.up.right"), secondaryIcon: .constant(nil))
-                    NormalFab(color: .constant(.red), icon: .constant("rectangle.portrait.and.arrow.right"), secondaryIcon: .constant(nil))
+                    NormalFab(color: myPrimaryColor, icon: "lightbulb", secondaryIcon: "plus")
+                    NormalFab(color: .green, icon: "checkmark")
+                    NormalFab(color: .blue, icon: "arrowshape.turn.up.right")
+                    NormalFab(color: .red, icon: "rectangle.portrait.and.arrow.right")
                 }
                 
             }

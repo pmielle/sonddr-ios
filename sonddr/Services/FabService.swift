@@ -22,7 +22,7 @@ class FabService: ObservableObject {
     @Published var modeStack: [Tab: [FabModeSubStack]] = [
         .Ideas: [FabModeSubStack(mainMode: .Add)],
         .Search: [FabModeSubStack(mainMode: nil)],
-        .Messages: [FabModeSubStack(mainMode: nil)],
+        .Messages: [FabModeSubStack(mainMode: .NewDiscussion)],
         .Notifications: [FabModeSubStack(mainMode: nil)],
     ]
     

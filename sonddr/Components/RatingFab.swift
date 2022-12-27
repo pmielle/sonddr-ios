@@ -42,7 +42,7 @@ struct RatingFab: View {
                                 .frame(height: self.maskHeight ?? self.height)
                         }
                     Text(self.icon ?? "")
-                        .font(.system(size: largeIconSize))
+                        .font(.system(size: 28))
                         .padding(.bottom, 12)
                 }
             }

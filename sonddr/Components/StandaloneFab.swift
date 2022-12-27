@@ -21,13 +21,7 @@ struct StandaloneFab: View {
     // ------------------------------------------
     var body: some View {
         
-        Rectangle()
-            .fill(self.color)
-            .cornerRadius(99)
-            .frame(width: fabSize, height: fabSize)
-            .overlay {
-                Image(systemName: self.icon)
-            }
+        NormalFab(color: self.color, icon: self.icon)
             .offset(x: self.isHidden ? mySpacing + fabSize : 0)
             .onTapGesture {
                 self.onTap()

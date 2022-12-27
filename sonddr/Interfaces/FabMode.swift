@@ -10,4 +10,6 @@ import SwiftUI
 enum FabMode: Equatable {
     case Add
     case Rate
+    case Comment
+    case NewDiscussion
 }

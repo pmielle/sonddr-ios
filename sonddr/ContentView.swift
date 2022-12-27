@@ -36,7 +36,7 @@ struct ContentView: View {
             } else {
                 ZStack(alignment: .bottomTrailing) {
                     MyTabView()
-                    ZStack {
+                    ZStack(alignment: .bottom) {
                         MyFab(tab: .Ideas)
                             .opacity(self.fab.selectedTab == .Ideas ? 1 : 0)
                         MyFab(tab: .Search)
