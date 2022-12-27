@@ -47,7 +47,7 @@ struct IdeaView: View {
                     showsIndicators: true,
                     offsetChanged: self.onScroll
                 ) {
-                    VStack(spacing: myLargeSpacing) {
+                    VStack(spacing: mySpacing) {
                         self.header(topInset: reader.safeAreaInsets.top)
                         self.content()
                         CommentsPreview(comments: self.comments, sortBy: self.$previewCommentsSortBy)
@@ -55,13 +55,15 @@ struct IdeaView: View {
                             .offsetIn(space: .named("idea-scroll-container")) { offset in
                                 self.onCommentsPreviewOffsetChange(offset: offset, containerHeight: reader.size.height)
                             }
+                        self.commentInput()
+                    }
+                    .background {
                         if self.showCommentsFab {
                             Color.clear
                                 .stackFabModeOverride(fab: self.fab, mode: .Comment)
                         }
-                        Spacer()
                     }
-                    .padding(.bottom, 100)
+                    .padding(.bottom, bottomBarApproxHeight + mySpacing)
                 }
                 .coordinateSpace(name: "idea-scroll-container")
                 
@@ -185,6 +187,18 @@ struct IdeaView: View {
             .frame(width: profilePictureSize)
             Text(self.idea.content)
         }
+        .myGutter()
+        .padding(.vertical, myLargeSpacing)
+    }
+    
+    func commentInput() -> some View {
+        HStack(spacing: mySpacing) {
+            ProfilePicture(user: self.auth.loggedInUser!)
+            Text("What do you think?")
+                .opacity(0.5)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: fabSize)
         .myGutter()
     }
 

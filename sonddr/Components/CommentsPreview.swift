@@ -27,15 +27,15 @@ struct CommentsPreview: View {
                     CommentView(comment: self.comments.first!)
                     Label("See \(self.comments.count) comment\(self.comments.count > 1 ? "s" : "")", systemImage: "chevron.down")
                         .labelStyle(TrailingIcon())
-                        .myLabel(color: .clear, border: .white)
-                        .foregroundColor(.white)
+                        .myLabel(color: .white)
+                        .foregroundColor(myDarkBackgroundColor)
                         .padding(.horizontal, mySpacing)
                         .padding(.leading, profilePictureSize + mySpacing)
                 }
             }
         }
         .padding(.bottom, myLargeSpacing)
-        .background(.black.opacity(0.5))
+        .background(myDarkBackgroundColor)
         
     }
     

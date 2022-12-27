@@ -8,4 +8,5 @@
 import SwiftUI
 
 let myBackgroundColor: Color = Color("BackgroundColor")
+let myDarkBackgroundColor: Color = Color("DarkBackgroundColor")
 let myPrimaryColor: Color = Color("PrimaryColor")
