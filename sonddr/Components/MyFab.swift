@@ -62,12 +62,21 @@ struct MyFab: View {
         switch mode {
         case .Add:
             NormalFab(color: myPrimaryColor, icon: "plus")
+                .onTapGesture {
+                    NotificationCenter.default.post(name: .addFabTap, object: nil)
+                }
         case .Rate:
             RatingFab(rating: 66)
         case .Comment:
             NormalFab(color: Color("GreenColor"), icon: "paperplane")
+                .onTapGesture {
+                    NotificationCenter.default.post(name: .commentFabTap, object: nil)
+                }
         case .NewDiscussion:
             NormalFab(color: Color("BlueColor"), icon: "plus")
+                .onTapGesture {
+                    NotificationCenter.default.post(name: .newDiscussionFabTap, object: nil)
+                }
         case nil:
             NormalFab(color: .gray, icon: "questionmark")
         }

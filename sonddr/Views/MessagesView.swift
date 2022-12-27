@@ -51,6 +51,9 @@ struct MessagesView: View {
                 }
                 
             }
+            .onFabTap(notificationName: .newDiscussionFabTap) {
+                print("new discussion fab tap...")
+            }
         }
         .onAppear {
             self.initialLoad()

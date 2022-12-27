@@ -78,6 +78,9 @@ struct IdeaView: View {
         .onChange(of: previewCommentsSortBy) { _ in
             self.getComments()
         }
+        .onFabTap(notificationName: .commentFabTap) {
+            print("comment fab tap...")
+        }
         .stackFabMode(fab: self.fab, mode: .Rate)
     }
     
