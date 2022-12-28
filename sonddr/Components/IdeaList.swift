@@ -16,6 +16,7 @@ struct IdeaList: View {
     @Binding var sortBy: SortBy
     @State var sections: [ListSection] = []
     @State var pinnedHeaderIndexes: [Int] = []
+    var alwaysShowFirstSortBy = false
     
     
     // body
@@ -71,7 +72,7 @@ struct IdeaList: View {
             Spacer()
             if (index == 0) {
                 self.sortByButton()
-                    .opacity(self.pinnedHeaderIndexes.count == 0 ? 1 : 0)
+                    .opacity(self.pinnedHeaderIndexes.count == 0 || self.alwaysShowFirstSortBy ? 1 : 0)
             }
         }
         .myGutter()
