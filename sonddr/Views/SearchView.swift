@@ -76,6 +76,15 @@ struct SearchView: View {
                         await self.getIdeas()
                     }
                 }
+                .navigationDestination(for: Idea.self) { idea in
+                    IdeaView(idea: idea)
+                }
+                .navigationDestination(for: Goal.self) { goal in
+                    GoalView(goal: goal)
+                }
+                .navigationDestination(for: User.self) { user in
+                    UserView()
+                }
             }
         }
     }
