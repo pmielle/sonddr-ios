@@ -11,16 +11,28 @@ struct MessagesView: View {
     
     // attributes
     // ------------------------------------------
+    // parameters
     @Binding var newDiscussionsNb: Int?
     var forceLoadingState: Bool = false
+    // environment
     @EnvironmentObject private var db: DatabaseService
     @EnvironmentObject private var auth: AuthenticationService
+    @EnvironmentObject private var fab: FabService
+    // constants
+    let topViewId = randomId()
+    let title = "Messages"
+    // state
     @State private var discussions: [Discussion]? = nil {
         didSet {
             self.newDiscussionsNb = self.discussions != nil ? self.discussions!.count : nil
         }
     }
     @State private var isLoading = true
+    @State var titleScale = 1.0
+    @State var showNavigationBarTitle = false
+    @State var navigation = NavigationPath()
+    @State var inProfile = false
+    @State var inNewDiscussion = false
     
     
     // constructor
@@ -31,45 +43,165 @@ struct MessagesView: View {
     // body
     // ------------------------------------------
     var body: some View {
-        NavigationStack {
-            ZStack() { MyBackground()
-                
-                ScrollView {
-                    VStack {
-                        if self.isLoading {
-                            self.discussionItem(discussion: dummyDiscussion())
-                                .redacted(reason: .placeholder)
-                            self.discussionItem(discussion: dummyDiscussion())
-                                .redacted(reason: .placeholder)
+        NavigationStack(path: self.$navigation) {
+                ZStack() { MyBackground()
+                    ScrollViewWithOffset(
+                        axes: .vertical,
+                        showsIndicators: true,
+                        offsetChanged: self.onScroll
+                    ) {
+                        ScrollViewReader { reader in
                             
-                        } else {
-                            ForEach(self.discussions!) { discussion in
-                                self.discussionItem(discussion: discussion)
+                            VStack(alignment: .leading, spacing: mySpacing) {
+                                self.titleView()
+                                self.counter()
+                                VStack(spacing: mySpacing) {
+                                    if self.isLoading {
+                                        self.discussionItem(discussion: dummyDiscussion())
+                                            .redacted(reason: .placeholder)
+                                        self.discussionItem(discussion: dummyDiscussion())
+                                            .redacted(reason: .placeholder)
+                                        
+                                    } else {
+                                        ForEach(self.discussions!) { discussion in
+                                            self.discussionItem(discussion: discussion)
+                                        }
+                                    }
+                                }
+                                .allowsHitTesting(!self.isLoading)
+                                .onReceive(NotificationCenter.default.publisher(for: .messagesBottomBarIconTap)) { _ in
+                                    self.onBottomBarIconTap(proxy: reader)
+                                }
+                                .padding(.vertical, mySpacing)
                             }
+                            
                         }
                     }
                 }
-                
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbarBackground(myBackgroundColor, for: .navigationBar)
+                .toolbar {
+                    self.toolbar()
+                }
+                .navigationDestination(for: Discussion.self) { discussion in
+                    DiscussionView(discussion: discussion)
+                }
+                .onAppear {
+                    self.initialLoad()
+                }
+                .onFabTap(notificationName: .newDiscussionFabTap) {
+                    self.inNewDiscussion = true
+                }
+                .fullScreenCover(isPresented: self.$inNewDiscussion) {
+                    NewDiscussionView(isPresented: self.$inNewDiscussion)
+                }
             }
-            .onFabTap(notificationName: .newDiscussionFabTap) {
-                print("new discussion fab tap...")
-            }
-        }
-        .onAppear {
-            self.initialLoad()
-        }
     }
     
     
     // subviews
     // ------------------------------------------
     func discussionItem(discussion: Discussion) -> some View {
-        return Text("\(discussion.id)")
+        let latestMessage = discussion.messages[0]
+        let recipients = discussion.with.map { user in
+            user.name
+        }.joined(separator: ", ")
+        return HStack(alignment: .top, spacing: mySpacing) {
+            self.roundedPicture(path: discussion.picture)
+            VStack(alignment: .leading, spacing: 5) {
+                HStack(spacing: 0) {
+                    Text(recipients)
+                        .fontWeight(.bold)
+                    Text(" · \(prettyTimeDelta(date:latestMessage.date))")
+                        .opacity(0.5)
+                }
+                Text("\(latestMessage.from.name): \(latestMessage.body)")
+                    .opacity(0.5)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .myGutter()
+    }
+        
+    func counter() -> some View {
+        HStack(spacing: mySpacing) {
+            Text("\(self.discussions?.count ?? 1) unread")
+            Circle().fill(.red).frame(height: 9)
+        }
+        .redacted(reason: self.isLoading ? .placeholder : [])
+        .myGutter()
+    }
+    func titleView() -> some View {
+        Text(self.title)
+            .myTitle()
+            .scaleEffect(self.titleScale, anchor: .bottomLeading)
+            .myGutter()
+            .padding(.top, mySpacing)
+            .id(self.topViewId)
+    }
+    
+    func roundedPicture(path: String) -> some View {
+        let size = profilePictureSize
+        return Rectangle()
+            .frame(width: size, height: size)
+            .overlay {
+                Image(path)
+                    .resizable()
+            }
+            .cornerRadius(99)
+    }
+    
+    @ToolbarContentBuilder
+    func toolbar() -> some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Text(self.title)
+                .myInlineToolbarTitle()
+                .opacity(self.showNavigationBarTitle ? 1 : 0)
+        }
+        ToolbarItem(placement: .navigationBarTrailing) {
+            ProfilePicture(user: self.auth.loggedInUser!)
+                .onTapGesture {
+                    self.inProfile = true
+                }
+                .fullScreenCover(isPresented: self.$inProfile) {
+                    ProfileView(isPresented: self.$inProfile)
+                }
+        }
     }
     
     
     // methods
     // ------------------------------------------
+    func onBottomBarIconTap(proxy: ScrollViewProxy) {
+        if (self.navigation.count > 0) {
+            self.goBackToNavigationRoot()
+        } else {
+            withAnimation(.easeIn(duration: myDurationInSec)) {
+                proxy.scrollTo(self.topViewId)
+            }
+        }
+    }
+    
+    func goBackToNavigationRoot() {
+        // FIXME: emptying the whole stack is not animated if count > 1
+        // FIXME: tap mid-navigation breaks things
+        self.navigation.removeLast(self.navigation.count)
+        self.fab.modeStack[.Messages]!.removeLast(self.fab.modeStack[.Messages]!.count - 1)
+    }
+    
+    func onScroll(offset: CGPoint) {
+        // title scale
+        if offset.y < -1 {
+            self.titleScale = 1 - 0.001 * offset.y
+        } else if self.titleScale > 1 {
+            self.titleScale = 1.0
+        }
+        // navigation bar title
+        withAnimation(.easeIn(duration: myShortDurationInSec)) {
+            self.showNavigationBarTitle = offset.y > 50
+        }
+    }
+    
     func initialLoad() {
         Task {
             await self.getDiscussions()

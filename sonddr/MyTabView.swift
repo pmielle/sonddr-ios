@@ -175,8 +175,8 @@ struct MyTabView: View {
                 NotificationCenter.default.post(Notification(name: .searchBottomBarIconTap))
             case .Notifications:
                 NotificationCenter.default.post(Notification(name: .notificationsBottomBarIconTap))
-            default:
-                print("bottomBarIconTap not implemented for \(tab)")
+            case .Messages:
+                NotificationCenter.default.post(Notification(name: .messagesBottomBarIconTap))
             }
         }
     }

@@ -42,7 +42,7 @@ struct NotificationsView: View {
     // body
     // ------------------------------------------
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: self.$navigation) {
             ZStack() { MyBackground()
                 ScrollViewWithOffset(
                     axes: .vertical,
@@ -216,7 +216,6 @@ struct NotificationsView: View {
         } catch {
             print("an error occured: \(error)")
         }
-        
     }
 }
 
