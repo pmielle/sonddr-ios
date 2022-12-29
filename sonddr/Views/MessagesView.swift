@@ -64,7 +64,9 @@ struct MessagesView: View {
                                         
                                     } else {
                                         ForEach(self.discussions!) { discussion in
-                                            self.discussionItem(discussion: discussion)
+                                            NavigationLink(value: discussion) {
+                                                self.discussionItem(discussion: discussion)
+                                            }
                                         }
                                     }
                                 }

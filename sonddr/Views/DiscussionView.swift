@@ -13,6 +13,8 @@ struct DiscussionView: View {
     // ------------------------------------------
     // parameters
     let discussion: Discussion
+    // environment
+    @EnvironmentObject var fab: FabService
     
     
     // body
@@ -22,6 +24,10 @@ struct DiscussionView: View {
             
             Text("DiscussionView works!")
             
+        }
+        .stackFabMode(fab: self.fab, mode: .Send)
+        .onFabTap(notificationName: .sendFabTap) {
+            print("send message...")
         }
     }
     
@@ -38,8 +44,12 @@ struct DiscussionView: View {
 
 struct DiscussionView_Previews: PreviewProvider {
     static var previews: some View {
-        NavigationView {
+        let fab = FabService()
+        fab.selectedTab = .Ideas
+        
+        return NavigationView {
             DiscussionView(discussion: dummyDiscussion())
         }
+        .environmentObject(fab)
     }
 }

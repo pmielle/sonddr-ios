@@ -72,6 +72,11 @@ struct MyFab: View {
                 .onTapGesture {
                     NotificationCenter.default.post(name: .commentFabTap, object: nil)
                 }
+        case .Send:
+            NormalFab(color: Color("BlueColor"), icon: "paperplane")
+                .onTapGesture {
+                    NotificationCenter.default.post(name: .sendFabTap, object: nil)
+                }
         case .NewDiscussion:
             NormalFab(color: Color("BlueColor"), icon: "plus")
                 .onTapGesture {

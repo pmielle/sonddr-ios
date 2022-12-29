@@ -13,6 +13,7 @@ extension Notification.Name {
     static let notificationsBottomBarIconTap = Notification.Name("notificationsBottomBarIconTap")
     static let messagesBottomBarIconTap = Notification.Name("messagesBottomBarIconTap")
     static let addFabTap = Notification.Name("addFabTap")
+    static let sendFabTap = Notification.Name("sendFabTap")
     static let commentFabTap = Notification.Name("commentFabTap")
     static let newDiscussionFabTap = Notification.Name("newDiscussionFabTap")
 }

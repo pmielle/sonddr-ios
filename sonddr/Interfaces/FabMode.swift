@@ -12,4 +12,5 @@ enum FabMode: Equatable {
     case Rate
     case Comment
     case NewDiscussion
+    case Send
 }
