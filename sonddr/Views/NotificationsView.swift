@@ -111,9 +111,10 @@ struct NotificationsView: View {
     
     func counter() -> some View {
         HStack(spacing: mySpacing) {
-            Text("2 unread")
+            Text("\(self.notifications?.count ?? 1) unread")
             Circle().fill(.red).frame(height: 9)
         }
+        .redacted(reason: self.isLoading ? .placeholder : [])
         .myGutter()
     }
     func titleView() -> some View {
