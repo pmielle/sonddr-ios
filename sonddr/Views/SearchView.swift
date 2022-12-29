@@ -51,9 +51,11 @@ struct SearchView: View {
                                         sortBy: self.$sortBy,
                                         alwaysShowFirstSortBy: true
                                     )
+                                    .allowsHitTesting(!self.isLoading)
                                 }
                             }
                         }
+                        .padding(.bottom, 100)
                         .onReceive(NotificationCenter.default.publisher(for: .searchBottomBarIconTap)) { _ in
                             self.onBottomBarIconTap(proxy: reader)
                         }

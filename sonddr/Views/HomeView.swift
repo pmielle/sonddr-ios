@@ -246,10 +246,8 @@ struct HomeView_Previews: PreviewProvider {
         
         return Group {
             HomeView()
-                
-            // 2nd preview with loading state
-            // ------------------------------
             HomeView(forceLoadingState: true)
+                .previewDisplayName("Loading")
         }
         .environmentObject(auth)
         .environmentObject(db)
