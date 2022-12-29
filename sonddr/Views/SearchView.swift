@@ -27,6 +27,7 @@ struct SearchView: View {
     @State var isLoading = false
     @State var sortBy: SortBy = .date
     @State var navigation = NavigationPath()
+    @State var scrollViewOffset: CGFloat = 0
 
     
     // body
@@ -34,7 +35,9 @@ struct SearchView: View {
     var body: some View {
         NavigationStack(path: self.$navigation) {
             ZStack { MyBackground()
-                ScrollView {
+                ScrollViewWithOffset(axes: .vertical, showsIndicators: true) { offset in
+                    self.scrollViewOffset = round(offset.y)
+                } content: {
                     ScrollViewReader { reader in
                         VStack(spacing: 0) {
                             Spacer()
@@ -116,8 +119,10 @@ struct SearchView: View {
     func onBottomBarIconTap(proxy: ScrollViewProxy) {
         if (self.navigation.count > 0) {
             self.goBackToNavigationRoot()
-        } else {
+        } else if (self.scrollViewOffset != 0) {
             self.scrollToTop(proxy: proxy)
+        } else if (self.query != nil) {
+            self.clear()
         }
     }
     
