@@ -50,14 +50,11 @@ struct NotificationsView: View {
                     offsetChanged: self.onScroll
                 ) {
                     ScrollViewReader { reader in
+                        
                         VStack(alignment: .leading, spacing: mySpacing) {
-                            Text(self.title)
-                                .myTitle()
-                                .scaleEffect(self.titleScale, anchor: .bottomLeading)
-                                .myGutter()
-                                .padding(.top, mySpacing)
-                                .id(self.topViewId)
-                            VStack {
+                            self.titleView()
+                            self.counter()
+                            VStack(spacing: mySpacing) {
                                 if self.isLoading {
                                     self.notificationItem(notification: dummyNotification())
                                         .redacted(reason: .placeholder)
@@ -74,7 +71,10 @@ struct NotificationsView: View {
                             .onReceive(NotificationCenter.default.publisher(for: .notificationsBottomBarIconTap)) { _ in
                                 self.onBottomBarIconTap(proxy: reader)
                             }
+                            .padding(.vertical, mySpacing)
+                            self.loadOlder()
                         }
+                        
                     }
                 }
             }
@@ -101,9 +101,52 @@ struct NotificationsView: View {
     
     // subviews
     // ------------------------------------------
+    func loadOlder() -> some View {
+        Label("Load older notifications", systemImage: "chevron.down")
+            .labelStyle(TrailingIcon())
+            .myLabel(color: .clear, border: .white)
+            .foregroundColor(.white)
+            .myGutter()
+    }
+    
+    func counter() -> some View {
+        HStack(spacing: mySpacing) {
+            Text("2 unread")
+            Circle().fill(.red).frame(height: 9)
+        }
+        .myGutter()
+    }
+    func titleView() -> some View {
+        Text(self.title)
+            .myTitle()
+            .scaleEffect(self.titleScale, anchor: .bottomLeading)
+            .myGutter()
+            .padding(.top, mySpacing)
+            .id(self.topViewId)
+    }
+    
     func notificationItem(notification: MyNotification) -> some View {
-        return Text("\(notification.content)")
-            .frame(maxWidth: .infinity)
+        HStack(alignment: .top, spacing: mySpacing) {
+            self.roundedPicture(path: notification.picture)
+            VStack(alignment: .leading, spacing: 5) {
+                Text(notification.content)
+                Text(prettyTimeDelta(date:notification.date))
+                    .opacity(0.5)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .myGutter()
+    }
+    
+    func roundedPicture(path: String) -> some View {
+        let size = profilePictureSize
+        return Rectangle()
+            .frame(width: size, height: size)
+            .overlay {
+                Image(path)
+                    .resizable()
+            }
+            .cornerRadius(99)
     }
     
     @ToolbarContentBuilder

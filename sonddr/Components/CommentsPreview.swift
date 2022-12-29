@@ -27,8 +27,8 @@ struct CommentsPreview: View {
                     CommentView(comment: self.comments.first!)
                     Label("See \(self.comments.count) comment\(self.comments.count > 1 ? "s" : "")", systemImage: "chevron.down")
                         .labelStyle(TrailingIcon())
-                        .myLabel(color: .white)
-                        .foregroundColor(myDarkBackgroundColor)
+                        .myLabel(color: .clear, border: .white)
+                        .foregroundColor(.white)
                         .padding(.horizontal, mySpacing)
                         .padding(.leading, profilePictureSize + mySpacing)
                 }
