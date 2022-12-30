@@ -102,7 +102,6 @@ struct GoalView: View {
     // ------------------------------------------
     func topBackground(topInset: CGFloat) -> some View {
         VStack(spacing: 0) {
-            
             self.goal.color
                 .frame(height: topInset + -1 * (self.scrollOffset < 0 ? self.scrollOffset : 0))
                 .overlay(alignment: .bottom) {
@@ -112,8 +111,6 @@ struct GoalView: View {
                             .frame(height: 0.5)
                     }
                 }
-            
-            
         }
         .ignoresSafeArea()
         
