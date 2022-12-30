@@ -44,7 +44,7 @@ struct IdeaView: View {
                 
                 ScrollViewWithOffset(
                     axes: .vertical,
-                    showsIndicators: true,
+                    showsIndicators: false,
                     offsetChanged: self.onScroll
                 ) {
                     VStack(spacing: mySpacing) {

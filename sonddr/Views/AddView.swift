@@ -40,7 +40,7 @@ struct AddView: View {
                     // main content
                     ScrollViewWithOffset(
                         axes: .vertical,
-                        showsIndicators: true,
+                        showsIndicators: false,
                         offsetChanged: self.onScroll
                     ) {
                         VStack(spacing: 0) {

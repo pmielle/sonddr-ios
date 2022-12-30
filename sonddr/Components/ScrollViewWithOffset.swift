@@ -33,7 +33,7 @@ struct ScrollViewWithOffset<T: View>: View {
 
 struct ScrollViewWithOffset_Previews: PreviewProvider {
     static var previews: some View {
-        ScrollViewWithOffset(axes: .vertical, showsIndicators: true, offsetChanged: {_ in }) {
+        ScrollViewWithOffset(axes: .vertical, showsIndicators: false, offsetChanged: {_ in }) {
             Text("foo")
         }
     }

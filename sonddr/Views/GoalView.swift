@@ -47,7 +47,7 @@ struct GoalView: View {
                 // actual content starts here
                 ScrollViewWithOffset(
                     axes: .vertical,
-                    showsIndicators: true,
+                    showsIndicators: false,
                     offsetChanged: self.onScroll
                 ) {
                     VStack(spacing: 0) {

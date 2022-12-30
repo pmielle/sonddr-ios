@@ -47,7 +47,7 @@ struct MessagesView: View {
                 ZStack() { MyBackground()
                     ScrollViewWithOffset(
                         axes: .vertical,
-                        showsIndicators: true,
+                        showsIndicators: false,
                         offsetChanged: self.onScroll
                     ) {
                         ScrollViewReader { reader in

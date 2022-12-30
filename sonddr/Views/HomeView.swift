@@ -49,7 +49,7 @@ struct HomeView: View {
                     // actual content starts here
                     ScrollViewWithOffset(
                         axes: .vertical,
-                        showsIndicators: true,
+                        showsIndicators: false,
                         offsetChanged: { value in
                             self.onScroll(
                                 offset: value,

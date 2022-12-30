@@ -35,7 +35,7 @@ struct SearchView: View {
     var body: some View {
         NavigationStack(path: self.$navigation) {
             ZStack { MyBackground()
-                ScrollViewWithOffset(axes: .vertical, showsIndicators: true) { offset in
+                ScrollViewWithOffset(axes: .vertical, showsIndicators: false) { offset in
                     self.scrollViewOffset = round(offset.y)
                 } content: {
                     ScrollViewReader { reader in
