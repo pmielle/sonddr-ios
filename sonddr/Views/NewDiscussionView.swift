@@ -18,7 +18,8 @@ struct NewDiscussionView: View {
     // constants
     // ...
     // state
-    // ...
+    @State var toInputText = ""
+    @State var bodyInputText = ""
     
     
     // body
@@ -28,16 +29,37 @@ struct NewDiscussionView: View {
             GeometryReader {reader in
                 ZStack(alignment: .bottomTrailing) { MyBackground()
                     
-                    // main content
-                    ScrollView {
-                        VStack {
-                            
-                            Text("NewDiscussionView works!")
-                                .frame(maxWidth: .infinity)
-                            
+                    VStack {
+                        // To:
+                        TextField("To:", text: self.$toInputText)
+                            .myGutter()
+                            .padding(.top, mySpacing)
+                        
+                        // content
+                        ScrollView {
+                            VStack {
+                                
+                                // ...
+                                
+                            }
                         }
-                        .padding(.bottom, 100)
+                        
+                        // message input
+                        HStack(spacing: mySpacing) {
+                            Button {
+                                print("attach...")
+                            } label: {
+                                Image(systemName: "paperclip")
+                            }
+                            TextField("Your message", text: self.$bodyInputText)
+                        }
+                        .frame(height: fabSize)
+                        .myGutter()
+                        .padding(.bottom, mySpacing)
+                        .padding(.trailing, mySpacing + fabSize)
+
                     }
+                    .padding(.bottom, bottomBarApproxHeight)
                     
                     // fab
                     StandaloneFab(icon: "paperplane", color: .blue) {
