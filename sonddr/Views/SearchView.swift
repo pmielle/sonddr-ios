@@ -116,11 +116,22 @@ struct SearchView: View {
                 }
         }
         ToolbarItem(placement: .navigationBarLeading) {
-            TextField("Search", text: self.$inputText)
-                .frame(width: UIScreen.main.bounds.width - 2 * mySpacing - profilePictureSize - mySpacing)
-                .onSubmit {
-                    self.onSubmit(proxy: proxy)
+            HStack(spacing: 5) {
+                Button {
+                    self.clear()
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .resizable()
+                        .scaledToFit()
+                        //.frame(height: 12)
                 }
+                .disabled(self.inputText.isEmpty)
+                TextField("Search", text: self.$inputText)
+            }
+            .frame(width: UIScreen.main.bounds.width - 2 * mySpacing - profilePictureSize - mySpacing)
+            .onSubmit {
+                self.onSubmit(proxy: proxy)
+            }
         }
     }
     
