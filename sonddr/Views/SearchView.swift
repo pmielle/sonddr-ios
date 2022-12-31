@@ -73,11 +73,6 @@ struct SearchView: View {
                 }
                 .coordinateSpace(name: "idea-list-container")  // needed in IdeaList
                 .scrollDisabled(self.isLoading)
-                .refreshable {
-                    Task {
-                        await self.getIdeas()
-                    }
-                }
                 .navigationDestination(for: Idea.self) { idea in
                     IdeaView(idea: idea)
                 }
@@ -117,16 +112,15 @@ struct SearchView: View {
         }
         ToolbarItem(placement: .navigationBarLeading) {
             HStack(spacing: 5) {
+                TextField("Search", text: self.$inputText)
                 Button {
                     self.clear()
                 } label: {
-                    Image(systemName: "xmark.circle.fill")
+                    Image(systemName: "xmark.circle")
                         .resizable()
                         .scaledToFit()
-                        //.frame(height: 12)
                 }
-                .disabled(self.inputText.isEmpty)
-                TextField("Search", text: self.$inputText)
+                .opacity(self.inputText.isEmpty ? 0 : 1)
             }
             .frame(width: UIScreen.main.bounds.width - 2 * mySpacing - profilePictureSize - mySpacing)
             .onSubmit {
