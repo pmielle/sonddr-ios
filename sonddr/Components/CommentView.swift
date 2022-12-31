@@ -40,7 +40,7 @@ struct CommentView: View {
                     Text("\(self.comment.score)")
                         .foregroundColor(
                             self.comment.score == 0 ? .white
-                            : self.comment.score > 0 ? .green
+                            : self.comment.score > 0 ? myGreenColor
                             : .red)
                     Button {
                         print("downvote \(self.comment.id)")

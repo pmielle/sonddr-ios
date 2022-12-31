@@ -21,9 +21,7 @@ struct DiscussionView: View {
     let title: String
     // state
     @State var inputText = ""
-    @State var showNavigationBarTitle = false
     @State var inProfile = false
-    @State var scrollViewOffset: CGFloat = 0
     
     
     // constructor
@@ -39,37 +37,15 @@ struct DiscussionView: View {
         ZStack() { MyBackground()
             VStack(spacing: 0) {
                 
-                // header
-                // ...
+                self.messages()
+                self.input()
                 
-                // messages
-                ScrollViewWithOffset(axes: .vertical, showsIndicators: false) { offset in
-                    self.scrollViewOffset = offset.y
-                } content: {
-                    VStack {
-                        Text("DiscussionView works!")
-                    }
-                }
-                
-                // input
-                HStack(spacing: mySpacing) {
-                    Button {
-                        print("attach...")
-                    } label: {
-                        Image(systemName: "paperclip")
-                    }
-                    TextField("Your message", text: self.$inputText)
-                }
-                .frame(height: fabSize)
-                .myGutter()
-                .padding(.bottom, mySpacing)
-                .padding(.trailing, mySpacing + fabSize)
             }
             .padding(.bottom, bottomBarApproxHeight)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbarBackground(myBackgroundColor, for: .navigationBar)
-        .toolbarBackground(self.scrollViewOffset > 0 ? .visible : .hidden, for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
             self.toolbar()
         }
@@ -82,12 +58,64 @@ struct DiscussionView: View {
     
     // subviews
     // ------------------------------------------
+    func messages() -> some View {
+        GeometryReader { reader in
+            ScrollView {
+                GeometryReader { geom in
+                    VStack(spacing: 0) {
+                        Spacer()
+                        ForEach(self.discussion.messages.indices, id: \.self) { i in
+                            let nextIsFromSameUser = self.chooseNextIsFromSameUser(i: i)
+                            let message = self.discussion.messages[i]
+                            MessageComponent(
+                                message: message,
+                                fromLoggedInUser: self.auth.loggedInUser == message.from,
+                                nextIsFromSameUser: nextIsFromSameUser,
+                                parentWidth: geom.size.width
+                            )
+                        }
+                    }
+                    .padding()
+                    .frame(minHeight: reader.size.height)
+                }
+            }
+        }
+    }
+
+    func chooseNextIsFromSameUser(i: Int) -> Bool {
+        let message = self.discussion.messages[i]
+        let user = message.from
+        var nextIsFromSameUser = false
+        if i < self.discussion.messages.count-1 {
+            let nextMessage = self.discussion.messages[i+1]
+            let nextUser = nextMessage.from
+            if nextUser == user {
+                nextIsFromSameUser = true
+            }
+        }
+        return nextIsFromSameUser
+    }
+    
+    func input() -> some View {
+        HStack(spacing: mySpacing) {
+            Button {
+                print("attach...")
+            } label: {
+                Image(systemName: "paperclip")
+            }
+            TextField("Your message", text: self.$inputText)
+        }
+        .frame(height: fabSize)
+        .myGutter()
+        .padding(.bottom, mySpacing)
+        .padding(.trailing, mySpacing + fabSize)
+    }
+    
     @ToolbarContentBuilder
     func toolbar() -> some ToolbarContent {
         ToolbarItem(placement: .principal) {
             Text(self.title)
                 .myInlineToolbarTitle()
-                .opacity(self.showNavigationBarTitle ? 1 : 0)
         }
         ToolbarItem(placement: .navigationBarTrailing) {
             ProfilePicture(user: self.auth.loggedInUser!)

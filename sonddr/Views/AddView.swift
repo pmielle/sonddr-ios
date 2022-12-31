@@ -60,7 +60,7 @@ struct AddView: View {
                     }
                     
                     // fab
-                    StandaloneFab(icon: "checkmark", color: .green) {
+                    StandaloneFab(icon: "checkmark", color: myGreenColor) {
                         print("send idea...")
                     }
                     .padding(.bottom, bottomBarApproxHeight + mySpacing)

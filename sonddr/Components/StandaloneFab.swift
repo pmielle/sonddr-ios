@@ -48,7 +48,7 @@ struct StandaloneFab_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             ZStack { MyBackground()
-                StandaloneFab(icon: "checkmark", color: .green) {}
+                StandaloneFab(icon: "checkmark", color: myGreenColor) {}
             }
         }
     }

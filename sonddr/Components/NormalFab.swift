@@ -56,8 +56,8 @@ struct NormalFab_Previews: PreviewProvider {
                 
                 VStack {
                     NormalFab(color: myPrimaryColor, icon: "lightbulb", secondaryIcon: "plus")
-                    NormalFab(color: .green, icon: "checkmark")
-                    NormalFab(color: .blue, icon: "arrowshape.turn.up.right")
+                    NormalFab(color: myGreenColor, icon: "checkmark")
+                    NormalFab(color: myBlueColor, icon: "arrowshape.turn.up.right")
                     NormalFab(color: .red, icon: "rectangle.portrait.and.arrow.right")
                 }
                 

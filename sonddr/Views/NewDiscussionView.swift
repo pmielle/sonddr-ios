@@ -62,7 +62,7 @@ struct NewDiscussionView: View {
                     .padding(.bottom, bottomBarApproxHeight)
                     
                     // fab
-                    StandaloneFab(icon: "paperplane", color: .blue) {
+                    StandaloneFab(icon: "paperplane", color: myBlueColor) {
                         print("start discussion...")
                     }
                     .padding(.bottom, bottomBarApproxHeight + mySpacing)
