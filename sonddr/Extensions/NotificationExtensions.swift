@@ -16,4 +16,5 @@ extension Notification.Name {
     static let sendFabTap = Notification.Name("sendFabTap")
     static let commentFabTap = Notification.Name("commentFabTap")
     static let newDiscussionFabTap = Notification.Name("newDiscussionFabTap")
+    static let goToDiscussionFabTap = Notification.Name("goToDiscussionFabTap")
 }

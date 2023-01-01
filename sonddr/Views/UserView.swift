@@ -71,7 +71,11 @@ struct UserView: View {
             .onAppear {
                 self.initialLoad()
             }
-            .stackFabMode(fab: self.fab, mode: nil)
+            .onFabTap(notificationName: .goToDiscussionFabTap) {
+                print("go to discussion...")
+            }
+            .stackFabMode(fab: self.fab, mode: .GoToDiscussion)
+            
         }
     }
     
