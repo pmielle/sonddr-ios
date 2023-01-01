@@ -72,7 +72,7 @@ struct UserView: View {
                 self.initialLoad()
             }
             .onFabTap(notificationName: .goToDiscussionFabTap) {
-                print("go to discussion...")
+                NotificationCenter.default.post(Notification(name: .goToDiscussion, object: nil, userInfo: ["user": self.user]))
             }
             .stackFabMode(fab: self.fab, mode: .GoToDiscussion)
             

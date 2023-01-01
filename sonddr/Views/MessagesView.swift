@@ -97,6 +97,9 @@ struct MessagesView: View {
                 .fullScreenCover(isPresented: self.$inNewDiscussion) {
                     NewDiscussionView(isPresented: self.$inNewDiscussion)
                 }
+                .onReceive(NotificationCenter.default.publisher(for: .goToDiscussion)) { notif in
+                    self.goToDiscussion(with: notif.userInfo!["user"] as! User)
+                }
             }
     }
     
@@ -175,6 +178,10 @@ struct MessagesView: View {
     
     // methods
     // ------------------------------------------
+    func goToDiscussion(with: User) {
+        self.inNewDiscussion = true
+    }
+    
     func onBottomBarIconTap(proxy: ScrollViewProxy) {
         if (self.navigation.count > 0) {
             self.goBackToNavigationRoot()

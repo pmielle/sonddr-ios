@@ -47,6 +47,9 @@ struct MyTabView: View {
         }.onAppear {
             self.selectedTab = .Ideas
         }
+        .onReceive(NotificationCenter.default.publisher(for: .goToDiscussion)) { _ in
+            self.selectedTab = .Messages
+        }
     }
     
     
