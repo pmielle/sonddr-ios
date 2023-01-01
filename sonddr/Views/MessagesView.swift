@@ -98,6 +98,7 @@ struct MessagesView: View {
                     NewDiscussionView(isPresented: self.$inNewDiscussion)
                 }
                 .onReceive(NotificationCenter.default.publisher(for: .goToDiscussion)) { notif in
+                    self.goBackToNavigationRoot()
                     self.goToDiscussion(with: notif.userInfo!["user"] as! User)
                 }
             }
