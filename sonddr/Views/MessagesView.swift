@@ -118,6 +118,7 @@ struct MessagesView: View {
                         .opacity(0.5)
                 }
                 Text("\(latestMessage.from.name): \(latestMessage.body)")
+                    .multilineTextAlignment(.leading)
                     .opacity(0.5)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
