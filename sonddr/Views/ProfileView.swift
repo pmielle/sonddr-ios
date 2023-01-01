@@ -152,7 +152,7 @@ struct ProfileView: View {
                                 .foregroundColor(self.accentColor)
                         }
                         .readSize { newSize in
-                            self.leftHeaderHStackOffset = max(0, (UIScreen.main.bounds.width - newSize.width) / 2)
+                            self.leftHeaderHStackOffset = max(0, (UIScreen.main.bounds.width - newSize.width) / 2 - mySpacing)
                         }
                     }
                     Text("User bio - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")

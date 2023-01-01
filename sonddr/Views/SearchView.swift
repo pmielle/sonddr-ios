@@ -80,7 +80,7 @@ struct SearchView: View {
                     GoalView(goal: goal)
                 }
                 .navigationDestination(for: User.self) { user in
-                    UserView()
+                    UserView(user: user)
                 }
             }
         }
