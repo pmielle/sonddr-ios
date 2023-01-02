@@ -33,6 +33,7 @@ struct MessagesView: View {
     @State var navigation = NavigationPath()
     @State var inProfile = false
     @State var inNewDiscussion = false
+    @State var preselectedUser: User? = nil
     
     
     // constructor
@@ -95,7 +96,7 @@ struct MessagesView: View {
                     self.inNewDiscussion = true
                 }
                 .fullScreenCover(isPresented: self.$inNewDiscussion) {
-                    NewDiscussionView(isPresented: self.$inNewDiscussion)
+                    NewDiscussionView(isPresented: self.$inNewDiscussion, preselectedUser: self.preselectedUser)
                 }
                 .onReceive(NotificationCenter.default.publisher(for: .goToDiscussion)) { notif in
                     self.goBackToNavigationRoot()
@@ -180,7 +181,15 @@ struct MessagesView: View {
     // methods
     // ------------------------------------------
     func goToDiscussion(with: User) {
+        // if the discussion already exists, open it
+        // TODO: go to discussion if already exists
+        // else, create a new conversation and preselect this user
+        self.preselectedUser = with
         self.inNewDiscussion = true
+        Task {
+            await sleep(seconds: myDurationInSec)
+            self.preselectedUser = nil
+        }
     }
     
     func onBottomBarIconTap(proxy: ScrollViewProxy) {
