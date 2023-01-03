@@ -32,9 +32,12 @@ struct NewDiscussionView: View {
                     
                     VStack {
                         // To:
-                        TextField("To:", text: self.$toInputText)
-                            .myGutter()
-                            .padding(.top, mySpacing)
+                        VStack(spacing: 0) {
+                            TextField("To:", text: self.$toInputText)
+                                .myGutter()
+                                .padding(.vertical, mySpacing)
+                            Divider()
+                        }
                         
                         // content
                         ScrollView {
@@ -46,18 +49,21 @@ struct NewDiscussionView: View {
                         }
                         
                         // message input
-                        HStack(spacing: mySpacing) {
-                            Button {
-                                print("attach...")
-                            } label: {
-                                Image(systemName: "paperclip")
+                        VStack(spacing: 0) {
+                            Divider()
+                            HStack(spacing: mySpacing) {
+                                Button {
+                                    print("attach...")
+                                } label: {
+                                    Image(systemName: "paperclip")
+                                }
+                                TextField("Your message", text: self.$bodyInputText)
                             }
-                            TextField("Your message", text: self.$bodyInputText)
+                            .frame(height: fabSize)
+                            .myGutter()
+                            .padding(.vertical, mySpacing)
+                            .padding(.trailing, mySpacing + fabSize)
                         }
-                        .frame(height: fabSize)
-                        .myGutter()
-                        .padding(.vertical, mySpacing)
-                        .padding(.trailing, mySpacing + fabSize)
                     }
                     .padding(.bottom, bottomBarApproxHeight)
                     
@@ -75,6 +81,7 @@ struct NewDiscussionView: View {
                 .navigationTitle("New discussion")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbarBackground(myBackgroundColor, for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
                 .onAppear {
                     if self.preselectedUser != nil {
                         self.toInputText = self.preselectedUser!.name
