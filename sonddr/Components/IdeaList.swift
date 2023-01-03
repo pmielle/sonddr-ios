@@ -14,7 +14,7 @@ struct IdeaList: View {
     var ideas: [Idea]?  // nil upon first load
     var pinnedHeaderColor: Color = myBackgroundColor
     @Binding var sortBy: SortBy
-    @State var sections: [ListSection] = []
+    @State var sections: [ListSection<Idea>] = []
     @State var pinnedHeaderIndexes: [Int] = []
     var alwaysShowFirstSortBy = false
     
@@ -37,7 +37,7 @@ struct IdeaList: View {
                 ) { i in
                     let section = self.sections[i]
                     Section {
-                        ForEach(section.ideas) { idea in
+                        ForEach(section.items) { idea in
                             IdeaCard(idea: idea)
                                 .padding(.bottom, mySpacing)
                             
@@ -130,9 +130,9 @@ struct IdeaList: View {
     
     func formatData(ideas: [Idea]?) {
         // init
-        var todaySection = ListSection(name: "Today", ideas: [])
-        var thisWeekSection = ListSection(name: "This week", ideas: [])
-        var earlierSection = ListSection(name: "Earlier", ideas: [])
+        var todaySection = ListSection<Idea>(name: "Today", items: [])
+        var thisWeekSection = ListSection<Idea>(name: "This week", items: [])
+        var earlierSection = ListSection<Idea>(name: "Earlier", items: [])
         // guard: nil case
         if ideas == nil {
             self.sections = []
@@ -141,29 +141,28 @@ struct IdeaList: View {
         ideas!.forEach { idea in
             let delta = Date.now.timeIntervalSince(idea.date)
             if delta <= 24 * 3600 {
-                todaySection.ideas.append(idea)
+                todaySection.items.append(idea)
             } else if delta <= 24 * 3600 * 7 {
-                thisWeekSection.ideas.append(idea)
+                thisWeekSection.items.append(idea)
             } else {
-                earlierSection.ideas.append(idea)
+                earlierSection.items.append(idea)
             }
         }
         // discard empty sections
-        var newValue: [ListSection] = []
+        var newValue: [ListSection<Idea>] = []
         [todaySection, thisWeekSection, earlierSection].forEach { section in
-            if !section.ideas.isEmpty {
+            if !section.items.isEmpty {
                 newValue.append(section)
             }
         }
         // assign
         self.sections = newValue
-
     }
 }
 
-struct ListSection {
+struct ListSection<T> {
     let name: String
-    var ideas: [Idea]
+    var items: [T]
 }
 
 enum SortBy {

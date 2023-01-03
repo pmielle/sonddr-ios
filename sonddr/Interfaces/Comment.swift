@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct Comment: Identifiable {
+struct Comment: Identifiable, Equatable {
     let id: String
     let from: User
     let body: String

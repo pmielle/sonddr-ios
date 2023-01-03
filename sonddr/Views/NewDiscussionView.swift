@@ -88,11 +88,6 @@ struct NewDiscussionView: View {
     
     // subviews
     // ------------------------------------------
-    // ...
-    
-    
-    // methods
-    // ------------------------------------------
     @ToolbarContentBuilder
     func toolbar() -> some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
@@ -102,6 +97,11 @@ struct NewDiscussionView: View {
                 }
         }
     }
+    
+    
+    // methods
+    // ------------------------------------------
+    // ...
 }
 
 struct NewDiscussionView_Previews: PreviewProvider {
