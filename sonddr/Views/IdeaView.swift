@@ -29,6 +29,7 @@ struct IdeaView: View {
     @State var comments: [Comment] = [dummyComment(), dummyComment()]
     @State var previewCommentsSortBy: SortBy = .date
     @State var showCommentsFab = false
+    @State var inComments = false
     
     
     // constructor
@@ -50,11 +51,18 @@ struct IdeaView: View {
                     VStack(spacing: mySpacing) {
                         self.header(topInset: reader.safeAreaInsets.top)
                         self.content()
-                        CommentsPreview(comments: self.comments, sortBy: self.$previewCommentsSortBy)
-                            .redacted(reason: self.isLoading ? .placeholder : [])
-                            .offsetIn(space: .named("idea-scroll-container")) { offset in
-                                self.onCommentsPreviewOffsetChange(offset: offset, containerHeight: reader.size.height)
-                            }
+                        CommentsPreview(
+                            comments: self.comments,
+                            sortBy: self.$previewCommentsSortBy
+                        ) {
+                            self.goToComments()
+                        }
+                        .redacted(reason: self.isLoading ? .placeholder : [])
+                        .offsetIn(
+                            space: .named("idea-scroll-container")
+                        ) { offset in
+                            self.onCommentsPreviewOffsetChange(offset: offset, containerHeight: reader.size.height)
+                        }
                         self.commentInput()
                     }
                     .background {
@@ -81,9 +89,16 @@ struct IdeaView: View {
             self.getComments()
         }
         .onFabTap(notificationName: .commentFabTap) {
-            print("comment fab tap...")
+            self.goToComments()
         }
         .stackFabMode(fab: self.fab, mode: .Rate)
+        .fullScreenCover(isPresented: self.$inComments) {
+            CommentsView(
+                isPresented: self.$inComments,
+                sortBy: self.$previewCommentsSortBy,
+                title: self.idea.title,
+                comments: self.comments)
+        }
     }
     
     
@@ -196,6 +211,9 @@ struct IdeaView: View {
             ProfilePicture(user: self.auth.loggedInUser!)
             Text("What do you think?")
                 .opacity(0.5)
+                .onTapGesture {
+                    self.goToComments()
+                }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .frame(height: fabSize)
@@ -205,6 +223,10 @@ struct IdeaView: View {
     
     // methods
     // ------------------------------------------
+    func goToComments() {
+        self.inComments = true
+    }
+    
     func onCommentsPreviewOffsetChange(offset: CGFloat, containerHeight: CGFloat) {
         let effectiveOffset = offset - containerHeight + bottomBarApproxHeight + self.fabTransitionThreshold
         self.showCommentsFab = effectiveOffset < 0

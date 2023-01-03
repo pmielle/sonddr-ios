@@ -56,9 +56,8 @@ struct NewDiscussionView: View {
                         }
                         .frame(height: fabSize)
                         .myGutter()
-                        .padding(.bottom, mySpacing)
+                        .padding(.vertical, mySpacing)
                         .padding(.trailing, mySpacing + fabSize)
-
                     }
                     .padding(.bottom, bottomBarApproxHeight)
                     

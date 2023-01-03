@@ -13,6 +13,7 @@ struct CommentsPreview: View {
     // ------------------------------------------
     let comments: [Comment]
     @Binding var sortBy: SortBy
+    let onSeeMoreClick: () -> Void
     
     
     // body
@@ -25,12 +26,16 @@ struct CommentsPreview: View {
                 VStack(alignment: .leading, spacing: 0) {
                     self.header()
                     CommentView(comment: self.comments.first!)
-                    Label("See \(self.comments.count) comment\(self.comments.count > 1 ? "s" : "")", systemImage: "chevron.down")
-                        .labelStyle(TrailingIcon())
-                        .myLabel(color: .clear, border: .white)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, mySpacing)
-                        .padding(.leading, profilePictureSize + mySpacing)
+                    Button {
+                        self.onSeeMoreClick()
+                    } label: {
+                        Label("See \(self.comments.count) comment\(self.comments.count > 1 ? "s" : "")", systemImage: "chevron.down")
+                            .labelStyle(TrailingIcon())
+                            .myLabel(color: .clear, border: .white)
+                            .foregroundColor(.white)
+                            .padding(.horizontal, mySpacing)
+                            .padding(.leading, profilePictureSize + mySpacing)
+                    }
                 }
             }
         }
@@ -75,7 +80,11 @@ struct CommentsPreview: View {
 struct CommentsPreview_Previews: PreviewProvider {
     static var previews: some View {
         ZStack { MyBackground()
-            CommentsPreview(comments: [dummyComment(), dummyComment()], sortBy: .constant(.date))
+            CommentsPreview(
+                comments: [dummyComment(), dummyComment()],
+                sortBy: .constant(.date)) {
+                    print("foo")
+                }
         }
     }
     

@@ -38,13 +38,14 @@ struct CommentsView: View {
                     VStack(spacing: 0) {
                         
                         // content
-                        ScrollView {
+                        ScrollView(showsIndicators: false) {
                             VStack(spacing: mySpacing) {
                                 self.header()
                                 self.commentList()
                             }
                         }
                         .background(myDarkBackgroundColor)
+                        .coordinateSpace(name: "comment-list-container")
                         
                         // message input
                         HStack(spacing: mySpacing) {

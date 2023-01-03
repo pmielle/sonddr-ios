@@ -97,18 +97,21 @@ struct DiscussionView: View {
     }
     
     func input() -> some View {
-        HStack(spacing: mySpacing) {
-            Button {
-                print("attach...")
-            } label: {
-                Image(systemName: "paperclip")
+        VStack(spacing: 0) {
+            Divider()
+            HStack(spacing: mySpacing) {
+                Button {
+                    print("attach...")
+                } label: {
+                    Image(systemName: "paperclip")
+                }
+                TextField("Your message", text: self.$inputText)
             }
-            TextField("Your message", text: self.$inputText)
+            .frame(height: fabSize)
+            .myGutter()
+            .padding(.vertical, mySpacing)
+            .padding(.trailing, mySpacing + fabSize)
         }
-        .frame(height: fabSize)
-        .myGutter()
-        .padding(.bottom, mySpacing)
-        .padding(.trailing, mySpacing + fabSize)
     }
     
     @ToolbarContentBuilder
