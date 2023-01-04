@@ -200,7 +200,7 @@ struct IdeaView: View {
                 // TODO: body comments
             }
             .frame(width: profilePictureSize)
-            Text("toto")
+            Text(self.idea.content)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .myGutter()
