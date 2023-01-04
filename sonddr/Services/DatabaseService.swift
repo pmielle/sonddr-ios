@@ -34,6 +34,11 @@ class DatabaseService: ObservableObject {
         return
     }
     
+    func postComment(comment: Comment, onIdea: Idea) async throws {
+        await sleep(seconds: 0.1)
+        return
+    }
+    
     func getUser() async throws -> User {
         await sleep(seconds: 0.1)
         return dummyUser()

@@ -14,8 +14,9 @@ struct CommentsView: View {
     // parameters
     @Binding var isPresented: Bool
     @Binding var sortBy: SortBy
+    @Binding var comments: [Comment]
     let title: String
-    let comments: [Comment]
+    let addCallback: (Comment) -> Void
     // environment
     @EnvironmentObject var auth: AuthenticationService
     @EnvironmentObject var db: DatabaseService
@@ -38,7 +39,7 @@ struct CommentsView: View {
                     VStack(spacing: 0) {
                         
                         // content
-                        ScrollView(showsIndicators: false) {
+                        ScrollView(showsIndicators: false) {  // TODO: make this refreshable eventually (w/ a callback)
                             VStack(spacing: mySpacing) {
                                 self.header()
                                 self.commentList()
@@ -50,8 +51,7 @@ struct CommentsView: View {
                         // message input
                         HStack(spacing: mySpacing) {
                             ProfilePicture(user: self.auth.loggedInUser!)
-                            Text("What do you think?")
-                                .opacity(0.5)
+                            TextField("What do you think?", text: self.$inputText)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .frame(height: fabSize)
@@ -63,7 +63,7 @@ struct CommentsView: View {
                     
                     // fab
                     StandaloneFab(icon: "paperplane", color: myGreenColor) {
-                        print("send comment...")
+                        self.onSubmit()
                     }
                     .padding(.bottom, bottomBarApproxHeight + mySpacing)
                     .padding(.trailing, mySpacing)
@@ -178,6 +178,27 @@ struct CommentsView: View {
     
     // methods
     // ------------------------------------------
+    func onSubmit() {
+        // check the inputs
+        let body = self.inputText
+        if body.isEmpty {
+            print("[error] please type in a comment")
+            return
+        }
+        let user = self.auth.loggedInUser!
+        let date = Date.now
+        // build the comment
+        let comment = Comment(
+            id: randomId(),
+            from: user,
+            body: body,
+            score: 0,
+            date: date)
+        // post it to the parent view
+        // it will post it to the database and add it to the local list of comments
+        self.addCallback(comment)
+    }
+    
     func processHeaderOffsetChange(offset: CGFloat, index: Int) {
         if offset == 0 {  // because it sometimes outputs 0.0s that I don't understand...
             return
@@ -238,9 +259,12 @@ struct CommentsView_Previews: PreviewProvider {
         return CommentsView(
             isPresented: .constant(true),
             sortBy: .constant(.date),
-            title: "Dummy idea title",
-            comments: [dummyComment(), dummyComment()])
-            .environmentObject(db)
-            .environmentObject(auth)
+            comments: .constant([dummyComment(), dummyComment()]),
+            title: "Dummy idea title"
+        ) { newComment in
+                print("new comment \(newComment)")
+        }
+        .environmentObject(db)
+        .environmentObject(auth)
     }
 }

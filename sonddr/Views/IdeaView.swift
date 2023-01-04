@@ -96,8 +96,11 @@ struct IdeaView: View {
             CommentsView(
                 isPresented: self.$inComments,
                 sortBy: self.$previewCommentsSortBy,
-                title: self.idea.title,
-                comments: self.comments)
+                comments: self.$comments,
+                title: self.idea.title
+            ) { newComment in
+                self.postComment(newComment: newComment)
+            }
         }
     }
     
@@ -224,6 +227,17 @@ struct IdeaView: View {
     
     // methods
     // ------------------------------------------
+    func postComment(newComment: Comment) {
+        Task {
+            // post it to the database
+            try? await self.db.postComment(
+                comment: newComment,
+                onIdea: self.idea)
+        }
+        // add it to the local list of comments
+        self.comments.append(newComment)
+    }
+    
     func goToComments() {
         self.inComments = true
     }
