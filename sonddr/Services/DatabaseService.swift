@@ -29,6 +29,11 @@ class DatabaseService: ObservableObject {
     
     // methods
     // ------------------------------------------
+    func postIdea(idea: Idea) async throws {
+        await sleep(seconds: 0.1)
+        return
+    }
+    
     func getUser() async throws -> User {
         await sleep(seconds: 0.1)
         return dummyUser()

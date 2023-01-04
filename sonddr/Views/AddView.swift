@@ -14,15 +14,18 @@ struct AddView: View {
     // parameters
     @Binding var isPresented: Bool
     let preselectedGoal: Goal?
+    let addCallback: (Idea) -> Void
     // environment
     @EnvironmentObject var auth: AuthenticationService
-    @EnvironmentObject var db: DatabaseService
     // constant
     let accentColor: Color = myBackgroundColor
     let coverPlaceholderColor: Color = .gray
     // state
     @State var negativeOffset: CGFloat = 0
     @State var selectedGoals: [Goal] = []
+    @State var title = ""
+    @State var content = ""
+    @State var coverImage = "DefaultIdeaCover"
     
     
     // constructor
@@ -61,7 +64,7 @@ struct AddView: View {
                     
                     // fab
                     StandaloneFab(icon: "checkmark", color: myGreenColor) {
-                        print("send idea...")
+                        self.onSubmit()
                     }
                     .padding(.bottom, bottomBarApproxHeight + mySpacing)
                     .padding(.trailing, mySpacing)
@@ -140,10 +143,49 @@ struct AddView: View {
     
     // methods
     // ------------------------------------------
+    func onSubmit() {
+        // validate the inputs
+        let id = randomId()
+        let title = self.title
+        if title.isEmpty {
+            print("[error] please choose a title")
+            return
+        }
+        let author = self.auth.loggedInUser!
+        let goals = self.selectedGoals
+        if goals.count == 0 {
+            print("[error] please select at least one goal")
+            return
+        }
+        let cover = self.coverImage
+        let rating = 50
+        let date = Date.now
+        let externalLinks: [ExternalLink] = []
+        let content = self.content
+        if content.isEmpty {
+            print("[error] please explain your idea")
+            return
+        }
+        // build the idea
+        let idea = Idea(
+            id: id,
+            title: title,
+            author: author,
+            goals: goals,
+            cover: cover,  // TODO: an actual image
+            rating: rating,
+            date: date,
+            externalLinks: externalLinks,
+            content: content)
+        // post it to the parent view
+        self.addCallback(idea)
+    }
+    
     func onScroll(offset: CGPoint) {
         // sticky top background
         self.negativeOffset = offset.y < 0 ? -1 * offset.y : 0
     }
+    
 }
 
 struct AddView_Previews: PreviewProvider {
@@ -151,8 +193,9 @@ struct AddView_Previews: PreviewProvider {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
         
-        AddView(isPresented: .constant(true), preselectedGoal: dummyGoal())
-            .environmentObject(auth)
-            .environmentObject(db)
+        AddView(isPresented: .constant(true), preselectedGoal: dummyGoal()) { newIdea in
+            print("newIdea is \(newIdea)")
+        }
+        .environmentObject(auth)
     }
 }

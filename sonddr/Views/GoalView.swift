@@ -93,7 +93,9 @@ struct GoalView: View {
             self.inAdd = true
         }
         .fullScreenCover(isPresented: self.$inAdd) {
-            AddView(isPresented: self.$inAdd, preselectedGoal: self.goal)
+            AddView(isPresented: self.$inAdd, preselectedGoal: self.goal) { newIdea in
+                print("add \(newIdea)")
+            }
         }
     }
     

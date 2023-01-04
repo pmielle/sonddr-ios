@@ -178,6 +178,8 @@
 		0B781FE429211243001D84AB /* sonddr */ = {
 			isa = PBXGroup;
 			children = (
+				0B781FE929211244001D84AB /* Assets.xcassets */,
+				0BE4A3F7292EB5100098AB62 /* Info.plist */,
 				0B78201E29243A0E001D84AB /* Views */,
 				0B781FF929212133001D84AB /* Components */,
 				0BE4A3FE29321E240098AB62 /* Services */,
@@ -189,8 +191,6 @@
 				0B781FE529211243001D84AB /* sonddrApp.swift */,
 				0B781FE729211243001D84AB /* ContentView.swift */,
 				0B39F916292512DB00C21405 /* MyTabView.swift */,
-				0B781FE929211244001D84AB /* Assets.xcassets */,
-				0BE4A3F7292EB5100098AB62 /* Info.plist */,
 				0B781FEB29211244001D84AB /* Preview Content */,
 			);
 			path = sonddr;

@@ -112,7 +112,9 @@ struct HomeView: View {
                 self.inAdd = true
             }
             .fullScreenCover(isPresented: self.$inAdd) {
-                AddView(isPresented: self.$inAdd, preselectedGoal: nil)
+                AddView(isPresented: self.$inAdd, preselectedGoal: nil) { newIdea in
+                    self.postIdea(newIdea: newIdea)
+                }
             }
         }
     }
@@ -179,6 +181,15 @@ struct HomeView: View {
     
     // methods
     // ------------------------------------------
+    func postIdea(newIdea: Idea) {
+        Task {
+            // post it to the database
+            try? await self.db.postIdea(idea: newIdea)
+        }
+        // add it to the local list of ideas
+        self.ideas!.append(newIdea)
+    }
+    
     func initialLoad() {
         Task {
             async let cacheGoals: () = try await self.db.cacheGoals()
