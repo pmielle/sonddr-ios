@@ -94,7 +94,7 @@ struct GoalView: View {
         }
         .fullScreenCover(isPresented: self.$inAdd) {
             AddView(isPresented: self.$inAdd, preselectedGoal: self.goal) { newIdea in
-                print("add \(newIdea)")
+                self.postIdea(newIdea: newIdea)
             }
         }
     }
@@ -168,6 +168,15 @@ struct GoalView: View {
     
     // methods
     // ------------------------------------------
+    func postIdea(newIdea: Idea) {
+        Task {
+            // post it to the database
+            try? await self.db.postIdea(idea: newIdea)
+        }
+        // add it to the local list of ideas
+        self.ideas!.append(newIdea)
+    }
+    
     func initialLoad() {
         Task {
             await self.getIdeas()
