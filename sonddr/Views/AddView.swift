@@ -51,8 +51,7 @@ struct AddView: View {
                                 .padding(.bottom, mySpacing)
                             HStack(alignment: .top, spacing: mySpacing) {
                                 ProfilePicture(user: self.auth.loggedInUser!)
-                                Text("Explain your idea")
-                                    .foregroundColor(self.coverPlaceholderColor)
+                                TextField("Explain your idea", text: self.$content)
                                     .padding(.top, 5)
                                     .frame(maxWidth: .infinity, alignment: .leading)  // so that very short bio alignment.leading
                             }
@@ -130,7 +129,7 @@ struct AddView: View {
                             self.selectedGoals.append(self.preselectedGoal!)
                         }
                     }
-                    Text("Choose a title")
+                    TextField("Choose a title", text: self.$title)
                         .myTitle()
                         .myGutter()
                         .padding(.leading, mySpacing + profilePictureSize)
