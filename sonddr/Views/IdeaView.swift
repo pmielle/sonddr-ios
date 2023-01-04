@@ -200,7 +200,8 @@ struct IdeaView: View {
                 // TODO: body comments
             }
             .frame(width: profilePictureSize)
-            Text(self.idea.content)
+            Text("toto")
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
         .myGutter()
         .padding(.vertical, myLargeSpacing)
@@ -229,7 +230,7 @@ struct IdeaView: View {
     
     func onCommentsPreviewOffsetChange(offset: CGFloat, containerHeight: CGFloat) {
         let effectiveOffset = offset - containerHeight + bottomBarApproxHeight + self.fabTransitionThreshold
-        self.showCommentsFab = effectiveOffset < 0
+        self.showCommentsFab = effectiveOffset < 0  // TODO: only if view has been scrolled otherwise always true if short content and tall screen
     }
     
     func initialLoad() {

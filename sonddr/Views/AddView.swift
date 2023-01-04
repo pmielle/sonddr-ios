@@ -17,6 +17,7 @@ struct AddView: View {
     let addCallback: (Idea) -> Void
     // environment
     @EnvironmentObject var auth: AuthenticationService
+    @EnvironmentObject var db: DatabaseService
     // constant
     let accentColor: Color = myBackgroundColor
     let coverPlaceholderColor: Color = .gray
@@ -118,8 +119,7 @@ struct AddView: View {
                     .frame(height: coverPictureHeight - topInset - goalChipHeight - mySpacing)
                 VStack(alignment: .leading, spacing: 2 * mySpacing) {
                     HeaderHStack(shadowColor: self.coverPlaceholderColor, additionalLeftPadding: mySpacing + profilePictureSize) {
-                        Label("Goal(s) of interest", systemImage: "plus.circle")
-                            .myLabel(color: myBackgroundColor)
+                        self.goalPicker()
                         ForEach(self.selectedGoals) { selectedGoal in
                             GoalChip(goal: selectedGoal)
                         }
@@ -136,6 +136,21 @@ struct AddView: View {
                 }
                 .foregroundColor(self.coverPlaceholderColor)
             }
+        }
+    }
+    
+    func goalPicker() -> some View {
+        Menu {
+            ForEach(self.db.goals!) { goal in
+                if !self.selectedGoals.contains(goal) {
+                    Button(goal.name) {
+                        self.selectedGoals.append(goal)
+                    }
+                }
+            }
+        } label: {
+            Label("Goal(s) of interest", systemImage: "plus.circle")
+                .myLabel(color: myBackgroundColor)
         }
     }
     
@@ -178,6 +193,8 @@ struct AddView: View {
             content: content)
         // post it to the parent view
         self.addCallback(idea)
+        // dismiss
+        self.isPresented = false
     }
     
     func onScroll(offset: CGPoint) {
@@ -192,9 +209,17 @@ struct AddView_Previews: PreviewProvider {
         let db = DatabaseService(testMode: true)
         let auth = AuthenticationService(db: db, testMode: true)
         
-        AddView(isPresented: .constant(true), preselectedGoal: dummyGoal()) { newIdea in
-            print("newIdea is \(newIdea)")
+        return Group {
+            AddView(isPresented: .constant(true), preselectedGoal: nil) { newIdea in
+                print("newIdea is \(newIdea)")
+            }
+            
+            AddView(isPresented: .constant(true), preselectedGoal: dummyGoal()) { newIdea in
+                print("newIdea is \(newIdea)")
+            }
+            .previewDisplayName("Preselected goal")
         }
         .environmentObject(auth)
+        .environmentObject(db)
     }
 }
