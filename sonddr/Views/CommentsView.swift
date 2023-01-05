@@ -21,7 +21,7 @@ struct CommentsView: View {
     @EnvironmentObject var auth: AuthenticationService
     @EnvironmentObject var db: DatabaseService
     // constants
-    // ...
+    let topViewId = randomId()
     // state
     @State var inputText = ""
     @State var sections: [ListSection<Comment>] = []
@@ -33,53 +33,56 @@ struct CommentsView: View {
     var body: some View {
         NavigationStack {
             GeometryReader {reader in
-                ZStack(alignment: .bottomTrailing) { MyBackground()
-                    
-                    // main
-                    VStack(spacing: 0) {
+                ScrollViewReader { scroll in
+                    ZStack(alignment: .bottomTrailing) { MyBackground()
                         
-                        // content
-                        ScrollView(showsIndicators: false) {  // TODO: make this refreshable eventually (w/ a callback)
-                            VStack(spacing: mySpacing) {
-                                self.header()
-                                self.commentList()
+                        // main
+                        VStack(spacing: 0) {
+                            
+                            // content
+                            ScrollView(showsIndicators: false) {  // TODO: make this refreshable eventually (w/ a callback)
+                                VStack(spacing: mySpacing) {
+                                    self.header()
+                                        .id(self.topViewId)
+                                    self.commentList()
+                                }
                             }
+                            .background(myDarkBackgroundColor)
+                            .coordinateSpace(name: "comment-list-container")
+                            
+                            // message input
+                            HStack(spacing: mySpacing) {
+                                ProfilePicture(user: self.auth.loggedInUser!)
+                                TextField("What do you think?", text: self.$inputText)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(height: fabSize)
+                            .myGutter()
+                            .padding(.vertical, mySpacing)
+                            .padding(.trailing, mySpacing + fabSize)
                         }
-                        .background(myDarkBackgroundColor)
-                        .coordinateSpace(name: "comment-list-container")
+                        .padding(.bottom, bottomBarApproxHeight)
                         
-                        // message input
-                        HStack(spacing: mySpacing) {
-                            ProfilePicture(user: self.auth.loggedInUser!)
-                            TextField("What do you think?", text: self.$inputText)
+                        // fab
+                        StandaloneFab(icon: "paperplane", color: myGreenColor) {
+                            self.onSubmit(proxy: scroll)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .frame(height: fabSize)
-                        .myGutter()
-                        .padding(.vertical, mySpacing)
-                        .padding(.trailing, mySpacing + fabSize)
+                        .padding(.bottom, bottomBarApproxHeight + mySpacing)
+                        .padding(.trailing, mySpacing)
+                        
                     }
-                    .padding(.bottom, bottomBarApproxHeight)
-                    
-                    // fab
-                    StandaloneFab(icon: "paperplane", color: myGreenColor) {
-                        self.onSubmit()
+                    .toolbar {
+                        self.toolbar()
                     }
-                    .padding(.bottom, bottomBarApproxHeight + mySpacing)
-                    .padding(.trailing, mySpacing)
-                
-                }
-                .toolbar {
-                    self.toolbar()
-                }
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbarBackground(myDarkBackgroundColor, for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
-                .onAppear {
-                    self.formatData(comments: self.comments)
-                }
-                .onChange(of: comments) { newValue in
-                    self.formatData(comments: newValue)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbarBackground(myDarkBackgroundColor, for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    .onAppear {
+                        self.formatData(comments: self.comments)
+                    }
+                    .onChange(of: comments) { newValue in
+                        self.formatData(comments: newValue)
+                    }
                 }
             }
         }
@@ -178,7 +181,7 @@ struct CommentsView: View {
     
     // methods
     // ------------------------------------------
-    func onSubmit() {
+    func onSubmit(proxy: ScrollViewProxy) {
         // check the inputs
         let body = self.inputText
         if body.isEmpty {
@@ -197,6 +200,10 @@ struct CommentsView: View {
         // post it to the parent view
         // it will post it to the database and add it to the local list of comments
         self.addCallback(comment)
+        // scroll back to the top of the comment list
+        proxy.scrollTo(self.topViewId)
+        // clear the input
+        self.inputText = ""
     }
     
     func processHeaderOffsetChange(offset: CGFloat, index: Int) {

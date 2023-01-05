@@ -235,7 +235,7 @@ struct IdeaView: View {
                 onIdea: self.idea)
         }
         // add it to the local list of comments
-        self.comments.append(newComment)
+        self.comments.insert(newComment, at: 0)
     }
     
     func goToComments() {
