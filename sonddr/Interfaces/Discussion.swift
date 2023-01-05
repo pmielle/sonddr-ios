@@ -14,7 +14,7 @@ struct Discussion: Identifiable, Hashable, Equatable {
     let id: String
     let with: [User]
     let picture: String
-    let messages: [MyMessage]
+    var messages: [MyMessage]
 }
 
 func dummyDiscussion() -> Discussion {

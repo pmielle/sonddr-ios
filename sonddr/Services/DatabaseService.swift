@@ -48,6 +48,11 @@ class DatabaseService: ObservableObject {
         return
     }
     
+    func postMessage(message: MyMessage, inDiscussion: Discussion) async throws {
+        await sleep(seconds: 0.1)
+        return
+    }
+    
     func postDiscussion(discussion: Discussion) async throws {
         await sleep(seconds: 0.1)
         return
