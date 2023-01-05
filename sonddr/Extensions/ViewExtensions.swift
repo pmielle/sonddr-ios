@@ -65,6 +65,28 @@ extension View {
 }
 
 
+// on first appear
+struct OnFirstAppear: ViewModifier {
+    let perform: () -> Void
+    @State var isFirstLoad = true
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                if isFirstLoad {
+                    self.isFirstLoad = false
+                    self.perform()                    
+                }
+            }
+    }
+}
+
+extension View {
+    func onFirstAppear(perform: @escaping () -> Void) -> some View {
+        modifier(OnFirstAppear(perform: perform))
+    }
+}
+
+
 // fab mode
 @MainActor
 struct StackFabMode: ViewModifier {

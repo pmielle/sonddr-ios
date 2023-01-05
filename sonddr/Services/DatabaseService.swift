@@ -29,12 +29,26 @@ class DatabaseService: ObservableObject {
     
     // methods
     // ------------------------------------------
+    func getUsers(startsWith: String? = nil) async throws -> [User] {
+        await sleep(seconds: 0.1)
+        if (startsWith != nil && !startsWith!.isEmpty) {
+            return [dummyUser(), dummyUser()]
+        } else {
+            return []
+        }
+    }
+    
     func postIdea(idea: Idea) async throws {
         await sleep(seconds: 0.1)
         return
     }
     
     func postComment(comment: Comment, onIdea: Idea) async throws {
+        await sleep(seconds: 0.1)
+        return
+    }
+    
+    func postDiscussion(discussion: Discussion) async throws {
         await sleep(seconds: 0.1)
         return
     }

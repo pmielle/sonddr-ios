@@ -68,7 +68,7 @@ struct UserView: View {
                 self.toolbar()
             }
             .toolbarBackground(myBackgroundColor, for: .navigationBar)
-            .onAppear {
+            .onFirstAppear {
                 self.initialLoad()
             }
             .onFabTap(notificationName: .goToDiscussionFabTap) {

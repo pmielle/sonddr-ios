@@ -89,14 +89,16 @@ struct MessagesView: View {
                 .navigationDestination(for: Discussion.self) { discussion in
                     DiscussionView(discussion: discussion)
                 }
-                .onAppear {
+                .onFirstAppear {
                     self.initialLoad()
                 }
                 .onFabTap(notificationName: .newDiscussionFabTap) {
                     self.inNewDiscussion = true
                 }
                 .fullScreenCover(isPresented: self.$inNewDiscussion) {
-                    NewDiscussionView(isPresented: self.$inNewDiscussion, preselectedUser: self.preselectedUser)
+                    NewDiscussionView(isPresented: self.$inNewDiscussion, preselectedUser: self.preselectedUser) { newDiscussion in
+                        self.postDiscussion(newDiscussion: newDiscussion)
+                    }
                 }
                 .onReceive(NotificationCenter.default.publisher(for: .goToDiscussion)) { notif in
                     self.goBackToNavigationRoot()
@@ -180,6 +182,18 @@ struct MessagesView: View {
     
     // methods
     // ------------------------------------------
+    func postDiscussion(newDiscussion: Discussion) {
+        Task {
+            // post it to the database
+            try? await self.db.postDiscussion(
+                discussion: newDiscussion
+            )
+        }
+        // add it to the local list of discussions
+        self.discussions!.insert(newDiscussion, at: 0)
+        // TODO: go to the discussion directly
+    }
+    
     func goToDiscussion(with: User) {
         // if the discussion already exists, open it
         // TODO: go to discussion if already exists

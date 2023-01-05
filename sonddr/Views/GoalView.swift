@@ -85,7 +85,7 @@ struct GoalView: View {
         .toolbar {
             self.toolbar()
         }
-        .onAppear {
+        .onFirstAppear {
             self.initialLoad()
         }
         .stackFabMode(fab: self.fab, mode: .Add)
@@ -174,7 +174,8 @@ struct GoalView: View {
             try? await self.db.postIdea(idea: newIdea)
         }
         // add it to the local list of ideas
-        self.ideas!.append(newIdea)
+        self.ideas!.insert(newIdea, at: 0)
+        // TODO: open the idea directly
     }
     
     func initialLoad() {

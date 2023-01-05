@@ -105,7 +105,7 @@ struct HomeView: View {
             .navigationDestination(for: User.self) { user in
                 UserView(user: user)
             }
-            .onAppear {
+            .onFirstAppear {
                 self.initialLoad()
             }
             .onFabTap(notificationName: .addFabTap) {
@@ -187,7 +187,8 @@ struct HomeView: View {
             try? await self.db.postIdea(idea: newIdea)
         }
         // add it to the local list of ideas
-        self.ideas!.append(newIdea)
+        self.ideas!.insert(newIdea, at: 0)
+        // TODO: open the idea directly
     }
     
     func initialLoad() {

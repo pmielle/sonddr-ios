@@ -80,7 +80,7 @@ struct ProfileView: View {
                     self.toolbar()
                 }
                 .toolbarBackground(self.accentColor, for: .navigationBar)
-                .onAppear {
+                .onFirstAppear {
                     self.initialLoad()
                 }
             }

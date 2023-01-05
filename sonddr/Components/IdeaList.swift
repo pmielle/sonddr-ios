@@ -54,7 +54,7 @@ struct IdeaList: View {
                 }
             }
         }
-        .onAppear {
+        .onFirstAppear {
             self.formatData(ideas: self.ideas)
         }
         .onChange(of: ideas) { newValue in

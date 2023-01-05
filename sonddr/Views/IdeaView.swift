@@ -82,7 +82,7 @@ struct IdeaView: View {
             self.toolbar()
         }
         .toolbarBackground(self.accentColor, for: .navigationBar)
-        .onAppear {
+        .onFirstAppear {
             self.initialLoad()
         }
         .onChange(of: previewCommentsSortBy) { _ in

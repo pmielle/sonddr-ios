@@ -92,7 +92,7 @@ struct NotificationsView: View {
             .navigationDestination(for: User.self) { user in
                 UserView(user: user)
             }
-            .onAppear {
+            .onFirstAppear {
                 self.initialLoad()
             }
         }
