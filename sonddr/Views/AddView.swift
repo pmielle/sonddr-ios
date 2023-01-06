@@ -193,8 +193,6 @@ struct AddView: View {
             content: content)
         // post it to the parent view
         self.addCallback(idea)
-        // dismiss
-        self.isPresented = false
     }
     
     func onScroll(offset: CGPoint) {

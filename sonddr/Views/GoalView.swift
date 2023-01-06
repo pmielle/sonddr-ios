@@ -14,6 +14,7 @@ struct GoalView: View {
     // parameters
     let goal: Goal
     var forceLoadingState: Bool = false
+    @Binding var navigation: NavigationPath
     // environment
     @EnvironmentObject var auth: AuthenticationService
     @EnvironmentObject var db: DatabaseService
@@ -95,6 +96,8 @@ struct GoalView: View {
         .fullScreenCover(isPresented: self.$inAdd) {
             AddView(isPresented: self.$inAdd, preselectedGoal: self.goal) { newIdea in
                 self.postIdea(newIdea: newIdea)
+                self.inAdd = false
+                self.navigation.append(newIdea)
             }
         }
     }
@@ -217,13 +220,13 @@ struct GoalView_Previews: PreviewProvider {
         
         return Group {
             NavigationStack {
-                GoalView(goal: dummyGoal())
+                GoalView(goal: dummyGoal(), navigation: .constant(NavigationPath()))
             }
             
             // 2nd preview with loading state
             // ------------------------------
             NavigationStack {
-                GoalView(goal: dummyGoal(), forceLoadingState: true)
+                GoalView(goal: dummyGoal(), forceLoadingState: true, navigation: .constant(NavigationPath()))
             }
         }
         .environmentObject(fab)

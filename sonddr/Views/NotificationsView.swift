@@ -87,7 +87,7 @@ struct NotificationsView: View {
                 IdeaView(idea: idea)
             }
             .navigationDestination(for: Goal.self) { goal in
-                GoalView(goal: goal)
+                GoalView(goal: goal, navigation: self.$navigation)
             }
             .navigationDestination(for: User.self) { user in
                 UserView(user: user)

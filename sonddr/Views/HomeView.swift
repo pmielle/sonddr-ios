@@ -100,7 +100,7 @@ struct HomeView: View {
                 IdeaView(idea: idea)
             }
             .navigationDestination(for: Goal.self) { goal in
-                GoalView(goal: goal)
+                GoalView(goal: goal, navigation: self.$navigation)
             }
             .navigationDestination(for: User.self) { user in
                 UserView(user: user)
@@ -113,7 +113,12 @@ struct HomeView: View {
             }
             .fullScreenCover(isPresented: self.$inAdd) {
                 AddView(isPresented: self.$inAdd, preselectedGoal: nil) { newIdea in
+                    self.inAdd = false
                     self.postIdea(newIdea: newIdea)
+                    Task {
+                        await sleep(seconds: 0.1)  // otherwise multiple update per frame warning
+                        self.navigation.append(newIdea)
+                    }
                 }
             }
         }
