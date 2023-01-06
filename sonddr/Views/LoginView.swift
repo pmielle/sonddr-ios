@@ -35,24 +35,43 @@ struct LoginView: View {
     // subviews
     // ------------------------------------------
     func loginButton() -> some View {
-        Button("Log in") {
-            self.onLoginClick()
-        }
-        .myLargeButton(color: Color("GreenColor"))
+        self.largeButton(
+            color: myGreenColor,
+            text: "Log in",
+            perform: self.onLoginClick
+        )
         .disabled(self.isLoading)
     }
     
     func signupButton() -> some View {
-        Button("Sign up") {
-            print("click")
-        }
-        .myLargeButton(color: .white.opacity(0.5))
+        self.largeButton(
+            color: .white.opacity(0.5),
+            text: "Sign up",
+            perform: self.onSignupClick
+        )
         .disabled(self.isLoading)
+    }
+    
+    func largeButton(color: Color, text: String, perform: @escaping () -> Void) -> some View {
+        Button {
+            perform()
+        } label: {
+            Text(text)
+                .fontWeight(.bold)
+                .frame(maxWidth: .infinity)
+                .padding(20)
+                .background(color)
+                .cornerRadius(20)
+        }
     }
     
     
     // methods
     // ------------------------------------------
+    func onSignupClick() {
+        print("sign up...")
+    }
+    
     func onLoginClick() {
         Task {
             self.isLoading = true

@@ -57,7 +57,6 @@
 		0BE4A3F6292B51150098AB62 /* NotificationExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */; };
 		0BE4A3F9292EC5200098AB62 /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3F8292EC5200098AB62 /* SplashScreen.swift */; };
 		0BE4A3FB292F823A0098AB62 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3FA292F823A0098AB62 /* LoginView.swift */; };
-		0BE4A3FD292F84710098AB62 /* ButtonExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3FC292F84710098AB62 /* ButtonExtensions.swift */; };
 		0BE4A40029321E340098AB62 /* AuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A3FF29321E340098AB62 /* AuthenticationService.swift */; };
 		0BE4A4022933B5180098AB62 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A4012933B5180098AB62 /* DatabaseService.swift */; };
 		0BE4A405293404AE0098AB62 /* MyNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE4A404293404AE0098AB62 /* MyNotification.swift */; };
@@ -125,7 +124,6 @@
 		0BE4A3F7292EB5100098AB62 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0BE4A3F8292EC5200098AB62 /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
 		0BE4A3FA292F823A0098AB62 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
-		0BE4A3FC292F84710098AB62 /* ButtonExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonExtensions.swift; sourceTree = "<group>"; };
 		0BE4A3FF29321E340098AB62 /* AuthenticationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationService.swift; sourceTree = "<group>"; };
 		0BE4A4012933B5180098AB62 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		0BE4A404293404AE0098AB62 /* MyNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNotification.swift; sourceTree = "<group>"; };
@@ -212,7 +210,6 @@
 				0B39F9182925807500C21405 /* ShapeExtensions.swift */,
 				0B39F9242926CE7300C21405 /* SpacingExtensions.swift */,
 				0BE4A3F5292B51150098AB62 /* NotificationExtensions.swift */,
-				0BE4A3FC292F84710098AB62 /* ButtonExtensions.swift */,
 				0BE4A40C29362F7B0098AB62 /* ViewExtensions.swift */,
 			);
 			path = Extensions;
@@ -422,7 +419,6 @@
 				0B7820062923530C001D84AB /* GoalBadge.swift in Sources */,
 				0B39F92329260D1C00C21405 /* TimeConstants.swift in Sources */,
 				0B781FE629211243001D84AB /* sonddrApp.swift in Sources */,
-				0BE4A3FD292F84710098AB62 /* ButtonExtensions.swift in Sources */,
 				0BE7CC542941C2F9000F7CDE /* Tab.swift in Sources */,
 				0B39F911292509D100C21405 /* IdeaView.swift in Sources */,
 				0B39F9212925F91D00C21405 /* MyFab.swift in Sources */,
