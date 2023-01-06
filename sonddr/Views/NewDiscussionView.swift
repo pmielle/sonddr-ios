@@ -19,12 +19,16 @@ struct NewDiscussionView: View {
     @EnvironmentObject var auth: AuthenticationService
     @EnvironmentObject var db: DatabaseService
     // constants
-    // ...
+    enum FocusedField: Hashable {
+        case to
+        case body
+    }
     // state
     @State var toInputText = ""
     @State var bodyInputText = ""
     @State var recipients: [User] = []
     @State var completionList: [User] = []
+    @FocusState var focusedField: FocusedField?
     
     
     // body
@@ -83,6 +87,12 @@ struct NewDiscussionView: View {
                                     Image(systemName: "paperclip")
                                 }
                                 TextField("Your message", text: self.$bodyInputText)
+                                    .focused($focusedField, equals: .body)
+                                    .onAppear {
+                                        if self.preselectedUser != nil {
+                                            focusedField = .body
+                                        }
+                                    }
                             }
                             .frame(height: fabSize)
                             .myGutter()

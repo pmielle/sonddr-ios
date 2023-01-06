@@ -62,12 +62,8 @@ struct CommentsView: View {
                                     .focused($focusedField, equals: .body)
                                     .onAppear {
                                         if self.focusOnAppear {
-                                            Task {
-                                                await sleep(seconds:1)
-                                                focusedField = .body
-                                            }
-                                        }
-                                    }
+                                            focusedField = .body
+                                        }                                    }
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .frame(height: fabSize)
