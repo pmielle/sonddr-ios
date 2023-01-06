@@ -102,7 +102,7 @@ struct MessagesView: View {
                 }
                 .onReceive(NotificationCenter.default.publisher(for: .goToDiscussion)) { notif in
                     self.goBackToNavigationRoot()
-                    self.goToDiscussion(with: notif.userInfo!["user"] as! User)
+                    self.goToDiscussionWith(user: notif.userInfo!["user"] as! User)
                 }
             }
     }
@@ -197,16 +197,29 @@ struct MessagesView: View {
         self.navigation.append(newDiscussion)
     }
     
-    func goToDiscussion(with: User) {
+    func goToDiscussionWith(user: User) {
         // if the discussion already exists, open it
-        // TODO: go to discussion if already exists
+        let matchingDiscussion = self.findDiscussionWith(user: user)
+        if matchingDiscussion != nil {
+            self.navigation.append(matchingDiscussion!)
+            return
+        }
         // else, create a new conversation and preselect this user
-        self.preselectedUser = with
+        self.preselectedUser = user
         self.inNewDiscussion = true
         Task {
             await sleep(seconds: myDurationInSec)
             self.preselectedUser = nil
         }
+    }
+    
+    func findDiscussionWith(user: User) -> Discussion? {
+        for discussion in self.discussions! {
+            if discussion.with == [user] {
+                return discussion
+            }
+        }
+        return nil
     }
     
     func onBottomBarIconTap(proxy: ScrollViewProxy) {
