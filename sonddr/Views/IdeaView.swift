@@ -30,6 +30,7 @@ struct IdeaView: View {
     @State var previewCommentsSortBy: SortBy = .date
     @State var showCommentsFab = false
     @State var inComments = false
+    @State var focusOnAppear = false
     
     
     // constructor
@@ -89,7 +90,7 @@ struct IdeaView: View {
             self.getComments()
         }
         .onFabTap(notificationName: .commentFabTap) {
-            self.goToComments()
+            self.goToComments(focusOnAppear: true)
         }
         .stackFabMode(fab: self.fab, mode: .Rate)
         .fullScreenCover(isPresented: self.$inComments) {
@@ -97,7 +98,8 @@ struct IdeaView: View {
                 isPresented: self.$inComments,
                 sortBy: self.$previewCommentsSortBy,
                 comments: self.$comments,
-                title: self.idea.title
+                title: self.idea.title,
+                focusOnAppear: self.$focusOnAppear
             ) { newComment in
                 self.postComment(newComment: newComment)
             }
@@ -216,7 +218,7 @@ struct IdeaView: View {
             Text("What do you think?")
                 .opacity(0.5)
                 .onTapGesture {
-                    self.goToComments()
+                    self.goToComments(focusOnAppear: true)
                 }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -238,7 +240,8 @@ struct IdeaView: View {
         self.comments.insert(newComment, at: 0)
     }
     
-    func goToComments() {
+    func goToComments(focusOnAppear: Bool = false) {
+        self.focusOnAppear = focusOnAppear
         self.inComments = true
     }
     

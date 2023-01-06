@@ -16,16 +16,21 @@ struct CommentsView: View {
     @Binding var sortBy: SortBy
     @Binding var comments: [Comment]
     let title: String
+    @Binding var focusOnAppear: Bool  // needed because let assigned to @State from parent bugs
     let addCallback: (Comment) -> Void
     // environment
     @EnvironmentObject var auth: AuthenticationService
     @EnvironmentObject var db: DatabaseService
     // constants
     let topViewId = randomId()
+    enum FocusedField: Hashable {
+      case body
+    }
     // state
     @State var inputText = ""
     @State var sections: [ListSection<Comment>] = []
     @State var pinnedHeaderIndexes: [Int] = []
+    @FocusState var focusedField: FocusedField?
     
     
     // body
@@ -54,6 +59,15 @@ struct CommentsView: View {
                             HStack(spacing: mySpacing) {
                                 ProfilePicture(user: self.auth.loggedInUser!)
                                 TextField("What do you think?", text: self.$inputText)
+                                    .focused($focusedField, equals: .body)
+                                    .onAppear {
+                                        if self.focusOnAppear {
+                                            Task {
+                                                await sleep(seconds:1)
+                                                focusedField = .body
+                                            }
+                                        }
+                                    }
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .frame(height: fabSize)
@@ -267,7 +281,8 @@ struct CommentsView_Previews: PreviewProvider {
             isPresented: .constant(true),
             sortBy: .constant(.date),
             comments: .constant([dummyComment(), dummyComment()]),
-            title: "Dummy idea title"
+            title: "Dummy idea title",
+            focusOnAppear: .constant(true)
         ) { newComment in
                 print("new comment \(newComment)")
         }
