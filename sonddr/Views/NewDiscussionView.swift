@@ -109,7 +109,7 @@ struct NewDiscussionView: View {
                 .toolbarBackground(.visible, for: .navigationBar)
                 .onAppear {
                     if self.preselectedUser != nil {
-                        self.toInputText = self.preselectedUser!.name
+                        self.recipients.append(self.preselectedUser!)
                     }
                 }
             }
