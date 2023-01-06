@@ -161,7 +161,9 @@ struct DiscussionView: View {
             try? await self.db.postMessage(message: message, inDiscussion: self.discussion)
         }
         // add it to the local list of messages
-        self.localMessages.append(message)
+        withAnimation(.easeOut(duration: myShortDurationInSec)) {
+            self.localMessages.append(message)
+        }
         // clear the input field
         self.inputText = ""
     }
