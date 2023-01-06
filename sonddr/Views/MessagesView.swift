@@ -191,7 +191,10 @@ struct MessagesView: View {
         }
         // add it to the local list of discussions
         self.discussions!.insert(newDiscussion, at: 0)
-        // TODO: go to the discussion directly
+        // dismiss the new discussion sheet
+        self.inNewDiscussion = false
+        // go to this new discussion
+        self.navigation.append(newDiscussion)
     }
     
     func goToDiscussion(with: User) {

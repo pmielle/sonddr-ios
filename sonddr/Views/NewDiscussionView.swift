@@ -187,8 +187,6 @@ struct NewDiscussionView: View {
         let discussion = Discussion(id: randomId(), with: recipients, picture: "DefaultProfilePicture", messages: [MyMessage(id: randomId(), from: from, body: body, date: date)])
         // post it to the parent view
         self.addCallback(discussion)
-        // dismiss
-        self.isPresented = false
     }
 }
 
