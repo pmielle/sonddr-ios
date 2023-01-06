@@ -35,52 +35,12 @@ struct SearchView: View {
     var body: some View {
         NavigationStack(path: self.$navigation) {
             ZStack { MyBackground()
-                ScrollViewWithOffset(axes: .vertical, showsIndicators: false) { offset in
-                    self.scrollViewOffset = round(offset.y)
-                } content: {
-                    ScrollViewReader { reader in
-                        VStack(spacing: 0) {
-                            Spacer()
-                                .frame(height: 0)
-                                .id(self.topViewId)
-                            VStack(spacing: mySpacing) {
-                                if self.query != nil {
-                                    self.resultCount()
-                                    IdeaList(
-                                        ideas: self.isLoading ? nil : self.result,
-                                        sortBy: self.$sortBy,
-                                        alwaysShowFirstSortBy: true
-                                    )
-                                    .allowsHitTesting(!self.isLoading)
-                                }
-                            }
-                        }
-                        .padding(.bottom, 100)
-                        .onReceive(NotificationCenter.default.publisher(for: .searchBottomBarIconTap)) { _ in
-                            self.onBottomBarIconTap(proxy: reader)
-                        }
-                        .onChange(of: self.sortBy) { _ in
-                            self.scrollToTop(proxy: reader, animate: false)
-                            Task {
-                                await self.getIdeas()
-                            }
-                        }
-                        .toolbar {
-                            self.toolbar(proxy: reader)
-                        }
-                        .toolbarBackground(myBackgroundColor, for: .navigationBar)
+                ScrollViewReader { reader in
+                    ZStack {
+                        self.completion(proxy: reader)
+                            .opacity(self.query == nil ? 1 : 0)
+                        self.results(proxy: reader)
                     }
-                }
-                .coordinateSpace(name: "idea-list-container")  // needed in IdeaList
-                .scrollDisabled(self.isLoading)
-                .navigationDestination(for: Idea.self) { idea in
-                    IdeaView(idea: idea)
-                }
-                .navigationDestination(for: Goal.self) { goal in
-                    GoalView(goal: goal)
-                }
-                .navigationDestination(for: User.self) { user in
-                    UserView(user: user)
                 }
             }
         }
@@ -89,8 +49,84 @@ struct SearchView: View {
     
     // subviews
     // ------------------------------------------
+    func results(proxy: ScrollViewProxy) -> some View {
+        ScrollViewWithOffset(axes: .vertical, showsIndicators: false) { offset in
+            self.scrollViewOffset = round(offset.y)
+        } content: {
+            VStack(spacing: 0) {
+                Spacer()
+                    .frame(height: 0)
+                    .id(self.topViewId)
+                VStack(spacing: mySpacing) {
+                    if self.query != nil {
+                        self.resultCount()
+                        IdeaList(
+                            ideas: self.isLoading ? nil : self.result,
+                            sortBy: self.$sortBy,
+                            alwaysShowFirstSortBy: true
+                        )
+                        .allowsHitTesting(!self.isLoading)
+                    }
+                }
+            }
+            .padding(.bottom, 100)
+            .onReceive(NotificationCenter.default.publisher(for: .searchBottomBarIconTap)) { _ in
+                self.onBottomBarIconTap(proxy: proxy)
+            }
+            .onChange(of: self.sortBy) { _ in
+                self.scrollToTop(proxy: proxy, animate: false)
+                Task {
+                    await self.getIdeas()
+                }
+            }
+            .toolbar {
+                self.toolbar(proxy: proxy)
+            }
+            .toolbarBackground(myBackgroundColor, for: .navigationBar)
+            
+        }
+        .coordinateSpace(name: "idea-list-container")  // needed in IdeaList
+        .scrollDisabled(self.isLoading)
+        .navigationDestination(for: Idea.self) { idea in
+            IdeaView(idea: idea)
+        }
+        .navigationDestination(for: Goal.self) { goal in
+            GoalView(goal: goal)
+        }
+        .navigationDestination(for: User.self) { user in
+            UserView(user: user)
+        }
+    }
+    
+    func completion(proxy: ScrollViewProxy) -> some View {
+        ScrollView {
+            VStack {
+                Spacer().frame(height: 0).padding(.top, mySpacing)
+                VStack {
+                    self.completionItem(text: "Dummy suggestion", proxy: proxy)
+                    self.completionItem(text: "Dummy suggestion", proxy: proxy)
+                }
+            }
+        }
+    }
+    
+    func completionItem(text: String, proxy: ScrollViewProxy) -> some View {
+        HStack(spacing: mySpacing) {
+            Image(systemName: "arrow.up.right")
+                .foregroundColor(myPrimaryColor)
+            Text(text)
+        }
+        .padding(.top, 5)
+        .myGutter()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .onTapGesture {
+            self.inputText = text
+            self.onSubmit(proxy: proxy)
+        }
+    }
+    
     func resultCount() -> some View {
-        let count = self.isLoading ? 1 : self.result!.count
+        let count = self.isLoading || self.result == nil ? 1 : self.result!.count
         return Text("\(count) result\(count > 1 ? "s" : "")")
             .redacted(reason: self.isLoading ? .placeholder : [])
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -113,6 +149,7 @@ struct SearchView: View {
         ToolbarItem(placement: .navigationBarLeading) {
             HStack(spacing: 5) {
                 TextField("Search", text: self.$inputText)
+                    .padding(.leading, 32)
                 Button {
                     self.clear()
                 } label: {
