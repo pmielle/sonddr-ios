@@ -13,13 +13,14 @@ struct GoalView: View {
     // ------------------------------------------
     // parameters
     let goal: Goal
-    var forceLoadingState: Bool = false
+    var forceLoadingState: Bool
     @Binding var navigation: NavigationPath
     // environment
     @EnvironmentObject var auth: AuthenticationService
     @EnvironmentObject var db: DatabaseService
     @EnvironmentObject var fab: FabService
     // constant
+    let accentColor: Color
     let topViewId = randomId()
     // state
     @State var ideas: [Idea]? = nil
@@ -34,7 +35,12 @@ struct GoalView: View {
     
     // constructor
     // ------------------------------------------
-    // ...
+    init(goal: Goal, navigation: Binding<NavigationPath>, forceLoadingState: Bool = false) {
+        self.goal = goal
+        self._navigation = navigation
+        self.forceLoadingState = forceLoadingState
+        self.accentColor = goal.darkerColor
+    }
 
 
     // body
@@ -54,11 +60,11 @@ struct GoalView: View {
                     VStack(spacing: 0) {
                         self.header()
                             .padding(.bottom, mySpacing)
-                            .background(self.goal.color)
+                            .background(self.accentColor)
                             .id(self.topViewId)
                         IdeaList(
                             ideas: self.isLoading ? nil : self.ideas,
-                            pinnedHeaderColor: self.goal.color,
+                            pinnedHeaderColor: self.accentColor,
                             sortBy: self.$sortBy
                         )
                         .allowsHitTesting(!self.isLoading)
@@ -107,7 +113,7 @@ struct GoalView: View {
     // ------------------------------------------
     func topBackground(topInset: CGFloat) -> some View {
         VStack(spacing: 0) {
-            self.goal.color
+            self.accentColor
                 .frame(height: topInset + -1 * (self.scrollOffset < 0 ? self.scrollOffset : 0))
                 .overlay(alignment: .bottom) {
                     if self.scrollOffset > 0 {
@@ -128,21 +134,16 @@ struct GoalView: View {
                 .scaleEffect(self.titleScale, anchor: .bottomLeading)
                 .myGutter()
                 .padding(.top, mySpacing)
-            Text("A description of this goal - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim. Donec ornare ex diam, id porta elit suscipit et.")
+            Text("A description of this goal - Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras auctor, eros vitae rhoncus cursus, urna justo hendrerit dolor, ut iaculis mi dolor eu enim.")
                 .myGutter()
-            HeaderHStack(shadowColor: self.goal.color) {
+            HeaderHStack(shadowColor: self.accentColor) {
                 Label("Learn more", systemImage: "info.circle")
                     .myLabel(color: .white)
-                    .foregroundColor(self.goal.color)
-                if self.isLoading {
-                    GoalChip(goal: dummyGoal()).redacted(reason: .placeholder)
-                    GoalChip(goal: dummyGoal()).redacted(reason: .placeholder)
-                } else {
-                    ForEach(self.db.goals!) { goal in
-                        if goal != self.goal {
-                            NavigationLink(value: goal) {
-                                GoalChip(goal: goal)
-                            }
+                    .foregroundColor(self.accentColor)
+                ForEach(self.db.goals!) { goal in
+                    if goal != self.goal {
+                        NavigationLink(value: goal) {
+                            GoalChip(goal: goal)
                         }
                     }
                 }
@@ -226,7 +227,7 @@ struct GoalView_Previews: PreviewProvider {
             // 2nd preview with loading state
             // ------------------------------
             NavigationStack {
-                GoalView(goal: dummyGoal(), forceLoadingState: true, navigation: .constant(NavigationPath()))
+                GoalView(goal: dummyGoal(), navigation: .constant(NavigationPath()), forceLoadingState: true)
             }
         }
         .environmentObject(fab)

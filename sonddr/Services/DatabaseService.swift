@@ -70,7 +70,16 @@ class DatabaseService: ObservableObject {
     
     func getGoals() async throws ->[Goal] {
         await sleep(seconds: 0.1)
-        return [dummyGoal(), dummyGoal()]
+        return [
+            noPoverty,
+            healthAndWellBeing,
+            reducedInequalities,
+            sustainability,
+            preservedEcosystems,
+            peaceAndJustice,
+            decentWork,
+            qualityEducation
+        ]
     }
     
     func getIdeas() async throws -> [Idea] {

@@ -147,8 +147,8 @@ struct HomeView: View {
                     .myLabel(color: .white)
                     .foregroundColor(self.accentColor)
                 if self.isLoading {
-                    GoalChip(goal: dummyGoal()).redacted(reason: .placeholder)
-                    GoalChip(goal: dummyGoal()).redacted(reason: .placeholder)
+                    GoalChip(goal: noPoverty).redacted(reason: .placeholder)
+                    GoalChip(goal: healthAndWellBeing).redacted(reason: .placeholder)
                 } else {
                     ForEach(self.db.goals!) { goal in
                         NavigationLink(value: goal) {

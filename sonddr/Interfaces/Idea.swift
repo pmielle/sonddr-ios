@@ -28,7 +28,7 @@ func dummyIdea(old: Bool = false) -> Idea {
         id: randomId(),
         title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit",
         author: dummyUser(),
-        goals: [dummyGoal(), dummyGoal()],
+        goals: [qualityEducation, healthAndWellBeing],
         cover: "DefaultIdeaCover",
         rating: 66,
         date: old ? Date.distantPast : Date.now - 300,

@@ -118,7 +118,7 @@ struct AddView: View {
                 Spacer()
                     .frame(height: coverPictureHeight - topInset - goalChipHeight - mySpacing)
                 VStack(alignment: .leading, spacing: 2 * mySpacing) {
-                    HeaderHStack(shadowColor: self.coverPlaceholderColor, additionalLeftPadding: mySpacing + profilePictureSize) {
+                    HeaderHStack(shadowColor: .clear, additionalLeftPadding: mySpacing + profilePictureSize) {
                         self.goalPicker()
                         ForEach(self.selectedGoals) { selectedGoal in
                             GoalChip(goal: selectedGoal)
